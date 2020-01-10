@@ -1,5 +1,6 @@
 package cn.edu.bdu.carmanage;
 
+import cn.edu.bdu.carmanage.utils.Md5;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -7,7 +8,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 class CarManageApplicationTests {
 
     @Test
-    void contextLoads() {
+    public void test01()
+    {
+        String password = "abc123";
+        String s = Md5.encodeByMD5(password);
+        System.out.println(s);
     }
 
 }
