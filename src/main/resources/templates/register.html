@@ -34,31 +34,37 @@
                         <div class="content">
                             <div class="form-group">
                                 <input id="register-username" class="input-material" type="text" name="username"
-                                       placeholder="请输入用户名/姓名">
+                                       placeholder="请输入用户名">
                                 <div class="invalid-feedback">
                                     用户名必须在2~10位之间
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input id="register-nicheng" class="input-material" type="text" name="nicheng"
+                                       placeholder="请输入昵称">
+                                <div class="invalid-feedback">
+                                    昵称必须在2~10位之间
                                 </div>
                             </div>
                             <div class="form-group">
                                 <input id="register-password" class="input-material" type="password"
                                        name="password" placeholder="请输入密码">
                                 <div class="invalid-feedback">
-                                    密码必须在6~10位之间
+                                    密码必须在6~18位之间
                                 </div>
                             </div>
                             <div class="form-group">
                                 <input id="register-passwords" class="input-material" type="password"
                                        name="repassword" placeholder="确认密码">
                                 <div class="invalid-feedback">
-                                    两次密码必须相同 且在6~10位之间
+                                    两次密码必须相同
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input id="verification-code" class="input-material" type="text"
-                                       name="vercode" placeholder="输入验证码">
-                                <a href="javascript:;" class="send">发送验证码</a>
+                                <input id="phone-number" class="input-material" type="text"
+                                       name="phone" placeholder="请输入手机号">
                                 <div class="invalid-feedback">
-                                    请输入验证码
+                                    请输入正确的手机号
                                 </div>
                             </div>
                             <div class="form-group">
@@ -82,11 +88,12 @@
         /*错误class  form-control is-invalid
         正确class  form-control is-valid*/
         var flagName = false;
+        var flagNicheng = false;
         var flagPas = false;
         var flagPass = false;
-        var flagCode = false;
+        var flagPhone = false;
         /*验证用户名*/
-        var username, password, passWords, verCode;
+        var username, nicheng, password, passWords, phone;
         $("#register-username").change(function () {
             username = $.trim($("#register-username").val());
             if (username.length < 2 || username.length > 10) {
@@ -97,6 +104,19 @@
                 $("#register-username").removeClass("form-control is-invalid")
                 $("#register-username").addClass("form-control is-valid");
                 flagName = true;
+            }
+        })
+        /*验证昵称*/
+        $("#register-nicheng").change(function () {
+            nicheng = $.trim($("#register-nicheng").val());
+            if (nicheng.length < 2 || nicheng.length > 10) {
+                $("#register-nicheng").removeClass("form-control is-valid")
+                $("#register-nicheng").addClass("form-control is-invalid");
+                flagNicheng = false;
+            } else {
+                $("#register-nicheng").removeClass("form-control is-invalid")
+                $("#register-nicheng").addClass("form-control is-valid");
+                flagNicheng = true;
             }
         })
         /*验证密码*/
@@ -126,23 +146,24 @@
             }
         })
 
-        /*验证验证码*/
-        $("#verification-code").change(function () {
-            verCode = $.trim($("#verification-code").val());
-            if (verCode.length <= 0) {
-                $("#verification-code").removeClass("form-control is-valid")
-                $("#verification-code").addClass("form-control is-invalid");
-                flagCode = false;
+        /*验证手机号*/
+        $("#phone-number").change(function () {
+            phone = $.trim($("#phone-number").val());
+            var pattern = /^1[345678]\d{9}$/;
+            if (!pattern.test(phone)) {
+                $("#phone-number").removeClass("form-control is-valid")
+                $("#phone-number").addClass("form-control is-invalid");
+                flagPhone = false;
             } else {
-                $("#verification-code").removeClass("form-control is-invalid")
-                $("#verification-code").addClass("form-control is-valid");
-                flagCode = true;
+                $("#phone-number").removeClass("form-control is-invalid")
+                $("#phone-number").addClass("form-control is-valid");
+                flagPhone = true;
             }
         })
 
 
         $("#regbtn").click(function () {
-            if (flagName && flagPas && flagPass && flagCode) {
+            if (flagName && flagNicheng && flagPas && flagPass && flagPhone) {
                 localStorage.setItem("username", username);
                 localStorage.setItem("password", password);
                 // localStorage.setItem("verCode", verCode)
@@ -152,8 +173,8 @@
                     data: JSON.stringify({"username": username, "password": password}),
                     contentType: "application/json;charset=UTF-8",
                     success: function (data) {
-                            alert("注册成功");
-                            location = "/user/user/index"
+                        alert("注册成功");
+                        location = "/user/user/index"
                     },
                     error: function (err) {
                         alert("注册失败");
@@ -163,14 +184,17 @@
                 if (!flagName) {
                     $("#register-username").addClass("form-control is-invalid");
                 }
+                if (!flagNicheng) {
+                    $("#register-nicheng").addClass("form-control is-invalid")
+                }
                 if (!flagPas) {
                     $("#register-password").addClass("form-control is-invalid");
                 }
                 if (!flagPass) {
                     $("#register-passwords").addClass("form-control is-invalid");
                 }
-                if (!flagCode) {
-                    $("#verification-code").addClass("form-control is-invalid");
+                if (!flagPhone) {
+                    $("#phone-number").addClass("form-control is-invalid");
                 }
             }
         })
