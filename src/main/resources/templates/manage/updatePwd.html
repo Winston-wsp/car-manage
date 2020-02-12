@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{/../../css/Site.css}" href="css/Site.css"/>
+    <link rel="stylesheet" th:href="@{/../../css/zy.all.css}" href="css/zy.all.css"/>
+    <link rel="stylesheet" th:href="@{/../../css/font-awesome.min.css}" href="css/font-awesome.min.css"/>
+    <link rel="stylesheet" th:href="@{/../../css/amazeui.min.css}" href="css/amazeui.min.css"/>
+    <link rel="stylesheet" th:href="@{/../../css/admin.css}" href="css/admin.css"/>
+</head>
+<body>
+<div class="am-cf admin-main" style="padding-top: 0px;">
+    <!-- content start -->
+
+    <div class="am-cf admin-main" style="padding-top: 0px;">
+        <!-- content start -->
+        <div class="admin-content">
+            <div class="admin-content-body">
+
+                <div class="am-g">
+                    <div class="am-u-sm-12 am-u-md-4 am-u-md-push-8">
+
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4"
+                         style="padding-top: 30px;">
+                        <form class="am-form am-form-horizontal"
+                              action="admin/user/addUser1Submit.action" method="post">
+                            <input type="hidden" id="username" th:value="${adminUsername}">
+                            <div class="am-form-group">
+                                <label for="oldPassword" class="am-u-sm-3 am-form-label">
+                                    原密码</label>
+                                <div class="am-u-sm-9">
+                                    <input type="password" id="oldPassword" required
+                                           placeholder="原密码" name="oldPassword">
+                                    <small>原密码...</small>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="newPassword" class="am-u-sm-3 am-form-label">
+                                    新密码</label>
+                                <div class="am-u-sm-9">
+                                    <input type="password" id="newPassword" required
+                                           placeholder="新密码" name="newPassword">
+                                    <small>新密码...</small>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <label for="reNewPassword" class="am-u-sm-3 am-form-label">
+                                    重复新密码</label>
+                                <div class="am-u-sm-9">
+                                    <input type="password" id="reNewPassword" required
+                                           placeholder="新密码" name="reNewPassword">
+                                    <small>确认新密码...</small>
+                                </div>
+                            </div>
+                            <div class="am-form-group">
+                                <div class="am-u-sm-9 am-u-sm-push-3">
+                                    <input th:onclick="btn_updatePassword([[${adminUsername}]]);" type="button"
+                                           class="am-btn am-btn-success"
+                                           value="修改"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <footer class="admin-content-footer">
+                <hr>
+                <p class="am-padding-left"></p>
+            </footer>
+        </div>
+        <!-- content end -->
+    </div>
+    <!-- end-->
+</div>
+<script th:src="@{/../js/jquery.min.js}" src="js/jquery.min.js"></script>
+<script>
+    var btn_updatePassword = function (adminUsername) {
+        var username = $("#username").val();
+        var password = $("#oldPassword").val();
+        var newPassword = $("#newPassword").val();
+        var reNewPassword = $("#reNewPassword").val();
+        if (username.length == 0 || password.length == 0 || newPassword.length == 0 || reNewPassword.length == 0) {
+            alert("不能有空字段");
+            return  false;
+        }
+        if (newPassword != reNewPassword) {
+            alert("两次新密码不一致，请重新输入");
+            return false;
+        }
+        $.ajax({
+            type: "PUT",
+            url: "/admin/user/updateAdminUser",
+            data: {username: username, password: password, newPassword: newPassword},
+            success: function (data) {
+                if (data < 0) {
+                    alert("原密码输入错误，请重新输入");
+                }
+                alert("密码修改成功");
+                window.location.reload();
+
+            }
+        })
+
+    }
+</script>
+</body>
+</html>

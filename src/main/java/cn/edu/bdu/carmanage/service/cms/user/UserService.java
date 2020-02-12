@@ -2,11 +2,16 @@ package cn.edu.bdu.carmanage.service.cms.user;
 
 import cn.edu.bdu.carmanage.entity.admin.AdminUser;
 import cn.edu.bdu.carmanage.entity.user.User;
+import cn.edu.bdu.carmanage.entity.user.UserVO;
 import cn.edu.bdu.carmanage.mapper.UserMapper;
 import cn.edu.bdu.carmanage.utils.Md5;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Author Winston
@@ -32,11 +37,14 @@ public class UserService {
      * @param id
      * @return
      */
-    public User getUserById(Integer id){
+    public User getUserById(String id){
         User user = userMapper.selectById(id);
         return user;
     }
-
+    public int updateUser(User user){
+        int row = userMapper.updateById(user);
+        return row;
+    }
     /**
      * 根据用户名密码查找用户
      * @param user
@@ -52,5 +60,23 @@ public class UserService {
         }
         return false;
 
+    }
+
+    public UserVO<User> getUsers(Long currentPagge, Long size) {
+        IPage<User> iPage = new Page<>(currentPagge,size);
+        IPage<User> page = userMapper.selectPage(iPage, null);
+        UserVO<User> userVO = new UserVO<>();
+        userVO.setPages(page.getPages());
+        userVO.setCurrent(page.getCurrent());
+       userVO.setSize(page.getSize());
+       userVO.setTotal(page.getTotal());
+       userVO.setList(page.getRecords());
+        return userVO;
+    }
+
+    public int deleteUser(String id) {
+
+        int row = userMapper.deleteById(id);
+        return row;
     }
 }

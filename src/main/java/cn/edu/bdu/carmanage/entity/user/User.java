@@ -1,6 +1,7 @@
 package cn.edu.bdu.carmanage.entity.user;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -16,5 +17,8 @@ public class User {
     private String id;
 
     private String username;
+    private String nicheng;
     private String password;
+    @TableField("phone_number")
+    private String phoneNumber;
 }

@@ -93,7 +93,7 @@
         var flagPass = false;
         var flagPhone = false;
         /*验证用户名*/
-        var username, nicheng, password, passWords, phone;
+        var username, nicheng, password, passWords, phoneNumber;
         $("#register-username").change(function () {
             username = $.trim($("#register-username").val());
             if (username.length < 2 || username.length > 10) {
@@ -148,9 +148,9 @@
 
         /*验证手机号*/
         $("#phone-number").change(function () {
-            phone = $.trim($("#phone-number").val());
+            phoneNumber = $.trim($("#phone-number").val());
             var pattern = /^1[345678]\d{9}$/;
-            if (!pattern.test(phone)) {
+            if (!pattern.test(phoneNumber)) {
                 $("#phone-number").removeClass("form-control is-valid")
                 $("#phone-number").addClass("form-control is-invalid");
                 flagPhone = false;
@@ -170,7 +170,12 @@
                 $.ajax({
                     type: "POST",
                     url: "/user/user/addUser",
-                    data: JSON.stringify({"username": username, "password": password}),
+                    data: JSON.stringify({
+                        "username": username,
+                        "nicheng": nicheng,
+                        "password": password,
+                        "phoneNumber": phoneNumber
+                    }),
                     contentType: "application/json;charset=UTF-8",
                     success: function (data) {
                         alert("注册成功");

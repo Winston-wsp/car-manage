@@ -1,4 +1,3 @@
-
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
@@ -8,5 +7,15 @@ spring:
     url: jdbc:mysql://localhost:3306/car_manage?serverTimezone=UTC&characterEncoding=utf-8
   thymeleaf:
     cache: false
+  devtools:
+    restart:
+      enabled: true
 server:
   port: 8089
+
+# 分页配置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql

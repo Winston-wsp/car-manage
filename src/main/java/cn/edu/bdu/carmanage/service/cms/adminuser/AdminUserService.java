@@ -20,25 +20,27 @@ public class AdminUserService {
 
     /**
      * 添加新的管理员用户
+     *
      * @param adminUser
      */
-    public void addAdminUser(AdminUser adminUser)
-    {
+    public void addAdminUser(AdminUser adminUser) {
         adminUserMapper.insert(adminUser);
     }
 
     /**
      * 根据id获取管理员用户
+     *
      * @param id
      * @return
      */
-    public AdminUser getAdminUserById(Integer id){
+    public AdminUser getAdminUserById(Integer id) {
         AdminUser adminUser = adminUserMapper.selectById(id);
         return adminUser;
     }
 
     /**
      * 根据用户名和密码查找管理员用户是否存在
+     *
      * @param adminUser
      * @return
      */
@@ -47,9 +49,23 @@ public class AdminUserService {
         queryWrapper.eq("username", adminUser.getUsername());
         queryWrapper.eq("password", Md5.encodeByMD5(adminUser.getPassword()));
         AdminUser user = adminUserMapper.selectOne(queryWrapper);
-        if(user != null){
+        if (user != null) {
             return true;
         }
         return false;
+    }
+
+    public int updateAdminUserByUsername(AdminUser adminUser,String newPassword) {
+        int row = -1;
+        QueryWrapper<AdminUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", adminUser.getUsername());
+        queryWrapper.eq("password", Md5.encodeByMD5(adminUser.getPassword()));
+        AdminUser user = this.adminUserMapper.selectOne(queryWrapper);
+        if(user == null){
+            return row;
+        }
+        user.setPassword(Md5.encodeByMD5(newPassword));
+        row = adminUserMapper.updateById(user);
+        return row;
     }
 }

@@ -1,6 +1,7 @@
 package cn.edu.bdu.carmanage.controller.adminuser;
 
 import cn.edu.bdu.carmanage.entity.admin.AdminUser;
+import cn.edu.bdu.carmanage.entity.user.User;
 import cn.edu.bdu.carmanage.service.cms.adminuser.AdminUserService;
 import cn.edu.bdu.carmanage.utils.Md5;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Author Winston
@@ -20,6 +23,7 @@ public class AdminUserController {
 
     @Autowired
     private AdminUserService adminUserService;
+
 
     /**
      * 添加新的管理员用户
@@ -35,13 +39,13 @@ public class AdminUserController {
     }
 
     @PostMapping("getAdminUser")
-    public String getAdminUser( AdminUser adminUser, Model model) {
+    public String getAdminUser(AdminUser adminUser, Model model) {
         Boolean flag = adminUserService.getAdminUser(adminUser);
         if (flag) {
             model.addAttribute("adminUser", adminUser);
-            return "success";
+            return "/manage/index";
         }
-        model.addAttribute("message","用户名或密码错误，请重新输入");
+        model.addAttribute("message", "用户名或密码错误，请重新输入");
         return "index";
     }
 
@@ -52,11 +56,25 @@ public class AdminUserController {
 
         return ResponseEntity.ok(adminUser);
     }
-
+    @PutMapping("/updateAdminUser")
+    @ResponseBody
+    public int updateAdminUserByUsername(AdminUser adminUser,String newPassword){
+        int row = adminUserService.updateAdminUserByUsername(adminUser, newPassword);
+        return row;
+    }
     @GetMapping("/index")
     public String index() {
         return "index";
     }
 
+    @GetMapping("/editPassword")
+    public String editPassword(@RequestParam("adminUsername") String adminUsername, Model model) {
+        model.addAttribute("adminUsername", adminUsername);
+        return "/manage/updatePwd";
+    }
+/*    @PostMapping("/updateAdminUser")
+    public {
+
+    }*/
 
 }
