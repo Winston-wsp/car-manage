@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" " http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.bdu.carmanage.mapper.CarParkingMapper">
+    <resultMap id="carParkingResultMap" type="cn.edu.bdu.carmanage.entity.car.CarParking">
+        <id column="id" property="id"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="carparks_id" property="carparksId"></result>
+        <result column="plate_number" property="plateNumber"></result>
+        <result column="start_time" property="startTime"></result>
+        <result column="end_time" property="endTime"></result>
+        <association property="carParks" javaType="cn.edu.bdu.carmanage.entity.car.CarParks">
+            <id column="id" property="id"></id>
+            <result column="area" property="area"></result>
+            <result column="park_number" property="parkNumber"></result>
+            <result column="status" property="status"></result>
+        </association>
+        <association property="user" javaType="cn.edu.bdu.carmanage.entity.user.User">
+            <id column="id" property="id"></id>
+            <result column="username" property="username"></result>
+            <result column="nicheng" property="nicheng"></result>
+        </association>
+    </resultMap>
+
+
+    <resultMap id="carparkingResult" type="cn.edu.bdu.carmanage.entity.car.CarParking">
+        <id column="id" property="id"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="carparks_id" property="carparksId"></result>
+        <result column="plate_number" property="plateNumber"></result>
+        <result column="start_time" property="startTime"></result>
+        <result column="end_time" property="endTime"></result>
+        <association property="carParks" javaType="cn.edu.bdu.carmanage.entity.car.CarParks">
+            <id column="id" property="id"></id>
+            <result column="area" property="area"></result>
+            <result column="park_number" property="parkNumber"></result>
+            <result column="status" property="status"></result>
+        </association>
+    </resultMap>
+    <select id="getMyCarParing" parameterType="String" resultMap="carparkingResult">
+        SELECT
+        car_parking.*,
+        car_carparks.area,
+        car_carparks.park_number,
+        car_carparks.STATUS
+        FROM
+        car_parking,
+        car_carparks
+        WHERE
+        car_parking.carparks_id = car_carparks.id
+        AND car_parking.user_id = #{userId}
+    </select>
+
+
+    <select id="getCarParkings" parameterType="map" resultMap="carParkingResultMap">
+        SELECT
+        car_parking.*,
+        car_carparks.area,
+        car_carparks.park_number,
+        car_carparks.STATUS,
+        user_user.username,
+        user_user.nicheng
+        FROM
+        car_parking
+        INNER JOIN car_carparks ON car_parking.carparks_id = car_carparks.id
+        INNER JOIN user_user ON car_parking.user_id = user_user.id
+        ${ew.customSqlSegment}
+        <!-- <if test="area!=null and area!=''">
+             AND car_carparks.area = #{area}
+         </if>
+         <if test="parkNumber!=null and parkNumber!=''">
+             AND car_carparks.parkNumber = #{parkNumber}
+         </if>
+         <if test="username!=null and username!=''">
+             AND user_user.username = #{username}
+         </if>
+         <if test="nicheng!=null and nicheng!=''">
+             AND user_user.nicheng = #{nicheng}
+         </if>
+ -->
+    </select>
+</mapper>

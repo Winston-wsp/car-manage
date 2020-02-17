@@ -19,37 +19,12 @@
         <div class="tabs">
             <div class="hd">
                 <ul>
-                    <li class="on" style="box-sizing: initial;-webkit-box-sizing: initial;">当前车位</li>
-                    <li class="" style="box-sizing: initial;-webkit-box-sizing: initial;">新增车位</li>
+                    <li class="on" style="box-sizing: initial;-webkit-box-sizing: initial;">历史公告</li>
+                    <li class="" style="box-sizing: initial;-webkit-box-sizing: initial;">发布公告</li>
                 </ul>
             </div>
-
             <div class="bd">
                 <ul style="display: block;padding: 20px;">
-                    <div style="display: block;padding-bottom: 20px;">
-                        <div class="row m-b-10">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <form th:action="@{/car/getCarParksList}" method="get">
-                                        <div class="col-xs-5">
-                                            <input id="area" name="area" type="text" class="form-control"
-                                                   placeholder="请输入区域...">
-
-                                        </div>
-                                        <div class="col-xs-5">
-                                            <input id="parkNumber" name="parkNumber" type="text" class="form-control"
-                                                   placeholder="请输入车位号...">
-                                        </div>
-                                        <div class="col-xs-2">
-                                            <button class="btn btn-default" type="submit">搜索
-                                            </button>
-                                        </div>
-                                    </form>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <li>
                         <!--分页显示角色信息 start-->
                         <div id="dv1">
@@ -57,29 +32,30 @@
                                 <thead>
                                 <tr>
                                     <th>编号</th>
-                                    <th>区域</th>
-                                    <th>车位号</th>
-                                    <th>备注</th>
+                                    <th>公告标题</th>
+                                    <th>公告内容</th>
+                                    <th>公告日期</th>
                                     <th>修改</th>
                                     <th>删除</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <span th:if="${carParksVO?.list} != null">
-                                    <tr th:each="carParks,stat:${carParksVO.list}">
+                                <span th:if="${announcementVO?.list} != null">
+                                <tr
+                                        th:each="announcement,stat:${announcementVO.list}">
                                     <td th:text="${stat.count}">1</td>
-                                    <td th:text="${carParks.area}">kobe</td>
-                                    <td th:text="${carParks.parkNumber}">菲菲菲非常美丽的巨兔12138</td>
-                                    <td th:text="${carParks.remark}">138177322211</td>
+                                    <td th:text="${announcement.title}">kobe</td>
+                                    <td width="50%" th:text="${announcement.content}">菲菲菲非常美丽的巨兔12138</td>
+                                    <td th:text="${#dates.format(announcement.time,'yyyy-MM-dd')}">138177322211</td>
                                     <td class="edit">
                                         <!--                                        <button onclick="btn_edit(1)"><i class="icon-edit bigger-120"></i>编辑</button>-->
-                                        <button th:onclick="btn_edit([[${carParks.id}]]);" type="button"
+                                        <button th:onclick="btn_edit([[${announcement.id}]]);" type="button"
                                                 data-toggle="modal"
                                                 data-target="#myModal"><i class="icon-edit bigger-120"></i>编辑
                                         </button>
                                     </td>
                                     <td class="delete">
-                                        <button th:onclick="btn_delete([[${carParks.id}]]);"><i
+                                        <button th:onclick="btn_delete([[${announcement.id}]]);"><i
                                                 class="icon-trash bigger-120"></i>删除
                                         </button>
                                     </td>
@@ -90,7 +66,7 @@
                             </table>
                         </div>
                         <!--分页显示角色信息 end-->
-                        <div style="text-align: center" th:if="${#lists.size(carParksVO.list)} != 0">
+                        <div style="text-align: center" th:if="${announcementVO?.list} != null">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
                                     <li>
@@ -98,11 +74,11 @@
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
-                                    <li class="" th:classappend="${page == carParksVO.current}?'active':''"
-                                        th:each="page : ${#numbers.sequence(1,carParksVO.pages)}">
+                                    <li class="" th:classappend="${page == announcementVO.current}?'active':''"
+                                        th:each="page : ${#numbers.sequence(1,announcementVO.pages)}">
                                         <a
                                                 th:text="${page}"
-                                                th:href="@{http://localhost:8089/car/getCarParksList?currentPage=}+${page}">1</a>
+                                                th:href="@{http://localhost:8089/user/user/getAnnouncement?currentPage=}+${page}"></a>
                                     </li>
                                     <li>
                                         <a href="#" aria-label="Next">
@@ -130,83 +106,30 @@
                                         <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4"
                                              style="padding-top: 30px;">
                                             <form class="am-form am-form-horizontal"
-                                                  action="/car/addCarParks" method="post">
+                                                  action="/user/user/addAnnouncement" method="post">
 
                                                 <div class="am-form-group">
-                                                    <label for="area" class="am-u-sm-3 am-form-label">
-                                                        区域 / Area</label>
+                                                    <label for="title" class="am-u-sm-3 am-form-label">
+                                                        标题 / Title</label>
                                                     <div class="am-u-sm-9">
-                                                        <input type="text" id="area" required
-                                                               placeholder="区域 / Area" name="area">
+                                                        <input type="text" id="title" required
+                                                               placeholder="标题 / Title" name="title">
                                                     </div>
                                                 </div>
                                                 <div class="am-form-group">
-                                                    <label for="parkNumber" class="am-u-sm-3 am-form-label">
-                                                        车位号 / Park-Number </label>
+                                                    <label for="content" class="am-u-sm-3 am-form-label">
+                                                        内容/ Content </label>
                                                     <div class="am-u-sm-9">
-                                                        <input type="text" id="parkNumber" required
-                                                               placeholder="车位号 / Park-Number" name="parkNumber">
-                                                    </div>
-                                                </div>
-                                                <!-- <div class="am-form-group">
-                                                     <label for="user-name" class="am-u-sm-3 am-form-label">
-                                                         性别 / sex </label>
-                                                     <div class="am-u-sm-9" style="line-height: 30px;">
-                                                         <input type="radio" id="man" name="sex" value="1" ${user.sex==1?
-                                                         "checked=checked ":""}/>
-                                                         <label for="man">
-                                                             男 </label> &nbsp;&nbsp;&nbsp;&nbsp; <input type="radio"
-                                                                                                        id="woman"
-                                                                                                        name="sex"
-                                                                                                        value="0"
-                                                                                                        ${user.sex==0?"checked=checke":""}/>
-                                                         <label for="woman"> 女 </label> <br/>
-                                                         <small>性别...</small>
-                                                     </div>
-                                                 </div>
-                                                 <div class="am-form-group">
-                                                     <label for="user-email" class="am-u-sm-3 am-form-label">
-                                                         联系电话 / phone </label>
-                                                     <div class="am-u-sm-9">
-                                                         <input type="tel" id="user-phone" required
-                                                                placeholder="请输入联系电话" name="phone"/>
-                                                         <small>联系电话...</small>
-                                                     </div>
-                                                 </div>
-                                                 <div class="am-form-group">
-                                                     <label for="user-email" class="am-u-sm-3 am-form-label">
-                                                         籍贯 / place </label>
-                                                     <div class="am-u-sm-9">
-                                                         <input type="text" id="user-email" required placeholder="请输入籍贯"
-                                                                name="place"/>
-                                                         <small>籍贯...</small>
-                                                     </div>
-                                                 </div>
-                                                 <div class="am-form-group">
-                                                     <label for="user-email" class="am-u-sm-3 am-form-label">
-                                                         电子邮件 / Email </label>
-                                                     <div class="am-u-sm-9">
-                                                         <input type="email" id="user-email" required
-                                                                placeholder="输入你的电子邮件 / Email" name="email"/>
-                                                         <small>邮箱你懂得...</small>
-                                                     </div>
-                                                 </div>-->
-
-
-                                                <div class="am-form-group">
-                                                    <label for="remark" class="am-u-sm-3 am-form-label">
-                                                        备注/ Remark </label>
-                                                    <div class="am-u-sm-9">
-									<textarea class="" rows="5" id="remark" name="remark"
-                                              placeholder="输入备注"></textarea>
-                                                        <small>50字以内...</small>
+									<textarea class="" rows="5" id="content" name="content"
+                                              placeholder="公告内容"></textarea>
+                                                        <small>1000字以内...</small>
                                                     </div>
                                                 </div>
                                                 <div class="am-form-group">
                                                     <div class="am-u-sm-9 am-u-sm-push-3">
                                                         <input onclick="btn_save();" type="button"
                                                                class="am-btn am-btn-success"
-                                                               value="新增车位"/>
+                                                               value="发布公告"/>
                                                     </div>
                                                 </div>
                                             </form>
@@ -233,23 +156,20 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">编辑车位信息</h4>
+                    <h4 class="modal-title" id="myModalLabel">编辑公告内容</h4>
                 </div>
                 <div class="modal-body">
                     <form>
                         <input type="hidden" id="inputId">
                         <div class="form-group">
-                            <label for="inputArea">区域</label>
-                            <input type="" class="form-control" id="inputArea"
-                                   placeholder="区域">
+                            <label for="inputTitle">公告标题</label>
+                            <input type="" class="form-control" id="inputTitle"
+                                   placeholder="标题">
                         </div>
                         <div class="form-group">
-                            <label for="inputParkNumber">车位号</label>
-                            <input type="text" class="form-control" id="inputParkNumber" placeholder="车位号">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputRemark">备注信息</label>
-                            <input type="text" class="form-control" id="inputRemark" placeholder="备注信息">
+                            <label for="inputContent">公告内容</label>
+                            <textarea style="height: 200px;" type="text" class="form-control" id="inputContent"
+                                      placeholder="公告内容"> </textarea>
                         </div>
                         <!--   <div class="form-group">
                                <label for="exampleInputFile">File input</label>
@@ -291,13 +211,12 @@
         // 确认修改
         var btn_update = function () {
             var id = $("#inputId").val();
-            var area = $("#inputArea").val();
-            var parkNumber = $("#inputParkNumber").val();
-            var remark = $("#inputRemark").val();
+            var title = $("#inputTitle").val();
+            var content = $("#inputContent。").val();
             $.ajax({
                 type: "PUT",
-                url: "http://localhost:8089/car/updateCarParks",
-                data: {id: id, area: area, parkNumber: parkNumber, remark: remark},
+                url: "http://localhost:8089/user/user/editAnnouncement",
+                data: {id: id, title: title, content: content},
                 success: function (data) {
                     if (data > 0) {
                         alert("修改成功");
@@ -310,18 +229,17 @@
         }
         var btn_save = function () {
             // var pid = $("#RawMaterialsTypePageId  option:selected").val();
-            var area = $("#area").val();
-            var parkNumber = $("#parkNumber").val();
-            var remark = $("#remark").val();
+            var title = $("#title").val();
+            var content = $("#content").val();
             $.ajax({
                 type: "post",
-                url: "/car/addCarParks",
+                url: "/user/user/addAnnouncement",
                 // contentType : "application/json",
-                data: {area: area, parkNumber: parkNumber, remark: remark},
+                data: {title: title, content: content},
                 success: function (data) {
                     if (data > 0) {
                         $.jq_Alert({
-                            message: "添加成功",
+                            message: "发布成功",
                             btnOktext: "确认",
                             dialogModal: true,
                             btnOkClick: function () {
@@ -342,12 +260,11 @@
         var btn_edit = function (id) {
             $.ajax({
                 type: "GET",
-                url: "http://localhost:8089/car/getCarParksById/" + id,
+                url: "http://localhost:8089/user/user/getAnnouncementById/" + id,
                 success: function (data) {
                     $("#inputId").val(data.id);
-                    $("#inputArea").val(data.area);
-                    $("#inputParkNumber").val(data.parkNumber);
-                    $("#inputRemark").val(data.remark);
+                    $("#inputTitle").val(data.title);
+                    $("#inputContent").val(data.content);
                 }
             });
         }
@@ -357,7 +274,7 @@
                 btnOkClick: function () {
                     $.ajax({
                         type: "DELETE",
-                        url: "/car/deleteCarParks/" + id,
+                        url: "/user/user/deleteAnnouncementById/" + id,
                         //data: {id: id},
                         success: function (data) {
                             if (data > 0) {

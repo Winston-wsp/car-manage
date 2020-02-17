@@ -72,7 +72,7 @@
                                 </button>
                             </div>
                             <small>已有账号?</small>
-                            <a th:href="@{/user/user/index}" href="login.html" class="signup">&nbsp;登录</a>
+                            <a th:href="@{/user/user/login}" href="login.html" class="signup">&nbsp;登录</a>
                         </div>
                     </div>
                 </div>
@@ -179,7 +179,7 @@
                     contentType: "application/json;charset=UTF-8",
                     success: function (data) {
                         alert("注册成功");
-                        location = "/user/user/index"
+                        location = "/user/user/login"
                     },
                     error: function (err) {
                         alert("注册失败");

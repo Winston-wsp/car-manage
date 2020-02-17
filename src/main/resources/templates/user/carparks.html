@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>文档列表 - 光年(Light Year Admin)后台管理系统模板</title>
+    <link rel="icon" href="favicon.ico" type="image/ico">
+    <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+    <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+    <meta name="author" content="yinqi">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/../../css/materialdesignicons.min.css}" href="css/materialdesignicons.min.css" rel="stylesheet">
+    <link th:href="@{/../../css/style.min.css}" href="css/style.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-toolbar clearfix">
+
+                    <div class="row m-b-10">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <form th:action="@{/car/getCarParksListToUser}" method="get">
+                                    <div class="col-xs-5">
+                                        <input id="area" name="area" type="text" class="form-control"
+                                               placeholder="请输入区域...">
+
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <input type="hidden" name="userId" id="userId" th:value="${userId}"/>
+                                        <input id="parkNumber" name="parkNumber" type="text" class="form-control"
+                                               placeholder="请输入车位号...">
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <button class="btn btn-success" type="submit">搜索
+                                        </button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>区域</th>
+                                    <th>车位号</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="carParks,stat:${carParksVO.list}">
+                                    <td th:text="${stat.count}">1</td>
+                                    <td th:text="${carParks.area}">第01章 天涯思君不可忘</td>
+                                    <td th:text="${carParks.parkNumber}">《倚天屠龙记》</td>
+                                    <td th:text="${carParks.remark}">金庸</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button th:onclick="btn_save([[${carParks.id}]]);"
+                                                    class="btn btn-xs btn-default" title="入库" data-toggle="modal"
+                                                    data-target="#myModal"><i
+                                                    class="mdi mdi-account-check"></i>入库
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">停车信息</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input id="plateNumber" class="form-control" type="text" name="plateNumber"
+                                               placeholder="请输入您的车牌号">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        <button id="saveCarparking" type="button" class="btn btn-primary">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <ul class="pagination" th:if="${#lists.size(carParksVO.list)} != 0">
+                            <li class="disabled"><span>«</span></li>
+                            <li class="" th:classappend="${page == carParksVO.current}?'active':''"
+                                th:each="page : ${#numbers.sequence(1,carParksVO.pages)}">
+                                <a
+                                        th:text="${page}"
+                                        th:href="@{http://localhost:8089/car/getCarParksListToUser?currentPage=}+${page}">1</a>
+                            </li>
+                            <!--                        <li class="disabled"><span>...</span></li>-->
+                            <li><a href="#!">»</a></li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript" th:src="@{/../../js/jquery.min.js}" src="js/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" th:src="@{/../../js/perfect-scrollbar.min.js}"
+        src="js/perfect-scrollbar.min.js"></script>
+<script th:src="@{/../../js/bootstrap-notify.min.js}" src="js/bootstrap-notify.min.js"></script>
+<script type="text/javascript" th:src="@{/../../js/main.min.js}" src="js/main.min.js"></script>
+<script type="text/javascript" th:src="@{/../../js/lightyear.js}" src="js/lightyear.js"></script>
+<script type="text/javascript">
+    // 搜索框
+    var btn_search = function () {
+        var parkNumber = $('#parkNumber').val();
+        var userId = $('#userId').val();
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8089/car/getCarParksListToUser",
+            data: {parkNumber: parkNumber, userId: userId}
+        });
+    }
+    var btn_save = function (id) {
+        // 消息提示示例
+        $('#saveCarparking').on('click', function () {
+            var userId = $('#userId').val();
+            var carparksId = id;
+            var plateNumber = $.trim($('#plateNumber').val());
+            if (plateNumber.length == 7) {
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8089/car/addCarParing",
+                    data: {userId: userId, carparksId: carparksId, plateNumber: plateNumber},
+                    success: function (data) {
+                        if (data > 0) {
+                            alert("入库成功");
+                            window.location.reload();
+
+                        } else {
+                            alert("入库失败");
+                        }
+                    }
+                });
+
+            }else {
+                alert("车牌号非法");
+            }
+
+
+        });
+
+    }
+
+    $(function () {
+        $('.search-bar .dropdown-menu a').click(function () {
+            var field = $(this).data('field') || '';
+            $('#search-field').val(field);
+            $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
+        });
+    });
+</script>
+
+</body>
+</html>

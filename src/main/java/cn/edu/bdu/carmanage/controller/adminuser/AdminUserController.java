@@ -1,17 +1,13 @@
 package cn.edu.bdu.carmanage.controller.adminuser;
 
 import cn.edu.bdu.carmanage.entity.admin.AdminUser;
-import cn.edu.bdu.carmanage.entity.user.User;
 import cn.edu.bdu.carmanage.service.cms.adminuser.AdminUserService;
-import cn.edu.bdu.carmanage.utils.Md5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @Author Winston
@@ -33,7 +29,7 @@ public class AdminUserController {
     public ResponseEntity<Void> addAdminUser(@RequestBody AdminUser adminUser) {
         AdminUser user = new AdminUser();
         user.setUsername(adminUser.getUsername());
-        user.setPassword(Md5.encodeByMD5(adminUser.getPassword()));
+        user.setPassword(adminUser.getPassword());
         adminUserService.addAdminUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

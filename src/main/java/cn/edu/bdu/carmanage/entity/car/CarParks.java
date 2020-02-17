@@ -22,5 +22,6 @@ public class CarParks {
     @TableField("park_number")
     private String parkNumber;
     private String remark;
+    private Character status;
 
 }

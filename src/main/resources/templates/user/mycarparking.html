@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <title>文档列表 - 光年(Light Year Admin)后台管理系统模板</title>
+    <link rel="icon" href="favicon.ico" type="image/ico">
+    <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
+    <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
+    <meta name="author" content="yinqi">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/../../css/materialdesignicons.min.css}" href="css/materialdesignicons.min.css" rel="stylesheet">
+    <link th:href="@{/../../css/style.min.css}" href="css/style.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-toolbar clearfix">
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>停车区域</th>
+                                    <th>车位号</th>
+                                    <th>车牌号</th>
+                                    <th>入场时间</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="carParking,stat:${carParkingList}">
+                                    <td th:text="${carParking.carParks.area}">1</td>
+                                    <td th:text="${carParking.carParks.parkNumber}">第01章 天涯思君不可忘</td>
+                                    <td th:text="${carParking.plateNumber}">《倚天屠龙记》</td>
+                                    <td th:text="${#dates.format(carParking.startTime,'yyyy年MM月dd日 HH:mm:ss')}">金庸</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button th:onclick="btn_chuku([[${carParking.id}]]);"
+                                                    class="btn btn-xs btn-default" title="出库" data-toggle="modal"
+                                                    data-target="#myModal"
+                                            ><i
+                                                    class="mdi mdi-account-check"></i>出库
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">确认出库</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label for="plateNumber">车牌号</label>
+                                        <input readonly="readonly" id="plateNumber" class="form-control" type="text"
+                                               name="plateNumber">
+                                    </div>
+                                    <div class="modal-body">
+                                        <label for="inTime">入库时间</label>
+                                        <input readonly="readonly" id="inTime" class="form-control" type="text"
+                                               name="inTime">
+                                    </div>
+                                    <div class="modal-body">
+                                        <label for="outTime">出库时间</label>
+                                        <input readonly="readonly" id="outTime" class="form-control" type="text"
+                                               name="outTime">
+                                    </div>
+                                    <div class="modal-body">
+                                        <label for="totalTime">停车时长</label>
+                                        <input readonly="readonly" id="totalTime" class="form-control" type="text"
+                                               name="totalTime">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        <button id="saveCarparking" type="button" class="btn btn-primary">确定</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript" th:src="@{/../../js/jquery.min.js}" src="js/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" th:src="@{/../../js/perfect-scrollbar.min.js}"
+        src="js/perfect-scrollbar.min.js"></script>
+<!--对话框-->
+<script th:src="@{/../../js/jconfirm/jquery-confirm.min.js}" src="js/jconfirm/jquery-confirm.min.js"></script>
+<script th:src="@{/../../js/bootstrap-notify.min.js}" src="js/bootstrap-notify.min.js"></script>
+<script type="text/javascript" th:src="@{/../../js/main.min.js}" src="js/main.min.js"></script>
+<script type="text/javascript" th:src="@{/../../js/lightyear.js}" src="js/lightyear.js"></script>
+<script type="text/javascript">
+    Date.prototype.format = function (fmt) {
+
+        var o = {
+
+            "M+": this.getMonth() + 1,                 //月份
+
+            "d+": this.getDate(),                    //日
+
+            "h+": this.getHours(),                   //小时
+
+            "m+": this.getMinutes(),                 //分
+
+            "s+": this.getSeconds(),                 //秒
+
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+
+            "S": this.getMilliseconds()             //毫秒
+
+        };
+
+        if (/(y+)/.test(fmt)) {
+
+            fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+
+        }
+
+        for (var k in o) {
+
+            if (new RegExp("(" + k + ")").test(fmt)) {
+
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+
+            }
+
+        }
+
+        return fmt;
+
+    }
+    // 搜索框
+    var btn_search = function () {
+        var parkNumber = $('#parkNumber').val();
+        var userId = $('#userId').val();
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8089/car/getCarParksListToUser",
+            data: {parkNumber: parkNumber, userId: userId}
+        });
+    }
+    // 点击出库按钮
+    var btn_chuku = function (id) {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8089/car/getCarParkingById/" + id,
+            success: function (data) {
+                var startTime = data.startTime;
+                var endTime = new Date();
+                $("#plateNumber").val(data.plateNumber);
+                $("#inTime").val(startTime);
+                $("#outTime").val(endTime.format("yyyy-MM-dd hh:mm:ss"));
+                var dateBegin = new Date(startTime.replace(/-/g, "/"));//将-转化为/，使用new Date
+                var dateEnd = endTime;//获取当前时间
+                var dateDiff = dateEnd.getTime() - dateBegin.getTime();//时间差的毫秒数
+                var dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));//计算出相差天数
+                var leave1 = dateDiff % (24 * 3600 * 1000) //计算天数后剩余的毫秒数
+                var hours = Math.floor(leave1 / (3600 * 1000))//计算出小时数
+                //计算相差分钟数
+                var leave2 = leave1 % (3600 * 1000) //计算小时数后剩余的毫秒数
+                var minutes = Math.floor(leave2 / (60 * 1000))//计算相差分钟数
+                //计算相差秒数
+                var leave3 = leave2 % (60 * 1000) //计算分钟数后剩余的毫秒数
+                var seconds = Math.round(leave3 / 1000)
+                var totalTime = hours+"小时"+minutes+"分钟";
+                $('#totalTime').val(totalTime);
+            }
+        });
+    }
+    $(function () {
+        $('.search-bar .dropdown-menu a').click(function () {
+            var field = $(this).data('field') || '';
+            $('#search-field').val(field);
+            $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
+        });
+    });
+</script>
+
+</body>
+</html>

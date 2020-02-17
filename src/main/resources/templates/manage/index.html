@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8"/>
-    <title>紫竹小区</title>
+    <title>紫竹小区后台管理系统</title>
     <link th:href="@{/../../css/Site.css}" href="/../css/Site.css" rel="stylesheet" type="text/css"/>
     <link th:href="@{/../../css/zy.layout.css}" href="/../css/zy.layout.css" rel="stylesheet"/>
     <link th:href="@{/../../css/zy.form.css}" href="/../css/zy.form.css" rel="stylesheet"/>
@@ -246,14 +246,14 @@
                 <a th:href="@{/car/getCarParksList}" href="../../static/html/admin/type.html" target="right">
                     <li>车位管理</li>
                 </a>
-                <a href="inventory.html" target="right">
+                <a th:href="@{/car/getCarParkings}"  href="inventory.html" target="right">
                     <li>在场车辆信息</li>
                 </a>
                 <a href="inbound.html" target="right">
                     <li>车辆信息查询</li>
                 </a>
-                <a href="warning.html" target="right">
-                    <li>公告栏</li>
+                <a th:href="@{http://localhost:8089/user/user/getAnnouncement}" href="warning.html" target="right">
+                    <li>发布公告</li>
                 </a>
                 <a href="outBoud.html" target="right">
                     <li>收入查询</li>

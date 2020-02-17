@@ -2,10 +2,8 @@ package cn.edu.bdu.carmanage.service.cms.adminuser;
 
 import cn.edu.bdu.carmanage.entity.admin.AdminUser;
 import cn.edu.bdu.carmanage.mapper.AdminUserMapper;
-import cn.edu.bdu.carmanage.utils.Md5;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 /**
@@ -47,7 +45,7 @@ public class AdminUserService {
     public Boolean getAdminUser(AdminUser adminUser) {
         QueryWrapper<AdminUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", adminUser.getUsername());
-        queryWrapper.eq("password", Md5.encodeByMD5(adminUser.getPassword()));
+        queryWrapper.eq("password", adminUser.getPassword());
         AdminUser user = adminUserMapper.selectOne(queryWrapper);
         if (user != null) {
             return true;
@@ -59,12 +57,12 @@ public class AdminUserService {
         int row = -1;
         QueryWrapper<AdminUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", adminUser.getUsername());
-        queryWrapper.eq("password", Md5.encodeByMD5(adminUser.getPassword()));
+        queryWrapper.eq("password", adminUser.getPassword());
         AdminUser user = this.adminUserMapper.selectOne(queryWrapper);
         if(user == null){
             return row;
         }
-        user.setPassword(Md5.encodeByMD5(newPassword));
+        user.setPassword(newPassword);
         row = adminUserMapper.updateById(user);
         return row;
     }

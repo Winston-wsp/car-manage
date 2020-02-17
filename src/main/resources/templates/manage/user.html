@@ -23,8 +23,39 @@
                     <li class="" style="box-sizing: initial;-webkit-box-sizing: initial;">添加用户</li>
                 </ul>
             </div>
+
+
+
             <div class="bd">
                 <ul style="display: block;padding: 20px;">
+                    <div style="display: block;padding-bottom: 20px;">
+                        <div class="row m-b-10">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <form th:action="@{/user/user/getUsers}" method="get">
+                                        <div class="col-xs-3">
+                                            <input id="username" name="username" type="text" class="form-control"
+                                                   placeholder="请输入用户名...">
+
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <input id="nicheng" name="nicheng" type="text" class="form-control"
+                                                   placeholder="请输入昵称...">
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <input id="phone" name="phone" type="text" class="form-control"
+                                                   placeholder="请输入手机号...">
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <button class="btn btn-default" type="submit">搜索
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <li>
                         <!--分页显示角色信息 start-->
                         <div id="dv1">
@@ -53,7 +84,9 @@
                                         </button>
                                     </td>
                                     <td class="delete">
-                                        <button th:onclick="btn_delete([[${user.id}]]);"><i class="icon-trash bigger-120"></i>删除</button>
+                                        <button th:onclick="btn_delete([[${user.id}]]);"><i
+                                                class="icon-trash bigger-120"></i>删除
+                                        </button>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -61,7 +94,7 @@
                             </table>
                         </div>
                         <!--分页显示角色信息 end-->
-                        <div style="text-align: center">
+                        <div style="text-align: center" th:if="${#lists.size(userVO.list)} != 0">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
                                     <li>
@@ -221,6 +254,10 @@
                             <label for="inputPhoneNumber">手机号</label>
                             <input type="text" class="form-control" id="inputPhoneNumber" placeholder="手机号">
                         </div>
+                        <div class="form-group">
+                            <label for="inputPassword">密码</label>
+                            <input type="text" class="form-control" id="inputPassword" placeholder="密码">
+                        </div>
                         <!--   <div class="form-group">
                                <label for="exampleInputFile">File input</label>
                                <input type="file" id="exampleInputFile">
@@ -262,19 +299,26 @@
         var btn_update = function () {
             var id = $("#inputId").val();
             var username = $("#inputUsername").val();
+            var password = $("#inputPassword").val();
             var nicheng = $("#inputNicheng").val();
             var phoneNumber = $("#inputPhoneNumber").val();
             $.ajax({
                 type: "PUT",
                 url: "http://localhost:8089/user/user/updateUser",
-                data: {id: id, username: username, nicheng: nicheng, phoneNumber: phoneNumber},
+                data: {
+                    id: id,
+                    username: username,
+                    password: password,
+                    nicheng: nicheng,
+                    phoneNumber: phoneNumber
+                },
                 success: function (data) {
-                   if(data > 0){
-                       alert("更新成功");
-                       window.location.reload();
-                   }else {
-                       alert("更新失败");
-                   }
+                    if (data > 0) {
+                        alert("更新成功");
+                        window.location.reload();
+                    } else {
+                        alert("更新失败");
+                    }
                 }
             });
         }
@@ -315,6 +359,7 @@
                 success: function (data) {
                     $("#inputId").val(data.id);
                     $("#inputUsername").val(data.username);
+                    $("#inputPassword").val(data.password);
                     $("#inputNicheng").val(data.nicheng);
                     $("#inputPhoneNumber").val(data.phoneNumber);
                 }
@@ -326,7 +371,7 @@
                 btnOkClick: function () {
                     $.ajax({
                         type: "DELETE",
-                        url: "/user/user/deleteUser/"+id,
+                        url: "/user/user/deleteUser/" + id,
                         //data: {id: id},
                         success: function (data) {
                             $.jq_Alert({
