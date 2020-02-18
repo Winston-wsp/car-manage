@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <title></title>
     <link rel="stylesheet"/>
-    <link rel="stylesheet" th:href="@{/../../css/Site.css}" href="css/Site.css"/>
-    <link rel="stylesheet" th:href="@{/../../css/zy.all.css}" href="css/zy.all.css"/>
-    <link rel="stylesheet" th:href="@{/../../css/font-awesome.min.css}" href="css/font-awesome.min.css"/>
-    <link rel="stylesheet" th:href="@{/../../css/amazeui.min.css}" href="css/amazeui.min.css"/>
-    <link rel="stylesheet" th:href="@{/../../css/admin.css}" href="css/admin.css"/>
+    <link rel="stylesheet" th:href="@{/../../static/css/Site.css}" href="css/Site.css"/>
+    <link rel="stylesheet" th:href="@{/../../static/css/zy.all.css}" href="css/zy.all.css"/>
+    <link rel="stylesheet" th:href="@{/../../static/css/font-awesome.min.css}" href="css/font-awesome.min.css"/>
+    <link rel="stylesheet" th:href="@{/../../static/css/amazeui.min.css}" href="css/amazeui.min.css"/>
+    <link rel="stylesheet" th:href="@{/../../static/css/admin.css}" href="css/admin.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -23,7 +23,6 @@
                     <li class="" style="box-sizing: initial;-webkit-box-sizing: initial;">添加用户</li>
                 </ul>
             </div>
-
 
 
             <div class="bd">
@@ -134,81 +133,49 @@
                                         <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4"
                                              style="padding-top: 30px;">
                                             <form class="am-form am-form-horizontal"
-                                                  action="user/addUser1Submit.action" method="post">
+                                                  th:action="@{/user/user/addUser}" method="post">
 
-                                                <div class="am-form-group">
-                                                    <label for="user-name" class="am-u-sm-3 am-form-label">
-                                                        姓名 / Name </label>
-                                                    <div class="am-u-sm-9">
-                                                        <input type="text" id="user-name" required
-                                                               placeholder="姓名 / Name" name="name">
-                                                    </div>
-                                                </div>
                                                 <div class="am-form-group">
                                                     <label for="user-name" class="am-u-sm-3 am-form-label">
                                                         用户名 / username </label>
                                                     <div class="am-u-sm-9">
                                                         <input type="text" id="user-name" required
                                                                placeholder="用户名 / username" name="username">
+                                                        <small id="usernameTip"></small>
                                                     </div>
                                                 </div>
                                                 <div class="am-form-group">
-                                                    <label for="user-name" class="am-u-sm-3 am-form-label">
-                                                        性别 / sex </label>
-                                                    <div class="am-u-sm-9" style="line-height: 30px;">
-                                                        <input type="radio" id="man" name="sex" value="1" ${user.sex==1?
-                                                        "checked=checked ":""}/>
-                                                        <label for="man">
-                                                            男 </label> &nbsp;&nbsp;&nbsp;&nbsp; <input type="radio"
-                                                                                                       id="woman"
-                                                                                                       name="sex"
-                                                                                                       value="0"
-                                                                                                       ${user.sex==0?"checked=checke":""}/>
-                                                        <label for="woman"> 女 </label> <br/>
-                                                        <small>性别...</small>
+                                                    <label for="user-nicheng" class="am-u-sm-3 am-form-label">
+                                                        昵称 / nicheng </label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="text" id="user-nicheng" required
+                                                               placeholder="昵称 / nicheng" name="nicheng">
+                                                        <small id="nichengTip"></small>
                                                     </div>
                                                 </div>
                                                 <div class="am-form-group">
-                                                    <label for="user-email" class="am-u-sm-3 am-form-label">
+                                                    <label for="user-password" class="am-u-sm-3 am-form-label">
+                                                        密码 / password </label>
+                                                    <div class="am-u-sm-9">
+                                                        <input type="text" id="user-password" required
+                                                               placeholder="密码 / password" name="password">
+                                                        <small id="passwordTip"></small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <label for="user-phone" class="am-u-sm-3 am-form-label">
                                                         联系电话 / phone </label>
                                                     <div class="am-u-sm-9">
                                                         <input type="tel" id="user-phone" required
-                                                               placeholder="请输入联系电话" name="phone"/>
-                                                        <small>联系电话...</small>
-                                                    </div>
-                                                </div>
-                                                <div class="am-form-group">
-                                                    <label for="user-email" class="am-u-sm-3 am-form-label">
-                                                        籍贯 / place </label>
-                                                    <div class="am-u-sm-9">
-                                                        <input type="text" id="user-email" required placeholder="请输入籍贯"
-                                                               name="place"/>
-                                                        <small>籍贯...</small>
-                                                    </div>
-                                                </div>
-                                                <div class="am-form-group">
-                                                    <label for="user-email" class="am-u-sm-3 am-form-label">
-                                                        电子邮件 / Email </label>
-                                                    <div class="am-u-sm-9">
-                                                        <input type="email" id="user-email" required
-                                                               placeholder="输入你的电子邮件 / Email" name="email"/>
-                                                        <small>邮箱你懂得...</small>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="am-form-group">
-                                                    <label for="user-intro" class="am-u-sm-3 am-form-label">
-                                                        备注/ Introg </label>
-                                                    <div class="am-u-sm-9">
-									<textarea class="" rows="5" id="user-intro" name="remark"
-                                              placeholder="输入备注"></textarea>
-                                                        <small>250字以内...</small>
+                                                               placeholder=" 联系电话 / phone" name="phoneNumber"/>
+                                                        <small id="phoneTip"></small>
                                                     </div>
                                                 </div>
                                                 <div class="am-form-group">
                                                     <div class="am-u-sm-9 am-u-sm-push-3">
-                                                        <input type="submit" class="am-btn am-btn-success"
+                                                        <input onclick="btn_save();" type="button"
+                                                               class="am-btn am-btn-success"
                                                                value="添加用户"/>
                                                     </div>
                                                 </div>
@@ -282,10 +249,10 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
-    <script th:src="@{/../../js/plugs/Jqueryplugs.js}" src="js/plugs/Jqueryplugs.js"
+    <script th:src="@{/../../static/js/plugs/Jqueryplugs.js}" src="js/plugs/Jqueryplugs.js"
             type="text/javascript"></script>
-    <script th:src="@{/../../js/_layout.js}" src="js/_layout.js"></script>
-    <script th:src="@{/../../js/plugs/jquery.SuperSlide.source.js}"
+    <script th:src="@{/../../static/js/_layout.js}" src="js/_layout.js"></script>
+    <script th:src="@{/../../static/js/plugs/jquery.SuperSlide.source.js}"
             src="js/plugs/jquery.SuperSlide.source.js"></script>
     <script>
         var num = 1;
@@ -323,33 +290,29 @@
             });
         }
         var btn_save = function () {
-            var pid = $("#RawMaterialsTypePageId  option:selected").val();
-            var name = $("#RawMaterialsTypeName").val();
-            var desc = $("#RawMaterialsTypeDescription").val();
-            var ramark = $("#Ramark").val();
-            $.ajax({
-                type: "post",
-                url: "/RawMaterialsType/AddRawMaterialsType",
-                data: {name: name, pid: pid, desc: desc, ramark: ramark},
-                success: function (data) {
-                    if (data > 0) {
-                        $.jq_Alert({
-                            message: "添加成功",
-                            btnOktext: "确认",
-                            dialogModal: true,
-                            btnOkClick: function () {
-                                //$("#RawMaterialsTypeName").val("");
-                                //$("#RawMaterialsTypeDescription").val("");
-                                //$("#Ramark").val("");
-                                //page1();
-                                location.reload();
-
-                            }
-                        });
+            var username = $.trim($("#user-name").val());
+            var nicheng = $.trim($("#user-nicheng").val());
+            var password = $.trim($("#user-password").val());
+            var phoneNumber = $.trim($("#user-phone").val());
+            if(phoneNumber.length == 0){
+                $("#user-phone").removeClass("form-control is-valid")
+                $("#user-phone").addClass("form-control is-invalid");
+            }else {
+                $.ajax({
+                    type: "post",
+                    url: "/user/user/addUser",
+                    data: {username: username, nicheng: nicheng, password: password, phoneNumber: phoneNumber},
+                    success: function (data) {
+                        if ("success" == data) {
+                            alert("添加成功");
+                            location = "/user/user/getUsers"
+                        }
+                        if ("error" == data) {
+                            alert("添加失败");
+                        }
                     }
-                }
-            });
-            alert(t);
+                });
+            }
         }
 
         var btn_edit = function (id) {

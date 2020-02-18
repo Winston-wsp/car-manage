@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="robots" content="all,follow">
     <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.2.1/css/bootstrap.min.css">
-    <link rel="stylesheet" th:href="@{/../css/style.default.css}" href="css/style.default.css" id="theme-stylesheet">
+    <link rel="stylesheet" th:href="@{/../static/css/style.default.css}" href="css/style.default.css" id="theme-stylesheet">
 </head>
 <body>
 <div class="page login-page">
@@ -67,12 +67,12 @@
     </div>
 </div>
 <!-- JavaScript files-->
-<script th:src="@{/../js/jquery.min.js}" src="js/jquery.min.js"></script>
-<script th:src="@{/../js/bootstrap.min.js}" src="js/bootstrap.min.js"></script>
-<script th:src="@{/../vendor/jquery-validation/jquery.validate.min.js}"
+<script th:src="@{/../static/js/jquery.min.js}" src="js/jquery.min.js"></script>
+<script th:src="@{/../static/js/bootstrap.min.js}" src="js/bootstrap.min.js"></script>
+<script th:src="@{/../static/vendor/jquery-validation/jquery.validate.min.js}"
         src="vendor/jquery-validation/jquery.validate.min.js"></script><!--表单验证-->
 <!-- Main File-->
-<script th:src="@{/../js/front.js}" src="js/front.js"></script>
+<script th:src="@{/../static/js/front.js}" src="js/front.js"></script>
 <script>
     $(function () {
         /*判断上次是否勾选记住密码和自动登录*/

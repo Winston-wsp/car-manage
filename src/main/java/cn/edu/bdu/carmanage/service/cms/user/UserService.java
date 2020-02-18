@@ -47,6 +47,18 @@ public class UserService {
         return user;
     }
 
+    /**
+     * 根据用户名查找用户
+     * @param username
+     * @return
+     */
+    public User getUserByUsername(String username){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        User user = this.userMapper.selectOne(queryWrapper);
+        return user;
+    }
+
     public int updateUser(User user) {
         int row = userMapper.updateById(user);
         return row;

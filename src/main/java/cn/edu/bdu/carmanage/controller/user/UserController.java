@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -32,7 +33,11 @@ public class UserController {
      */
     @PostMapping("addUser")
     @ResponseBody
-    public String addUser(@RequestBody User user) {
+    public String addUser(User user) {
+        User userByUsername = this.userService.getUserByUsername(user.getUsername());
+        if(userByUsername != null){
+            return "error";
+        }
         User u = new User();
         u.setUsername(user.getUsername());
         u.setNicheng(user.getNicheng());
@@ -42,11 +47,13 @@ public class UserController {
         return "success";
     }
 
+
     @PostMapping("getUser")
-    public String getUser(User user, Model model) {
+    public String getUser(User user, Model model, HttpServletRequest request) {
         User u = userService.getUser(user);
         if (u != null) {
-            model.addAttribute("user", u);
+            request.getSession().setAttribute("userSession",u);
+            model.addAttribute("user",u);
             return "/user/index";
         }
         model.addAttribute("message", "用户名或密码错误，请重新输入");

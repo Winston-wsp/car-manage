@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @Author Winston
  * @Date 2020/1/7
@@ -35,9 +37,10 @@ public class AdminUserController {
     }
 
     @PostMapping("getAdminUser")
-    public String getAdminUser(AdminUser adminUser, Model model) {
+    public String getAdminUser(AdminUser adminUser, HttpServletRequest request,Model model) {
         Boolean flag = adminUserService.getAdminUser(adminUser);
         if (flag) {
+            request.getSession().setAttribute("adminUserSession",adminUser);
             model.addAttribute("adminUser", adminUser);
             return "/manage/index";
         }
