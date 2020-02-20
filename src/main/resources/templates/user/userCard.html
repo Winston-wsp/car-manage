@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <title>其他 - 光年(Light Year Admin)后台管理系统模板</title>
+    <title>模态框 - 光年(Light Year Admin)后台管理系统模板</title>
     <link rel="icon" href="favicon.ico" type="image/ico">
     <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
     <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
@@ -11,6 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link th:href="@{/../../static/css/materialdesignicons.min.css}" href="css/materialdesignicons.min.css"
           rel="stylesheet">
+    <link th:href="@{/../../static/css/animate.css}" href="css/style.min.css" rel="stylesheet">
     <link th:href="@{/../../static/css/style.min.css}" href="css/style.min.css" rel="stylesheet">
 </head>
 
@@ -30,7 +31,7 @@
 
                     <nav class="sidebar-main">
                         <ul class="nav nav-drawer">
-                            <li class="nav-item active"><a th:href="@{/user/user/getAnnouncementToUser}"
+                            <li class="nav-item active"><a th:href="@{'/user/user/getUser?userId='+${session.user.id}}"
                                                            href="javascript:void(0)"><i class="mdi mdi-home"></i> 首页</a>
                             </li>
                             <li class="nav-item nav-item-has-subnav">
@@ -39,16 +40,16 @@
                                     <li><a
                                             th:href="@{'/car/getCarParksListToUser?userId='+${session.user.id}}"
                                             href="lyear_forms_elements.html">空闲车位查询</a></li>
-                                    <li><a th:href="@{'/car/getMyCarParking?userId='+${session.user.id}}"
+                                    <li><a target="right" th:href="@{'/car/getMyCarParking?userId='+${session.user.id}}"
                                            href="lyear_forms_elements.html">我的车位</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item nav-item-has-subnav">
+                            <li class="nav-item nav-item-has-subnav active open">
                                 <a href="javascript:void(0)"><i class="mdi mdi-currency-jpy"></i> 充值缴费</a>
                                 <ul class="nav nav-subnav">
                                     <li><a th:href="@{'/user/user/toUserChongzhi?userId='+${session.user.id}}"
                                            href="#">充值</a></li>
-                                    <li><a
+                                    <li class="active"  ><a
                                            th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
                                     <li><a href="#">历史缴费</a></li>
                                 </ul>
@@ -252,47 +253,154 @@
             <!--页面主要内容-->
             <main class="lyear-layout-content">
                 <div class="container-fluid">
-                    <center><h3>公告栏</h3></center>
-                    <!--手风琴效果-->
-                    <div style="padding: 50px; padding-top: 20px;" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                        <div th:each="announcement,stat : ${announcementVO.list}" class="panel panel-primary">
-                            <div class="panel-heading" role="tab" id="headingOne">
-                                <h4 class="panel-title">
-                                    <a th:text="${announcement.title}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        第一回 赈民饥包公奉旨　图谋害庞相施计
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                <div th:text="${announcement.content}" class="panel-body">
-                                    话说大宋开基之主太祖赵匡胤，此位天子，原乃上界赤龙临凡，英雄猛勇，豪侠情怀，创开四百年天下。陈桥兵变，黄袍加身，代位于后周而归一统。前书已有《两宋》表明，兹不絮谈。且说大宋相传继统四世仁宗嘉佑王，当时天子英明，群臣为国，四方宁靖，百姓安康。前者宋太祖既殁之后，杨家父子众英雄相继而亡。今者人得五虎，英雄佐粥，保护江山，扫除国敌。后话休题多表。忽一日，仁宗天子临朝。但见祥光灿烂，瑞色辉煌。
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header"><h4>卡号办理</h4></div>
+                                <div class="card-body">
+                                    <input id="userId" type="hidden" th:value="${userId}">
+                                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal"
+                                            data-target="#myModal">
+                                        点击办理月卡
+                                    </button>
+                                    <div class="btn-lg">
+                                        月卡费用：199
+                                    </div>
+
+                                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <input id="monthCard" type="hidden" value="1">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close"><span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    <h4 class="modal-title" id="myModalLabel">月卡办理</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    您确定办理月卡吗？
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                                    </button>
+                                                    <button onclick="btn_addCarCard(1)" class="btn btn-primary">确定办理</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+                                    <button type="button" class="btn  btn-cyan btn-lg" data-toggle="modal"
+                                            data-target="#myModal2">
+                                        点击办理年卡
+                                    </button>
+                                    <div class="btn-lg">
+                                        年卡费用：2000
+                                    </div>
+                                    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <input id="yearCard" type="hidden" value="2">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close"><span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    <h4 class="modal-title" id="myModalLabel2">年卡办理</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    您确定办理年卡吗？
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                                    </button>
+                                                    <button onclick="btn_addCarCard(2)" type="button" class="btn btn-primary">确定缴费
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
-                                <span th:text="${#dates.format(announcement.time,'yyyy-MM-dd')}"></span>
+                                <div class="card-header"><h4>办卡声明</h4></div>
+                                <div class="card-body">
+
+                                    <ul id="myTabs" class="nav nav-tabs" role="tablist">
+                                        <li class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab">月卡</a></li>
+                                        <li><a href="#profile" role="tab" id="profile-tab" data-toggle="tab">年卡</a></li>
+                                    </ul>
+                                    <div id="myTabContent" class="tab-content">
+                                        <div class="tab-pane fade active in" id="home">
+                                            <p>
+                                                月卡可以在使用周期能免费停车，该卡仅提供减免一个月(30天)内停车所产生的费用，并不提供车位。最终解释权归小区物业所有
+                                            </p>
+                                        </div>
+                                        <div class="tab-pane fade" id="profile">
+                                            <p>
+                                                年卡可以在使用周期能免费停车，该卡仅提供减免一年(365天)内停车所产生的费用，并不提供车位。最终解释权归小区物业所有
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!--手风琴效果 End-->
                 </div>
             </main>
         </div>
     </div>
 </div>
 
-
-
 <script type="text/javascript" th:src="@{/../../static/js/jquery.min.js}" src="js/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" th:src="@{/../../static/js/perfect-scrollbar.min.js}"
         src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" th:src="@{/../../static/js/lightyear.js}"></script>
+<script type="text/javascript" th:src="@{/../../static/js/bootstrap-notify.min.js}"></script>
 <script type="text/javascript" th:src="@{/../../static/js/main.min.js}" src="js/main.min.js"></script>
-<script>
-    // 按钮示例
-    $('#myButton').on('click', function () {
-        var $btn = $(this).button('loading');
+<script type="text/javascript">
+    $('#exampleModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var recipient = button.data('whatever')
+        var modal = $(this)
+        modal.find('.modal-title').text('发送新消息给 ' + recipient)
+        modal.find('.modal-body input').val(recipient)
+    })
+
+    var btn_addCarCard = function (type) {
+        var id = $('#userId').val();
+        var type = type;
+        lightyear.loading('show');
         setTimeout(function () {
-            $btn.button("reset")
-        }, 3e3)
-    });
+
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8089/car/addCarCard/" + id,
+                data: {type: type},
+                success: function (data) {
+
+                   if(data > 0){
+                       lightyear.loading('hide');
+                       lightyear.notify('办理成功', 'success', 1000);
+                       setTimeout(function () {
+
+                           window.location.reload();
+                       }, 1000);
+                   }else {
+                       lightyear.loading('hide');
+                       lightyear.notify('当前有未出库的车辆，请结算后再进行办理', 'danger', 2000);
+                       setTimeout(function () {
+                           window.location.reload();
+                       }, 2000);
+                   }
+                }
+            })
+        },1e2);
+
+
+    }
 </script>
 </body>
 </html>

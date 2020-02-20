@@ -9,110 +9,362 @@
     <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
     <meta name="author" content="yinqi">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link th:href="@{/../../static/css/materialdesignicons.min.css}" href="css/materialdesignicons.min.css" rel="stylesheet">
+    <link th:href="@{/../../static/css/materialdesignicons.min.css}" href="css/materialdesignicons.min.css"
+          rel="stylesheet">
     <link th:href="@{/../../static/css/style.min.css}" href="css/style.min.css" rel="stylesheet">
 </head>
 
 <body>
-<div class="container-fluid">
+<div class="lyear-layout-web">
+    <div class="lyear-layout-web">
+        <div class="lyear-layout-container">
+            <!--左侧导航-->
+            <aside class="lyear-layout-sidebar">
 
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-toolbar clearfix">
+                <!-- logo -->
+                <div id="logo" class="sidebar-header">
+                    <a href="javascript:void(0)"><img th:src="@{/../../static/Resources/images/mylogo.png}"
+                                                      src="images/logo-sidebar.png" title="LightYear" alt="LightYear"/></a>
+                </div>
+                <div class="lyear-layout-sidebar-scroll">
 
-                    <div class="row m-b-10">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <form th:action="@{/car/getCarParksListToUser}" method="get">
-                                    <div class="col-xs-5">
-                                        <input id="area" name="area" type="text" class="form-control"
-                                               placeholder="请输入区域...">
+                    <nav class="sidebar-main">
+                        <ul class="nav nav-drawer">
+                            <li class="nav-item active"><a th:href="@{'/user/user/getUser?userId='+${session.user.id}}"
+                                                           href="javascript:void(0)"><i class="mdi mdi-home"></i> 首页</a>
+                            </li>
+                            <li class="nav-item nav-item-has-subnav active open">
+                                <a href="javascript:void(0)"><i class="mdi mdi-access-point-network"></i> 车位</a>
+                                <ul class="nav nav-subnav">
+                                    <li class="active"><a
+                                           th:href="@{'/car/getCarParksListToUser?userId='+${session.user.id}}"
+                                           href="lyear_forms_elements.html">空闲车位查询</a></li>
+                                    <li><a th:href="@{'/car/getMyCarParking?userId='+${session.user.id}}"
+                                           href="lyear_forms_elements.html">我的车位</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item nav-item-has-subnav">
+                                <a href="javascript:void(0)"><i class="mdi mdi-currency-jpy"></i> 充值缴费</a>
+                                <ul class="nav nav-subnav">
+                                    <li><a th:href="@{'/user/user/toUserChongzhi?userId='+${session.user.id}}"
+                                           href="#">充值</a></li>
+                                    <li><a
+                                           th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
+                                    <li><a href="#">历史缴费</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item nav-item-has-subnav">
+                                <a href="javascript:void(0)"><i class="mdi mdi-account"></i> 账号资料</a>
+                                <ul class="nav nav-subnav">
+                                    <li><a
+                                           th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}">个人信息</a>
+                                    </li>
+                                    <li><a
+                                           th:href="@{'/user/user/toUpdatePassword?userId='+${session.user.id}}">修改密码</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
 
-                                    </div>
-                                    <div class="col-xs-5">
-                                        <input type="hidden" name="userId" id="userId" th:value="${userId}"/>
-                                        <input id="parkNumber" name="parkNumber" type="text" class="form-control"
-                                               placeholder="请输入车位号...">
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <button class="btn btn-success" type="submit">搜索
-                                        </button>
-                                    </div>
-                                </form>
-
-                            </div>
-                        </div>
+                    <div class="sidebar-footer">
+                        <p class="copyright">&copy;copyright,有任何建议或问题欢迎提出，邮箱地址：1207626332@qq.com<a
+                                href="http://www.baidu.com/" target="_blank">紫竹之家</a></p>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>编号</th>
-                                    <th>区域</th>
-                                    <th>车位号</th>
-                                    <th>备注</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="carParks,stat:${carParksVO.list}">
-                                    <td th:text="${stat.count}">1</td>
-                                    <td th:text="${carParks.area}">第01章 天涯思君不可忘</td>
-                                    <td th:text="${carParks.parkNumber}">《倚天屠龙记》</td>
-                                    <td th:text="${carParks.remark}">金庸</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button th:onclick="btn_save([[${carParks.id}]]);"
-                                                    class="btn btn-xs btn-default" title="入库" data-toggle="modal"
-                                                    data-target="#myModal"><i
-                                                    class="mdi mdi-account-check"></i>入库
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                </div>
+
+            </aside>
+            <!--End 左侧导航-->
+
+            <!--头部信息-->
+            <header class="lyear-layout-header">
+
+                <nav class="navbar navbar-default">
+                    <div class="topbar">
+
+                        <div class="topbar-left">
+                            <div class="lyear-aside-toggler">
+                                <span class="lyear-toggler-bar"></span>
+                                <span class="lyear-toggler-bar"></span>
+                                <span class="lyear-toggler-bar"></span>
+                            </div>
+                            <span class="navbar-page-title"> </span>
                         </div>
-                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="myModalLabel">停车信息</h4>
+
+                        <ul class="topbar-right">
+                            <li class="dropdown dropdown-profile">
+                                <a href="javascript:void(0)" data-toggle="dropdown">
+                                    <img class="img-avatar img-avatar-48 m-r-10"
+                                         th:src="@{/../../static/Resources/images/logo-ico.png}"
+                                         src="images/users/avatar.jpg"
+                                         alt="社会你鹏哥"/>
+                                    <span th:text="${session.user.nicheng}">笔下光年 <span class="caret"></span></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a target="right"
+                                           th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}"><i
+                                            class="mdi mdi-account"></i> 个人信息</a></li>
+                                    <li><a target="right"
+                                           th:href="@{'/user/user/toUpdatePassword?userId='+${session.user.id}}"><i
+                                            class="mdi mdi-lock-outline"></i> 修改密码</a>
+                                    </li>
+                                    <li><a href="javascript:void(0)"><i class="mdi mdi-delete"></i> 清空缓存</a></li>
+                                    <li class="divider"></li>
+                                    <li><a th:href="@{/user/user/userLogout}"><i class="mdi mdi-logout-variant"></i>
+                                        退出登录</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!--切换主题配色-->
+                            <li class="dropdown dropdown-skin">
+                                <span data-toggle="dropdown" class="icon-palette"><i class="mdi mdi-palette"></i></span>
+                                <ul class="dropdown-menu dropdown-menu-right" data-stopPropagation="true">
+                                    <li class="drop-title"><p>主题</p></li>
+                                    <li class="drop-skin-li clearfix">
+                  <span class="inverse">
+                    <input type="radio" name="site_theme" value="default" id="site_theme_1" checked>
+                    <label for="site_theme_1"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="site_theme" value="dark" id="site_theme_2">
+                    <label for="site_theme_2"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="site_theme" value="translucent" id="site_theme_3">
+                    <label for="site_theme_3"></label>
+                  </span>
+                                    </li>
+                                    <li class="drop-title"><p>LOGO</p></li>
+                                    <li class="drop-skin-li clearfix">
+                  <span class="inverse">
+                    <input type="radio" name="logo_bg" value="default" id="logo_bg_1" checked>
+                    <label for="logo_bg_1"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="logo_bg" value="color_2" id="logo_bg_2">
+                    <label for="logo_bg_2"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="logo_bg" value="color_3" id="logo_bg_3">
+                    <label for="logo_bg_3"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="logo_bg" value="color_4" id="logo_bg_4">
+                    <label for="logo_bg_4"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="logo_bg" value="color_5" id="logo_bg_5">
+                    <label for="logo_bg_5"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="logo_bg" value="color_6" id="logo_bg_6">
+                    <label for="logo_bg_6"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="logo_bg" value="color_7" id="logo_bg_7">
+                    <label for="logo_bg_7"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="logo_bg" value="color_8" id="logo_bg_8">
+                    <label for="logo_bg_8"></label>
+                  </span>
+                                    </li>
+                                    <li class="drop-title"><p>头部</p></li>
+                                    <li class="drop-skin-li clearfix">
+                  <span class="inverse">
+                    <input type="radio" name="header_bg" value="default" id="header_bg_1" checked>
+                    <label for="header_bg_1"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="header_bg" value="color_2" id="header_bg_2">
+                    <label for="header_bg_2"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="header_bg" value="color_3" id="header_bg_3">
+                    <label for="header_bg_3"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="header_bg" value="color_4" id="header_bg_4">
+                    <label for="header_bg_4"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="header_bg" value="color_5" id="header_bg_5">
+                    <label for="header_bg_5"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="header_bg" value="color_6" id="header_bg_6">
+                    <label for="header_bg_6"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="header_bg" value="color_7" id="header_bg_7">
+                    <label for="header_bg_7"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="header_bg" value="color_8" id="header_bg_8">
+                    <label for="header_bg_8"></label>
+                  </span>
+                                    </li>
+                                    <li class="drop-title"><p>侧边栏</p></li>
+                                    <li class="drop-skin-li clearfix">
+                  <span class="inverse">
+                    <input type="radio" name="sidebar_bg" value="default" id="sidebar_bg_1" checked>
+                    <label for="sidebar_bg_1"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="sidebar_bg" value="color_2" id="sidebar_bg_2">
+                    <label for="sidebar_bg_2"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="sidebar_bg" value="color_3" id="sidebar_bg_3">
+                    <label for="sidebar_bg_3"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="sidebar_bg" value="color_4" id="sidebar_bg_4">
+                    <label for="sidebar_bg_4"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="sidebar_bg" value="color_5" id="sidebar_bg_5">
+                    <label for="sidebar_bg_5"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="sidebar_bg" value="color_6" id="sidebar_bg_6">
+                    <label for="sidebar_bg_6"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="sidebar_bg" value="color_7" id="sidebar_bg_7">
+                    <label for="sidebar_bg_7"></label>
+                  </span>
+                                        <span>
+                    <input type="radio" name="sidebar_bg" value="color_8" id="sidebar_bg_8">
+                    <label for="sidebar_bg_8"></label>
+                  </span>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!--切换主题配色-->
+                        </ul>
+
+                    </div>
+                </nav>
+
+            </header>
+            <!--End 头部信息-->
+            <!--页面主要内容-->
+            <main class="lyear-layout-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-toolbar clearfix">
+
+                                    <div class="row m-b-10">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <form th:action="@{/car/getCarParksListToUser}" method="get">
+                                                    <div class="col-xs-5">
+                                                        <input id="area" name="area" type="text" class="form-control"
+                                                               placeholder="请输入区域...">
+
+                                                    </div>
+                                                    <div class="col-xs-5">
+                                                        <input type="hidden" name="userId" id="userId"
+                                                               th:value="${userId}"/>
+                                                        <input id="parkNumber" name="parkNumber" type="text"
+                                                               class="form-control"
+                                                               placeholder="请输入车位号...">
+                                                    </div>
+                                                    <div class="col-xs-2">
+                                                        <button class="btn btn-success" type="submit">搜索
+                                                        </button>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-body">
-                                        <input id="plateNumber" class="form-control" type="text" name="plateNumber"
-                                               placeholder="请输入您的车牌号">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                        <button id="saveCarparking" type="button" class="btn btn-primary">确定</button>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th>编号</th>
+                                                    <th>区域</th>
+                                                    <th>车位号</th>
+                                                    <th>备注</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="carParks,stat:${carParksVO.list}">
+                                                    <td th:text="${stat.count}">1</td>
+                                                    <td th:text="${carParks.area}">第01章 天涯思君不可忘</td>
+                                                    <td th:text="${carParks.parkNumber}">《倚天屠龙记》</td>
+                                                    <td th:text="${carParks.remark}">金庸</td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <button th:onclick="btn_save([[${carParks.id}]]);"
+                                                                    class="btn btn-xs btn-default" title="入库"
+                                                                    data-toggle="modal"
+                                                                    data-target="#myModal"><i
+                                                                    class="mdi mdi-account-check"></i>入库
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                                             aria-labelledby="myModalLabel">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title" id="myModalLabel">停车信息</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input id="plateNumber" class="form-control" type="text"
+                                                               name="plateNumber"
+                                                               placeholder="请输入您的车牌号">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default"
+                                                                data-dismiss="modal">关闭
+                                                        </button>
+                                                        <button id="saveCarparking" type="button"
+                                                                class="btn btn-primary">确定
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <ul class="pagination" th:if="${#lists.size(carParksVO.list)} != 0">
+                                            <li class="disabled"><span>«</span></li>
+                                            <li class="" th:classappend="${page == carParksVO.current}?'active':''"
+                                                th:each="page : ${#numbers.sequence(1,carParksVO.pages)}">
+                                                <a
+                                                        th:text="${page}"
+                                                        th:href="@{http://localhost:8089/car/getCarParksListToUser?currentPage=}+${page}">1</a>
+                                            </li>
+                                            <!--                        <li class="disabled"><span>...</span></li>-->
+                                            <li><a href="#!">»</a></li>
+                                        </ul>
+
                                     </div>
                                 </div>
                             </div>
 
                         </div>
-                        <ul class="pagination" th:if="${#lists.size(carParksVO.list)} != 0">
-                            <li class="disabled"><span>«</span></li>
-                            <li class="" th:classappend="${page == carParksVO.current}?'active':''"
-                                th:each="page : ${#numbers.sequence(1,carParksVO.pages)}">
-                                <a
-                                        th:text="${page}"
-                                        th:href="@{http://localhost:8089/car/getCarParksListToUser?currentPage=}+${page}">1</a>
-                            </li>
-                            <!--                        <li class="disabled"><span>...</span></li>-->
-                            <li><a href="#!">»</a></li>
-                        </ul>
 
                     </div>
                 </div>
-            </div>
+
+            </main>
 
         </div>
-
     </div>
 </div>
 
@@ -120,7 +372,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript" th:src="@{/../../static/js/perfect-scrollbar.min.js}"
         src="js/perfect-scrollbar.min.js"></script>
-<script th:src="@{/../../js/bootstrap-notify.min.js}" src="js/bootstrap-notify.min.js"></script>
+<script th:src="@{/../../static/js/bootstrap-notify.min.js}" src="js/bootstrap-notify.min.js"></script>
 <script type="text/javascript" th:src="@{/../../static/js/main.min.js}" src="js/main.min.js"></script>
 <script type="text/javascript" th:src="@{/../../static/js/lightyear.js}" src="js/lightyear.js"></script>
 <script type="text/javascript">
@@ -140,6 +392,7 @@
             var userId = $('#userId').val();
             var carparksId = id;
             var plateNumber = $.trim($('#plateNumber').val());
+            lightyear.loading('show');
             if (plateNumber.length == 7) {
                 $.ajax({
                     type: "POST",
@@ -147,17 +400,29 @@
                     data: {userId: userId, carparksId: carparksId, plateNumber: plateNumber},
                     success: function (data) {
                         if (data > 0) {
-                            alert("入库成功");
-                            window.location.reload();
+                            lightyear.loading('hide');
+                            lightyear.notify('入库成功', 'success', 1000);
+                            setTimeout(function () {
+
+                                window.location.reload();
+                            }, 1000);
 
                         } else {
-                            alert("入库失败");
+                            lightyear.loading('hide');
+                            lightyear.notify('系统繁忙，请稍后再试', 'danger', 2000);
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 2000);
                         }
                     }
                 });
 
-            }else {
-                alert("车牌号非法");
+            } else if (plateNumber.length != 7) {
+
+                setTimeout(function () {
+                    lightyear.loading('hide');
+                    lightyear.notify('车牌号非法', 'danger', 500);
+                }, 500);
             }
 
 

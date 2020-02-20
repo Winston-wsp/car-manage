@@ -63,6 +63,7 @@
                                 <tr>
                                     <th>编号</th>
                                     <th>用户名</th>
+                                    <th>账户余额</th>
                                     <th>昵称</th>
                                     <th>手机号</th>
                                     <th>修改</th>
@@ -74,6 +75,7 @@
                                 <tr th:each="user,stat:${userVO.list}">
                                     <td th:text="${stat.count}">1</td>
                                     <td th:text="${user.username}">kobe</td>
+                                    <td th:text="'￥'+${user.money}">1</td>
                                     <td th:text="${user.nicheng}">菲菲菲非常美丽的巨兔12138</td>
                                     <td th:text="${user.phoneNumber}">138177322211</td>
                                     <td class="edit">
@@ -225,16 +227,6 @@
                             <label for="inputPassword">密码</label>
                             <input type="text" class="form-control" id="inputPassword" placeholder="密码">
                         </div>
-                        <!--   <div class="form-group">
-                               <label for="exampleInputFile">File input</label>
-                               <input type="file" id="exampleInputFile">
-                               <p class="help-block">Example block-level help text here.</p>
-                           </div>
-                           <div class="checkbox">
-                               <label>
-                                   <input type="checkbox"> Check me out
-                               </label>
-                           </div>-->
                     </form>
                 </div>
                 <div class="modal-footer">

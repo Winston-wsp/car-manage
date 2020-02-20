@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <title>--紫竹小区(ZIZHU)--</title>
+    <title>对话框 - 光年(Light Year Admin)后台管理系统模板</title>
     <link rel="icon" href="favicon.ico" type="image/ico">
     <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
     <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
@@ -11,6 +11,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link th:href="@{/../../static/css/materialdesignicons.min.css}" href="css/materialdesignicons.min.css"
           rel="stylesheet">
+    <!--对话框-->
+    <link rel="stylesheet" th:href="@{/../../static/js/jconfirm/jquery-confirm.min.css}">
     <link th:href="@{/../../static/css/style.min.css}" href="css/style.min.css" rel="stylesheet">
 </head>
 
@@ -35,31 +37,29 @@
                         <li class="nav-item nav-item-has-subnav">
                             <a href="javascript:void(0)"><i class="mdi mdi-access-point-network"></i> 车位</a>
                             <ul class="nav nav-subnav">
-                                <li><a
-                                        th:href="@{'/car/getCarParksListToUser?userId='+${session.user.id}}"
-                                        href="lyear_forms_elements.html">空闲车位查询</a></li>
-                                <li><a th:href="@{'/car/getMyCarParking?userId='+${session.user.id}}"
+                                <li><a th:href="@{'/car/getCarParksListToUser?userId='+${user.id}}"
+                                       href="lyear_forms_elements.html">空闲车位查询</a></li>
+                                <li><a th:href="@{'/car/getMyCarParking?userId='+${user.id}}"
                                        href="lyear_forms_elements.html">我的车位</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item nav-item-has-subnav">
+                        <li class="nav-item nav-item-has-subnav active open">
                             <a href="javascript:void(0)"><i class="mdi mdi-currency-jpy"></i> 充值缴费</a>
                             <ul class="nav nav-subnav">
-                                <li><a th:href="@{'/user/user/toUserChongzhi?userId='+${session.user.id}}"
+                                <li class="active" ><a th:href="@{'/user/user/toUserChongzhi?userId='+${user.id}}"
                                        href="#">充值</a></li>
-                                <li><a
-                                        th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
+                                <li><a th:href="@{'/user/user/toUserCard?userId='+${user.id}}">办卡</a>
+                                </li>
                                 <li><a href="#">历史缴费</a></li>
                             </ul>
                         </li>
                         <li class="nav-item nav-item-has-subnav">
                             <a href="javascript:void(0)"><i class="mdi mdi-account"></i> 账号资料</a>
                             <ul class="nav nav-subnav">
-                                <li><a th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}">个人信息</a>
+                                <li><a th:href="@{'/user/user/toUserInfo?userId='+${user.id}}">个人信息</a>
                                 </li>
                                 <li><a
-                                        th:href="@{'/user/user/toUpdatePassword?userId='+${session.user.id}}">修改密码</a>
-                                </li>
+                                       th:href="@{'/user/user/toUpdatePassword?userId='+${user.id}}">修改密码</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -96,13 +96,12 @@
                                      th:src="@{/../../static/Resources/images/logo-ico.png}"
                                      src="images/users/avatar.jpg"
                                      alt="社会你鹏哥"/>
-                                <span th:text="${session.user.nicheng}">笔下光年 <span class="caret"></span></span>
+                                <span th:text="${user.nicheng}">笔下光年 <span class="caret"></span></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
-                                <li><a target="right" th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}"><i
+                                <li><a target="right" th:href="@{'/user/user/toUserInfo?userId='+${user.id}}"><i
                                         class="mdi mdi-account"></i> 个人信息</a></li>
-                                <li><a target="right"
-                                       th:href="@{'/user/user/toUpdatePassword?userId='+${session.user.id}}"><i
+                                <li><a target="right" th:href="@{'/user/user/toUpdatePassword?userId='+${user.id}}"><i
                                         class="mdi mdi-lock-outline"></i> 修改密码</a>
                                 </li>
                                 <li><a href="javascript:void(0)"><i class="mdi mdi-delete"></i> 清空缓存</a></li>
@@ -170,11 +169,11 @@
                                 <li class="drop-skin-li clearfix">
                   <span class="inverse">
                     <input type="radio" name="header_bg" value="default" id="header_bg_1" checked>
-                    <label for="header_bg_1"></label>                      
+                    <label for="header_bg_1"></label>
                   </span>
                                     <span>
                     <input type="radio" name="header_bg" value="color_2" id="header_bg_2">
-                    <label for="header_bg_2"></label>                      
+                    <label for="header_bg_2"></label>
                   </span>
                                     <span>
                     <input type="radio" name="header_bg" value="color_3" id="header_bg_3">
@@ -182,15 +181,15 @@
                   </span>
                                     <span>
                     <input type="radio" name="header_bg" value="color_4" id="header_bg_4">
-                    <label for="header_bg_4"></label>                      
+                    <label for="header_bg_4"></label>
                   </span>
                                     <span>
                     <input type="radio" name="header_bg" value="color_5" id="header_bg_5">
-                    <label for="header_bg_5"></label>                      
+                    <label for="header_bg_5"></label>
                   </span>
                                     <span>
                     <input type="radio" name="header_bg" value="color_6" id="header_bg_6">
-                    <label for="header_bg_6"></label>                      
+                    <label for="header_bg_6"></label>
                   </span>
                                     <span>
                     <input type="radio" name="header_bg" value="color_7" id="header_bg_7">
@@ -246,185 +245,194 @@
 
         </header>
         <!--End 头部信息-->
-
-        <!--页面主要内容-->
         <main class="lyear-layout-content">
             <div class="container-fluid">
-                <!--    <div style="position: absolute; left: 241px;right: 20px; ">
-                        <iframe th:src="@{http://localhost:8089/user/user/getAnnouncementToUser}" scrolling="no"
-                                width="100%"
-                                height="800"
-                                name="right" border="none"></iframe>
-                    </div>-->
-                <div class="row">
-                    <div class="col-sm-6 col-lg-4">
-                        <div class="card bg-primary">
-                            <div class="card-body clearfix">
-                                <div class="pull-right">
-                                    <p class="h6 text-white m-t-0">账户余额</p>
-                                    <p class="h3 text-white m-b-0" th:text="${session.user.money}">102,125.00</p>
-                                </div>
-                                <div class="pull-left"><span class="img-avatar img-avatar-48 bg-translucent"><i
-                                        class="mdi mdi-currency-cny fa-1-5x"></i></span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6 col-lg-4">
-                        <div class="card bg-success">
-                            <div class="card-body clearfix">
-                                <div class="pull-right">
-                                    <p class="h6 text-white m-t-0">车位总数</p>
-                                    <p class="h3 text-white m-b-0" th:text="${carParksMap['allCarParks']}">920,000</p>
-                                </div>
-                                <div class="pull-left"><span class="img-avatar img-avatar-48 bg-translucent"><i
-                                        class="mdi mdi-access-point"></i></span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6 col-lg-4">
-                        <div class="card bg-danger">
-                            <div class="card-body clearfix">
-                                <div class="pull-right">
-                                    <p class="h6 text-white m-t-0">剩余车位</p>
-                                    <p class="h3 text-white m-b-0" th:text="${carParksMap['emptyCarParks']}">
-                                        102,125.00</p>
-                                </div>
-                                <div class="pull-left"><span class="img-avatar img-avatar-48 bg-translucent"><i
-                                        class="mdi mdi-alarm-light"></i></span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- <div class="col-sm-6 col-lg-3">
-                         <div class="card bg-purple">
-                             <div class="card-body clearfix">
-                                 <div class="pull-right">
-                                     <p class="h6 text-white m-t-0">新增留言</p>
-                                     <p class="h3 text-white m-b-0">153 条</p>
-                                 </div>
-                                 <div class="pull-left"><span class="img-avatar img-avatar-48 bg-translucent"><i
-                                         class="mdi mdi-comment-outline fa-1-5x"></i></span></div>
-                             </div>
-                         </div>
-                     </div>-->
-                </div>
 
                 <div class="row">
-
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                         <div class="card">
-                            <div class="card-header">
-                                <h4>公告栏</h4>
-                            </div>
+                            <div class="card-header"><h4>请选择充值金额</h4></div>
                             <div class="card-body">
-                                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                                    <div th:each="announcement,stat : ${announcementList}"
-                                         class="panel panel-primary">
-                                        <div class="panel-heading" role="tab" id="headingOne">
-                                            <h4 class="panel-title">
-                                                <a th:text="${announcement.title}" role="button" data-toggle="collapse"
-                                                   data-parent="#accordion" href="#collapseOne" aria-expanded="true"
-                                                   aria-controls="collapseOne">
-                                                    第一回 赈民饥包公奉旨　图谋害庞相施计
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel"
-                                             aria-labelledby="headingOne">
-                                            <div th:text="${announcement.content}" class="panel-body">
-                                                话说大宋开基之主太祖赵匡胤，此位天子，原乃上界赤龙临凡，英雄猛勇，豪侠情怀，创开四百年天下。陈桥兵变，黄袍加身，代位于后周而归一统。前书已有《两宋》表明，兹不絮谈。且说大宋相传继统四世仁宗嘉佑王，当时天子英明，群臣为国，四方宁靖，百姓安康。前者宋太祖既殁之后，杨家父子众英雄相继而亡。今者人得五虎，英雄佐粥，保护江山，扫除国敌。后话休题多表。忽一日，仁宗天子临朝。但见祥光灿烂，瑞色辉煌。
-                                            </div>
-                                            <span th:text="${#dates.format(announcement.time,'yyyy-MM-dd')}"></span>
-                                        </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <button class="btn btn-primary btn-block example-p-1">弹出框示例</button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-primary btn-block example-p-2">确认框示例</button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-primary btn-block example-p-3">对话框示例</button>
+                                    </div>
+                                    <br/><br/><br/>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-primary btn-block example-p-4">错误/红色 对话框</button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-primary btn-block example-p-5">成功/绿色 对话框</button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-primary btn-block example-p-6">警告/黄色 对话框</button>
                                     </div>
 
                                 </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="col-lg-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>交易历史记录</h4>
-                            </div>
-                            <div class="card-body">
-                                <canvas class="js-chartjs-lines"></canvas>
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-
             </div>
-
-
         </main>
-        <!--End 页面主要内容-->
     </div>
 </div>
 
+
 <script type="text/javascript" th:src="@{/../../static/js/jquery.min.js}" src="js/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
-<!--<script type="text/javascript" th:src="@{/../../js/bootstrap.min.js}" src="js/bootstrap.min.js"></script>-->
 <script type="text/javascript" th:src="@{/../../static/js/perfect-scrollbar.min.js}"
         src="js/perfect-scrollbar.min.js"></script>
+<!--对话框-->
+<script th:src="@{/../../static/js/jconfirm/jquery-confirm.min.js}" src="js/jconfirm/jquery-confirm.min.js"></script>
 <script type="text/javascript" th:src="@{/../../static/js/main.min.js}" src="js/main.min.js"></script>
 
-<!--图表插件-->
-<script type="text/javascript" th:src="@{/../../static/js/Chart.js}" src="js/Chart.js"></script>
 <script type="text/javascript">
-    // 按钮示例
-    $('#myButton').on('click', function () {
-        var $btn = $(this).button('loading');
-        setTimeout(function () {
-            $btn.button("reset")
-        }, 3e3)
-    });
-    $(document).ready(function (e) {
-        var $dashChartBarsCnt = jQuery('.js-chartjs-bars')[0].getContext('2d'),
-            $dashChartLinesCnt = jQuery('.js-chartjs-lines')[0].getContext('2d');
-
-        var $dashChartBarsData = {
-            labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-            datasets: [
-                {
-                    label: '注册用户',
-                    borderWidth: 1,
-                    borderColor: 'rgba(0,0,0,0)',
-                    backgroundColor: 'rgba(51,202,185,0.5)',
-                    hoverBackgroundColor: "rgba(51,202,185,0.7)",
-                    hoverBorderColor: "rgba(0,0,0,0)",
-                    data: [2500, 1500, 1200, 3200, 4800, 3500, 1500]
+    $('.example-p-1').on('click', function () {
+        $.alert({
+            title: '嗨',
+            content: '这是对用户的简单提示框。 <br> 一些 <strong>HTML</strong> <em>内容</em>',
+            buttons: {
+                confirm: {
+                    text: '确认',
+                    btnClass: 'btn-primary',
+                    action: function () {
+                        $.alert('你点击了确认!');
+                    }
+                },
+                cancel: {
+                    text: '取消',
+                    action: function () {
+                        $.alert('你点击了取消!');
+                    }
                 }
-            ]
-        };
-        var $dashChartLinesData = {
-            labels: ['2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014'],
-            datasets: [
-                {
-                    label: '交易资金',
-                    data: [20, 25, 40, 30, 45, 40, 55, 40, 48, 40, 42, 50],
-                    borderColor: '#358ed7',
-                    backgroundColor: 'rgba(53, 142, 215, 0.175)',
-                    borderWidth: 1,
-                    fill: false,
-                    lineTension: 0.5
-                }
-            ]
-        };
-
-        new Chart($dashChartBarsCnt, {
-            type: 'bar',
-            data: $dashChartBarsData
+            }
         });
-
-        var myLineChart = new Chart($dashChartLinesCnt, {
-            type: 'line',
-            data: $dashChartLinesData,
+    });
+    $('.example-p-2').on('click', function () {
+        $.confirm({
+            title: '对话框',
+            content: '一些内容...',
+            buttons: {
+                confirm: {
+                    text: '确认',
+                    action: function () {
+                        $.alert('确认的!');
+                    }
+                },
+                cancel: {
+                    text: '关闭',
+                    action: function () {
+                        $.alert('取消的!');
+                    }
+                },
+                somethingElse: {
+                    text: '其他',
+                    btnClass: 'btn-blue',
+                    keys: ['enter', 'shift'],
+                    action: function () {
+                        $.alert('其他的选择？');
+                    }
+                }
+            }
+        });
+    });
+    $('.example-p-3').on('click', function () {
+        $.confirm({
+            title: '提示',
+            content: '' +
+                '<form action="" class="formName">' +
+                '<div class="form-group">' +
+                '<label>请输入您的姓名</label>' +
+                '<input type="text" placeholder="姓名" class="name form-control" required />' +
+                '</div>' +
+                '</form>',
+            buttons: {
+                formSubmit: {
+                    text: '提交',
+                    btnClass: 'btn-blue',
+                    action: function () {
+                        var name = this.$content.find('.name').val();
+                        if (!name) {
+                            $.alert('请您输入您的姓名');
+                            return false;
+                        }
+                        $.alert('您的姓名是： ' + name);
+                    }
+                },
+                cancel: {
+                    text: '取消'
+                },
+            },
+            onContentReady: function () {
+                var jc = this;
+                this.$content.find('form').on('submit', function (e) {
+                    e.preventDefault();
+                    jc.$$formSubmit.trigger('click');
+                });
+            }
+        });
+    });
+    $('.example-p-4').on('click', function () {
+        $.confirm({
+            title: '错误提示',
+            content: '笑江湖浪迹十年游，空负少年头。对铜驼巷陌，吟情渺渺，心事悠悠！酒冷诗残梦断，南国正清秋。',
+            type: 'red',
+            typeAnimated: true,
+            buttons: {
+                tryAgain: {
+                    text: '重试',
+                    btnClass: 'btn-red',
+                    action: function () {
+                    }
+                },
+                close: {
+                    text: '关闭'
+                }
+            }
+        });
+    });
+    $('.example-p-5').on('click', function () {
+        $.confirm({
+            title: '成功',
+            content: '难消受灯昏罗帐，怅昙花一现恨难休！飘零惯，金戈铁马，拼葬荒丘！',
+            type: 'green',
+            buttons: {
+                omg: {
+                    text: '谢谢',
+                    btnClass: 'btn-green',
+                },
+                close: {
+                    text: '关闭',
+                }
+            }
+        });
+    });
+    $('.example-p-6').on('click', function () {
+        $.confirm({
+            title: '警告',
+            content: '把剑凄然望，无处招归舟。明日天涯路远，问谁留楚佩，弄影中洲？数英雄儿女，俯仰古今愁。',
+            type: 'orange',
+            typeAnimated: false,
+            buttons: {
+                omg: {
+                    text: '重试',
+                    btnClass: 'btn-orange',
+                },
+                close: {
+                    text: '关闭',
+                }
+            }
         });
     });
 </script>

@@ -247,12 +247,12 @@
                     <li>车位管理</li>
                 </a>
                 <a th:href="@{/car/getCarParkings}"  href="inventory.html" target="right">
-                    <li>在场车辆信息</li>
+                    <li>在场车辆</li>
                 </a>
-                <a href="inbound.html" target="right">
-                    <li>车辆信息查询</li>
+                <a th:href="@{/car/getCarParksListToAdmin}" target="right">
+                    <li>空闲车位</li>
                 </a>
-                <a th:href="@{http://localhost:8089/user/user/getAnnouncement}" href="warning.html" target="right">
+                <a th:href="@{/user/user/getAnnouncement}" href="warning.html" target="right">
                     <li>发布公告</li>
                 </a>
                 <a href="outBoud.html" target="right">

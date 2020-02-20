@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <title>其他 - 光年(Light Year Admin)后台管理系统模板</title>
+    <title>个人信息 - 光年(Light Year Admin)后台管理系统模板</title>
     <link rel="icon" href="favicon.ico" type="image/ico">
     <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
     <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
@@ -12,6 +12,7 @@
     <link th:href="@{/../../static/css/materialdesignicons.min.css}" href="css/materialdesignicons.min.css"
           rel="stylesheet">
     <link th:href="@{/../../static/css/style.min.css}" href="css/style.min.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -30,7 +31,7 @@
 
                     <nav class="sidebar-main">
                         <ul class="nav nav-drawer">
-                            <li class="nav-item active"><a th:href="@{/user/user/getAnnouncementToUser}"
+                            <li class="nav-item active"><a th:href="@{'/user/user/getUser?userId='+${session.user.id}}"
                                                            href="javascript:void(0)"><i class="mdi mdi-home"></i> 首页</a>
                             </li>
                             <li class="nav-item nav-item-has-subnav">
@@ -39,7 +40,7 @@
                                     <li><a
                                             th:href="@{'/car/getCarParksListToUser?userId='+${session.user.id}}"
                                             href="lyear_forms_elements.html">空闲车位查询</a></li>
-                                    <li><a th:href="@{'/car/getMyCarParking?userId='+${session.user.id}}"
+                                    <li><a  th:href="@{'/car/getMyCarParking?userId='+${session.user.id}}"
                                            href="lyear_forms_elements.html">我的车位</a></li>
                                 </ul>
                             </li>
@@ -48,15 +49,15 @@
                                 <ul class="nav nav-subnav">
                                     <li><a th:href="@{'/user/user/toUserChongzhi?userId='+${session.user.id}}"
                                            href="#">充值</a></li>
-                                    <li><a
+                                    <li><a target="right"
                                            th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
                                     <li><a href="#">历史缴费</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item nav-item-has-subnav">
+                            <li class="nav-item nav-item-has-subnav active open">
                                 <a href="javascript:void(0)"><i class="mdi mdi-account"></i> 账号资料</a>
                                 <ul class="nav nav-subnav">
-                                    <li><a
+                                    <li class="active"><a
                                            th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}">个人信息</a>
                                     </li>
                                     <li><a
@@ -252,47 +253,98 @@
             <!--页面主要内容-->
             <main class="lyear-layout-content">
                 <div class="container-fluid">
-                    <center><h3>公告栏</h3></center>
-                    <!--手风琴效果-->
-                    <div style="padding: 50px; padding-top: 20px;" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                        <div th:each="announcement,stat : ${announcementVO.list}" class="panel panel-primary">
-                            <div class="panel-heading" role="tab" id="headingOne">
-                                <h4 class="panel-title">
-                                    <a th:text="${announcement.title}" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        第一回 赈民饥包公奉旨　图谋害庞相施计
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                                <div th:text="${announcement.content}" class="panel-body">
-                                    话说大宋开基之主太祖赵匡胤，此位天子，原乃上界赤龙临凡，英雄猛勇，豪侠情怀，创开四百年天下。陈桥兵变，黄袍加身，代位于后周而归一统。前书已有《两宋》表明，兹不絮谈。且说大宋相传继统四世仁宗嘉佑王，当时天子英明，群臣为国，四方宁靖，百姓安康。前者宋太祖既殁之后，杨家父子众英雄相继而亡。今者人得五虎，英雄佐粥，保护江山，扫除国敌。后话休题多表。忽一日，仁宗天子临朝。但见祥光灿烂，瑞色辉煌。
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <hr>
+                                    <form method="post" action="#!" class="site-form">
+                                        <input id="userId" type="hidden" th:value="${user.id}">
+                                        <div class="form-group">
+                                            <label for="username">用户名</label>
+                                            <input type="text" class="form-control" name="username" id="username"
+                                                   th:value="${user.username}" disabled="disabled"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="money">账户余额</label>
+                                            <input type="text" class="form-control" name="money" id="money"
+                                                   th:value="'￥'+${user.money}" disabled="disabled"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nicheng">昵称</label>
+                                            <input type="text" class="form-control" name="nicheng" id="nicheng"
+                                                   placeholder="输入您的昵称" th:value="${user.nicheng}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phoneNumber">电话</label>
+                                            <input type="text" class="form-control" name="phoneNumber" id="phoneNumber"
+                                                   aria-describedby="phoneHelp" placeholder="请输入正确的电话号码"
+                                                   th:value="${user.phoneNumber}">
+                                            <small id="phoneHelp" class="form-text text-muted">请保证您填写的电话号码是正确的。</small>
+                                        </div>
+                                        <button onclick="btn_update();" type="button" class="btn btn-primary">保存
+                                        </button>
+                                    </form>
+
                                 </div>
-                                <span th:text="${#dates.format(announcement.time,'yyyy-MM-dd')}"></span>
                             </div>
                         </div>
+
                     </div>
-                    <!--手风琴效果 End-->
                 </div>
             </main>
         </div>
     </div>
 </div>
 
-
-
-<script type="text/javascript" th:src="@{/../../static/js/jquery.min.js}" src="js/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
-<script type="text/javascript" th:src="@{/../../static/js/perfect-scrollbar.min.js}"
+<script th:src="@{/../../static/js/jquery.min.js}" type="text/javascript" src="js/jquery.min.js"></script>
+<script th:src="@{/../../static/js/bootstrap.min.js}" type="text/javascript" src="js/bootstrap.min.js"></script>
+<script th:src="@{/../../static/js/perfect-scrollbar.min.js}" type="text/javascript"
         src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" th:src="@{/../../static/js/lightyear.js}"></script>
+<script type="text/javascript" th:src="@{/../../static/js/bootstrap-notify.min.js}"></script>
 <script type="text/javascript" th:src="@{/../../static/js/main.min.js}" src="js/main.min.js"></script>
 <script>
-    // 按钮示例
-    $('#myButton').on('click', function () {
-        var $btn = $(this).button('loading');
-        setTimeout(function () {
-            $btn.button("reset")
-        }, 3e3)
-    });
+    var btn_update = function () {
+        var id = $("#userId").val();
+        var username = $("#username").val();
+        var nicheng = $("#nicheng").val();
+        var phoneNumber = $.trim($("#phoneNumber").val());
+        var pattern = /^1[345678]\d{9}$/;
+
+        if (!pattern.test(phoneNumber)) {
+            lightyear.loading('show');
+            lightyear.loading('hide');
+            lightyear.notify('号码格式不正确哦！', 'danger', 1000);
+            setTimeout(function () {
+
+            }, 1000);
+        } else {
+            lightyear.loading('show');
+            $.ajax({
+                type: "PUT",
+                url: "http://localhost:8089/user/user/updateUser",
+                data: {
+                    id: id,
+                    username: username,
+                    nicheng: nicheng,
+                    phoneNumber: phoneNumber
+                },
+                success: function (data) {
+                    if (data > 0) {
+                        lightyear.loading('hide');
+                        lightyear.notify('保存成功', 'success', 1000);
+                        setTimeout(function () {
+
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                    }
+                }
+            });
+        }
+    }
 </script>
 </body>
 </html>

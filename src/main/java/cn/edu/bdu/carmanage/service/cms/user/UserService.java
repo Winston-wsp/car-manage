@@ -1,5 +1,6 @@
 package cn.edu.bdu.carmanage.service.cms.user;
 
+import cn.edu.bdu.carmanage.entity.admin.AdminUser;
 import cn.edu.bdu.carmanage.entity.user.Announcement;
 import cn.edu.bdu.carmanage.entity.user.User;
 import cn.edu.bdu.carmanage.entity.user.UserVO;
@@ -60,6 +61,10 @@ public class UserService {
     }
 
     public int updateUser(User user) {
+        if(user.getPassword() == null || "".equals(user.getPassword())){{
+            User user1 = this.userMapper.selectById(user.getId());
+            user.setPassword(user1.getPassword());
+        }}
         int row = userMapper.updateById(user);
         return row;
     }
@@ -161,5 +166,16 @@ public class UserService {
     public List<Announcement> getAnnouncementList() {
         List<Announcement> announcements = this.announcementMapper.selectList(null);
         return announcements;
+    }
+
+
+    public int updateUserById(String id, String password, String newPassword) {
+        int row = -1;
+        User user = this.userMapper.selectById(id);
+        if(user.getPassword().equals(password)){
+            user.setPassword(newPassword);
+            row = this.userMapper.updateById(user);
+        }
+        return row;
     }
 }

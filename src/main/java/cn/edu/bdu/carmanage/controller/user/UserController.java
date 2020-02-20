@@ -3,6 +3,7 @@ package cn.edu.bdu.carmanage.controller.user;
 import cn.edu.bdu.carmanage.entity.user.Announcement;
 import cn.edu.bdu.carmanage.entity.user.User;
 import cn.edu.bdu.carmanage.entity.user.UserVO;
+import cn.edu.bdu.carmanage.service.cms.car.CarParksService;
 import cn.edu.bdu.carmanage.service.cms.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,9 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Winston
@@ -24,6 +27,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private CarParksService carParksService;
 
     /**
      * 添加新的普通用户
@@ -35,7 +40,7 @@ public class UserController {
     @ResponseBody
     public String addUser(User user) {
         User userByUsername = this.userService.getUserByUsername(user.getUsername());
-        if(userByUsername != null){
+        if (userByUsername != null) {
             return "error";
         }
         User u = new User();
@@ -47,13 +52,43 @@ public class UserController {
         return "success";
     }
 
+@GetMapping("/getUser")
+public String getUser(@RequestParam(value = "userId") String userId, Model model){
+        User u = null;
+    if(userId != null ){
+        u = this.userService.getUserById(userId);
+        Map<String, Integer> carParksMap = new HashMap<>();
+//        request.getSession().setAttribute("user", u);
 
+        Integer allCarParks = this.carParksService.getAllCarParks();
+        Integer emptyCarParks = this.carParksService.getEmptyCarParks();
+        carParksMap.put("allCarParks", allCarParks);
+        carParksMap.put("emptyCarParks", emptyCarParks);
+        model.addAttribute("carParksMap", carParksMap);
+
+        // 获取公告栏
+        List<Announcement> announcementList = this.userService.getAnnouncementList();
+        model.addAttribute("announcementList", announcementList);
+        return "/user/index";
+    }
+    return "/login";
+}
     @PostMapping("getUser")
-    public String getUser(User user, Model model, HttpServletRequest request) {
-        User u = userService.getUser(user);
+    public String getUser(@RequestParam(value = "userId",required = false) String userId, User user, Model model, HttpServletRequest request) {
+        User u = userService.getUser(user);;
         if (u != null) {
-            request.getSession().setAttribute("userSession",u);
-            model.addAttribute("user",u);
+            Map<String, Integer> carParksMap = new HashMap<>();
+            request.getSession().setAttribute("user", u);
+
+            Integer allCarParks = this.carParksService.getAllCarParks();
+            Integer emptyCarParks = this.carParksService.getEmptyCarParks();
+            carParksMap.put("allCarParks", allCarParks);
+            carParksMap.put("emptyCarParks", emptyCarParks);
+            model.addAttribute("carParksMap", carParksMap);
+
+            // 获取公告栏
+            List<Announcement> announcementList = this.userService.getAnnouncementList();
+            model.addAttribute("announcementList", announcementList);
             return "/user/index";
         }
         model.addAttribute("message", "用户名或密码错误，请重新输入");
@@ -81,10 +116,11 @@ public class UserController {
      */
     @PutMapping("updateUser")
     @ResponseBody
-    public int updateUser(User user) {
+    public int updateUser(String newPassword, User user) {
         int row = userService.updateUser(user);
         return row;
     }
+
 
     @DeleteMapping("deleteUser/{id}")
     @ResponseBody
@@ -118,6 +154,11 @@ public class UserController {
 
     }
 
+    @GetMapping("/userLogout")
+    public String userLogout(HttpServletRequest request) {
+        request.getSession().invalidate();
+        return "/login";
+    }
 
     /**
      * 注册页面
@@ -152,7 +193,7 @@ public class UserController {
         return "/manage/announcement";
     }
 
-    @GetMapping("/getAnnouncementToUser")
+  /*  @GetMapping("/getAnnouncementToUser")
     public String getAnnouncementToUser(@RequestParam(value = "currentPage", defaultValue = "1") Long currentPage, @RequestParam(value = "size", defaultValue = "8") Long size, Model model) {
         UserVO<Announcement> announcementVO = userService.getAnnouncement(currentPage, size);
         if (!CollectionUtils.isEmpty(announcementVO.getList())) {
@@ -160,7 +201,7 @@ public class UserController {
         }
         return "/user/announcement";
     }
-
+*/
     @GetMapping("/getAnnouncementById/{id}")
     public ResponseEntity<Announcement> getAnnouncementById(@PathVariable("id") String id) {
         Announcement announcement = this.userService.getAnnouncementById(id);
@@ -184,4 +225,48 @@ public class UserController {
         return row;
     }
 
+    /**
+     * 用户个人信息
+     *
+     * @param userId
+     * @param model
+     * @return
+     */
+    @GetMapping("/toUserInfo")
+    public String toUserInfo(@RequestParam String userId, Model model) {
+        User user = this.userService.getUserById(userId);
+        model.addAttribute("user", user);
+        return "/user/userInfo";
+    }
+
+    @GetMapping("/toUpdatePassword")
+    public String toUpdatePassword(@RequestParam String userId, Model model) {
+        model.addAttribute("userId", userId);
+        return "/user/updatePwd";
+    }
+
+    /**
+     * 更新用户密码
+     *
+     * @return
+     */
+    @PutMapping("/updateUserById")
+    @ResponseBody
+    public int updateUserById(@RequestParam("id") String id, @RequestParam("password") String password, @RequestParam("newPassword") String newPassword) {
+        int row = userService.updateUserById(id, password, newPassword);
+        return row;
+    }
+
+    @GetMapping("/toUserCard")
+    public String toUserCard(@RequestParam String userId, Model model) {
+        model.addAttribute("userId", userId);
+        return "/user/userCard";
+    }
+
+    @GetMapping("/toUserChongzhi")
+    public String toUserChongzhi(@RequestParam String userId, Model model) {
+        User user = this.userService.getUserById(userId);
+        model.addAttribute("user", user);
+        return "/user/chongzhi";
+    }
 }

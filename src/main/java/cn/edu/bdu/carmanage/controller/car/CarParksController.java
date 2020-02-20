@@ -50,6 +50,13 @@ public class CarParksController {
         return "/user/carparks";
     }
 
+    @GetMapping("/getCarParksListToAdmin")
+    public String getCarParksListToAdmin(@RequestParam(value = "area", required = false, defaultValue = "") String area, @RequestParam(value = "parkNumber", required = false, defaultValue = "") String parkNumber, @RequestParam(value = "currentPage", defaultValue = "1") Long currentPage, @RequestParam(value = "size", defaultValue = "8") Long size, Model model) {
+        UserVO<CarParks> carParksVO = carParksService.getCarParksListToUser(area, parkNumber, currentPage, size);
+        model.addAttribute("carParksVO", carParksVO);
+        return "/manage/carstop";
+    }
+
     @GetMapping("/getCarParksById/{id}")
     @ResponseBody
     public ResponseEntity<CarParks> getCarParksById(@PathVariable("id") String id) {
@@ -104,6 +111,7 @@ public class CarParksController {
 
     /**
      * 管理员获取在场车辆的信息
+     *
      * @param area
      * @param parkNumber
      * @param username
@@ -130,9 +138,42 @@ public class CarParksController {
 
     @GetMapping("/getCarParkingById/{id}")
     @ResponseBody
-    public CarParking getCarParkingById(@PathVariable("id") String id){
+    public CarParking getCarParkingById(@PathVariable("id") String id) {
         CarParking carParking = this.carParksService.getCarParkingById(id);
         return carParking;
+    }
+
+    /**
+     * 根据id，更新出库时间
+     * @param id
+     * @return
+     */
+    @PutMapping("/updateCarParkingById/{carparkingId}")
+    @ResponseBody
+    public int updateCarParkingById(@PathVariable("carparkingId") String id,@RequestParam("outTime") Date outTime){
+
+        int row = this.carParksService.updateCarParkingById(id, outTime);
+        return row;
+    }
+
+    @PostMapping("/addCarCard/{userId}")
+    @ResponseBody
+    public int addCarCard(@PathVariable("userId") String userId, @RequestParam("type") int type) {
+        int row = this.carParksService.addCarCard(userId, type);
+        return row;
+    }
+
+    /**
+     * 根据用户id查找账号类型
+     *
+     * @param userId
+     * @return
+     */
+    @GetMapping("/getCarCardByUserId/{userId}")
+    @ResponseBody
+    public Long getCarCardByUserId(@PathVariable("userId") String userId, @RequestParam("endTime") Date endTime) {
+        Long result = this.carParksService.getCarCardByUserId(userId, endTime);
+        return result;
     }
 
 }

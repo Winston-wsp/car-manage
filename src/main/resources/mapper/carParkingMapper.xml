@@ -64,18 +64,5 @@
         INNER JOIN car_carparks ON car_parking.carparks_id = car_carparks.id
         INNER JOIN user_user ON car_parking.user_id = user_user.id
         ${ew.customSqlSegment}
-        <!-- <if test="area!=null and area!=''">
-             AND car_carparks.area = #{area}
-         </if>
-         <if test="parkNumber!=null and parkNumber!=''">
-             AND car_carparks.parkNumber = #{parkNumber}
-         </if>
-         <if test="username!=null and username!=''">
-             AND user_user.username = #{username}
-         </if>
-         <if test="nicheng!=null and nicheng!=''">
-             AND user_user.nicheng = #{nicheng}
-         </if>
- -->
     </select>
 </mapper>

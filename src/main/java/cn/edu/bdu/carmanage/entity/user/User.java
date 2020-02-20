@@ -1,5 +1,6 @@
 package cn.edu.bdu.carmanage.entity.user;
 
+import cn.edu.bdu.carmanage.entity.car.CarCard;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -21,4 +22,8 @@ public class User {
     private String password;
     @TableField("phone_number")
     private String phoneNumber;
+    private Double money;
+    @TableField(exist = false)
+    private CarCard carCard;
+
 }
