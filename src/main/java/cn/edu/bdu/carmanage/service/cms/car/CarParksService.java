@@ -2,10 +2,12 @@ package cn.edu.bdu.carmanage.service.cms.car;
 
 import cn.edu.bdu.carmanage.entity.car.CarCard;
 import cn.edu.bdu.carmanage.entity.car.CarParking;
+import cn.edu.bdu.carmanage.entity.car.CarParkingCost;
 import cn.edu.bdu.carmanage.entity.car.CarParks;
 import cn.edu.bdu.carmanage.entity.user.User;
 import cn.edu.bdu.carmanage.entity.user.UserVO;
 import cn.edu.bdu.carmanage.mapper.CarCardMapper;
+import cn.edu.bdu.carmanage.mapper.CarParkingCostMapper;
 import cn.edu.bdu.carmanage.mapper.CarParkingMapper;
 import cn.edu.bdu.carmanage.mapper.CarParksMapper;
 import cn.edu.bdu.carmanage.utils.CardNumberUtils;
@@ -34,6 +36,9 @@ public class CarParksService {
     private CarParkingMapper carParkingMapper;
     @Autowired
     private CarCardMapper carCardMapper;
+    @Autowired
+    private CarParkingCostMapper carParkingCostMapper;
+
 
     public int addCarParks(CarParks carParks) {
         int row = this.carParksMapper.insert(carParks);
@@ -95,6 +100,10 @@ public class CarParksService {
     }
 
     public int deleteCarParks(String id) {
+        CarParks carParks = this.carParksMapper.selectById(id);
+        if(carParks.getStatus() == '0'){
+            return -2;
+        }
         int row = this.carParksMapper.deleteById(id);
         return row;
     }
@@ -121,7 +130,7 @@ public class CarParksService {
         return carParkingList;
     }
 
-    public UserVO<CarParking> getCarParkings(String area, String parkNumber, String username, String nicheng, Long currentPage, Long size) {
+    public UserVO<CarParking> getCarParkings(String area, String parkNumber, String username, Long currentPage, Long size) {
         QueryWrapper<CarParking> queryWrapper = new QueryWrapper<>();
 //        Map<String, String> map = new HashMap<>();
         if (!"".equals(area) && area != null) {
@@ -137,10 +146,7 @@ public class CarParksService {
 //            map.put("username", username);
             queryWrapper.eq("user_user.username", username);
         }
-        if (!"".equals(nicheng) && nicheng != null) {
-//            map.put("nicheng", nicheng);
-            queryWrapper.eq("user_user.nicheng", nicheng);
-        }
+
         Page<CarParking> page = new Page<>(currentPage, size);
         IPage<CarParking> parkingIPage = this.carParkingMapper.getCarParkings(page, queryWrapper);
         UserVO<CarParking> carParkingVO = new UserVO<>();
@@ -163,8 +169,8 @@ public class CarParksService {
 
         // 如果用户在办卡的时候有车未出库，则办卡失败
         List<CarParking> carParkings = this.carParkingMapper.getMyCarParing(userId);
-        for(CarParking carParking : carParkings){
-            if(carParking.getStartTime() != null && carParking.getEndTime() == null){
+        for (CarParking carParking : carParkings) {
+            if (carParking.getStartTime() != null && carParking.getEndTime() == null) {
                 return row;
             }
         }
@@ -237,8 +243,15 @@ public class CarParksService {
         QueryWrapper<CarCard> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
         CarCard carCard = this.carCardMapper.selectOne(queryWrapper);
-        // 用户车辆所在的车位
-        List<CarParking> carParkings = this.carParkingMapper.getMyCarParing(userId);
+
+        // 用户车辆所在的车位，用户可以停多辆
+        List<CarParking> carParkings = new ArrayList<>();
+        List<CarParking> carParkingList = this.carParkingMapper.getMyCarParing(userId);
+        carParkingList.forEach(carParking -> {
+            if (carParking.getStartTime() != null && carParking.getEndTime() == null) {
+                carParkings.add(carParking);
+            }
+        });
         if (carCard == null) {
             // 不存在卡号，是普通用户
             return -1l;
@@ -249,13 +262,13 @@ public class CarParksService {
         // 卡的有效期
         Date cardStartTime = carCard.getStartTime();
         Date cardEndTime = carCard.getEndTime();
-        if (DateUtil.isExpired(cardStartTime,cardEndTime,startTime)){
+        if (DateUtil.isExpired(cardStartTime, cardEndTime, startTime)) {
             // 会员卡已经过期
             return -1l;
         }
         // 如果会员卡没过期
         // 1.入库时间在有效期，出库时间不在有效期
-        if(DateUtil.isExpired(cardStartTime,cardEndTime,endTime)){
+        if (DateUtil.isExpired(cardStartTime, cardEndTime, endTime)) {
             // 计算过期日期到出库时间的毫秒数
             long between = DateUtil.between(cardEndTime, endTime, DateUnit.MS);
             System.out.println(between);
@@ -264,17 +277,20 @@ public class CarParksService {
         return 1l;
     }
 
-    public int updateCarParkingById(String id, Date outTime) {
+    public int updateCarParkingById(String id, Date outTime, Double money, String context) {
         CarParking carParking = this.carParkingMapper.selectById(id);
         carParking.setEndTime(outTime);
         int row = this.carParkingMapper.updateById(carParking);
 
-        // 出库后车位状态要置为未使用状态
-        // 查询车位号
-        String carparksId = carParking.getCarparksId();
-        CarParks carParks = this.carParksMapper.selectById(carparksId);
-        carParks.setStatus('1');
-        row = this.carParksMapper.updateById(carParks);
+        if (row > 0) {
+            // 出库后车位状态要置为未使用状态
+            // 查询车位号
+            String carparksId = carParking.getCarparksId();
+            CarParks carParks = this.carParksMapper.selectById(carparksId);
+            carParks.setStatus('1');
+            row = this.carParksMapper.updateById(carParks);
+
+        }
         return row;
     }
 
@@ -282,11 +298,20 @@ public class CarParksService {
     public Integer getAllCarParks() {
         return this.carParksMapper.selectCount(null);
     }
+
     // 获取空闲车位
-    public Integer getEmptyCarParks(){
+    public Integer getEmptyCarParks() {
         QueryWrapper<CarParks> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("status",1);
+        queryWrapper.eq("status", 1);
         Integer count = this.carParksMapper.selectCount(queryWrapper);
         return count;
+    }
+
+    // 获取价格区间
+    public CarParkingCost getCarParkingCost() {
+        List<CarParkingCost> carParkingCosts = this.carParkingCostMapper.selectList(null);
+        CarParkingCost carParkingCost = carParkingCosts.get(0);
+
+        return carParkingCost;
     }
 }

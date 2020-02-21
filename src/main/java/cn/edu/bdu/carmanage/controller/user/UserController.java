@@ -1,7 +1,10 @@
 package cn.edu.bdu.carmanage.controller.user;
 
+import cn.edu.bdu.carmanage.entity.car.CarCard;
+import cn.edu.bdu.carmanage.entity.car.CarParkingCost;
 import cn.edu.bdu.carmanage.entity.user.Announcement;
 import cn.edu.bdu.carmanage.entity.user.User;
+import cn.edu.bdu.carmanage.entity.user.UserPay;
 import cn.edu.bdu.carmanage.entity.user.UserVO;
 import cn.edu.bdu.carmanage.service.cms.car.CarParksService;
 import cn.edu.bdu.carmanage.service.cms.user.UserService;
@@ -10,9 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,30 +57,32 @@ public class UserController {
         return "success";
     }
 
-@GetMapping("/getUser")
-public String getUser(@RequestParam(value = "userId") String userId, Model model){
+    @GetMapping("/getUser")
+    public String getUser(@RequestParam(value = "userId") String userId, HttpServletRequest request, Model model) {
         User u = null;
-    if(userId != null ){
-        u = this.userService.getUserById(userId);
-        Map<String, Integer> carParksMap = new HashMap<>();
-//        request.getSession().setAttribute("user", u);
+        if (userId != null) {
+            u = this.userService.getUserById(userId);
+            Map<String, Integer> carParksMap = new HashMap<>();
+            request.getSession().setAttribute("user", u);
 
-        Integer allCarParks = this.carParksService.getAllCarParks();
-        Integer emptyCarParks = this.carParksService.getEmptyCarParks();
-        carParksMap.put("allCarParks", allCarParks);
-        carParksMap.put("emptyCarParks", emptyCarParks);
-        model.addAttribute("carParksMap", carParksMap);
+            Integer allCarParks = this.carParksService.getAllCarParks();
+            Integer emptyCarParks = this.carParksService.getEmptyCarParks();
+            carParksMap.put("allCarParks", allCarParks);
+            carParksMap.put("emptyCarParks", emptyCarParks);
+            model.addAttribute("carParksMap", carParksMap);
 
-        // 获取公告栏
-        List<Announcement> announcementList = this.userService.getAnnouncementList();
-        model.addAttribute("announcementList", announcementList);
-        return "/user/index";
+            // 获取公告栏
+            List<Announcement> announcementList = this.userService.getAnnouncementList();
+            model.addAttribute("announcementList", announcementList);
+            return "/user/index";
+        }
+        return "/login";
     }
-    return "/login";
-}
+
     @PostMapping("getUser")
-    public String getUser(@RequestParam(value = "userId",required = false) String userId, User user, Model model, HttpServletRequest request) {
-        User u = userService.getUser(user);;
+    public String getUser(@RequestParam(value = "userId", required = false) String userId, User user, Model model, HttpServletRequest request) {
+        User u = userService.getUser(user);
+        ;
         if (u != null) {
             Map<String, Integer> carParksMap = new HashMap<>();
             request.getSession().setAttribute("user", u);
@@ -193,15 +200,15 @@ public String getUser(@RequestParam(value = "userId") String userId, Model model
         return "/manage/announcement";
     }
 
-  /*  @GetMapping("/getAnnouncementToUser")
-    public String getAnnouncementToUser(@RequestParam(value = "currentPage", defaultValue = "1") Long currentPage, @RequestParam(value = "size", defaultValue = "8") Long size, Model model) {
-        UserVO<Announcement> announcementVO = userService.getAnnouncement(currentPage, size);
-        if (!CollectionUtils.isEmpty(announcementVO.getList())) {
-            model.addAttribute("announcementVO", announcementVO);
-        }
-        return "/user/announcement";
-    }
-*/
+    /*  @GetMapping("/getAnnouncementToUser")
+      public String getAnnouncementToUser(@RequestParam(value = "currentPage", defaultValue = "1") Long currentPage, @RequestParam(value = "size", defaultValue = "8") Long size, Model model) {
+          UserVO<Announcement> announcementVO = userService.getAnnouncement(currentPage, size);
+          if (!CollectionUtils.isEmpty(announcementVO.getList())) {
+              model.addAttribute("announcementVO", announcementVO);
+          }
+          return "/user/announcement";
+      }
+  */
     @GetMapping("/getAnnouncementById/{id}")
     public ResponseEntity<Announcement> getAnnouncementById(@PathVariable("id") String id) {
         Announcement announcement = this.userService.getAnnouncementById(id);
@@ -235,6 +242,8 @@ public String getUser(@RequestParam(value = "userId") String userId, Model model
     @GetMapping("/toUserInfo")
     public String toUserInfo(@RequestParam String userId, Model model) {
         User user = this.userService.getUserById(userId);
+        CarCard carCard = this.userService.getCarCardInfo(userId);
+        model.addAttribute("carCard", carCard);
         model.addAttribute("user", user);
         return "/user/userInfo";
     }
@@ -260,6 +269,9 @@ public String getUser(@RequestParam(value = "userId") String userId, Model model
     @GetMapping("/toUserCard")
     public String toUserCard(@RequestParam String userId, Model model) {
         model.addAttribute("userId", userId);
+        // 获取停车需要的价格
+        CarParkingCost carParkingCost = this.carParksService.getCarParkingCost();
+        model.addAttribute("carParkingCost", carParkingCost);
         return "/user/userCard";
     }
 
@@ -268,5 +280,44 @@ public String getUser(@RequestParam(value = "userId") String userId, Model model
         User user = this.userService.getUserById(userId);
         model.addAttribute("user", user);
         return "/user/chongzhi";
+    }
+
+    @PostMapping("/addUserMoney/{userId}")
+    @ResponseBody
+    public int addUserMoney(@PathVariable("userId") String userId, @RequestParam("context") String context, @RequestParam("money") Double money) {
+        int row = this.userService.addUserMoney(userId, money);
+        if (row > 0) {
+            this.userService.addPayOrder(userId, context, money);
+        }
+        return row;
+    }
+
+    /**
+     * 用户的缴费历史
+     *
+     * @return
+     */
+    @GetMapping("/toUserCost")
+    public String toUserCost(@RequestParam("userId") String userId,
+                             @RequestParam(value = "startDate", required = false, defaultValue = "") String startDate,
+                             @RequestParam(value = "endDate", required = false, defaultValue = "") String endDate,
+                             @RequestParam(value = "currentPage", defaultValue = "1") Long currentPage,
+                             @RequestParam(value = "size", defaultValue = "8") Long size,
+                             Model model) {
+
+            model.addAttribute("startDate", startDate);
+            model.addAttribute("endDate", endDate);
+       /* Map<String,String> map = new HashMap<>();
+        if(!StringUtils.isEmpty(startDate) ){
+            map.put("startDate",startDate);
+        }
+        if (!StringUtils.isEmpty(endDate)) {
+            map.put("endDate", endDate);
+            model.addAttribute("searchDate", map);
+        }*/
+
+        UserVO<UserPay> userPayVO = this.userService.getUserCost(userId, startDate, endDate, currentPage, size);
+        model.addAttribute("userPayVO", userPayVO);
+        return "/user/userCost";
     }
 }

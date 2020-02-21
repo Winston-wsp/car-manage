@@ -17,7 +17,7 @@
         <association property="user" javaType="cn.edu.bdu.carmanage.entity.user.User">
             <id column="id" property="id"></id>
             <result column="username" property="username"></result>
-            <result column="nicheng" property="nicheng"></result>
+            <result column="phone_number" property="phoneNumber"></result>
         </association>
     </resultMap>
 
@@ -58,7 +58,7 @@
         car_carparks.park_number,
         car_carparks.STATUS,
         user_user.username,
-        user_user.nicheng
+        user_user.phone_number
         FROM
         car_parking
         INNER JOIN car_carparks ON car_parking.carparks_id = car_carparks.id

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <title>模态框 - 光年(Light Year Admin)后台管理系统模板</title>
+    <title>--紫竹小区(ZIZHU)--</title>
     <link rel="icon" href="favicon.ico" type="image/ico">
     <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
     <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
@@ -40,7 +40,7 @@
                                     <li><a
                                             th:href="@{'/car/getCarParksListToUser?userId='+${session.user.id}}"
                                             href="lyear_forms_elements.html">空闲车位查询</a></li>
-                                    <li><a target="right" th:href="@{'/car/getMyCarParking?userId='+${session.user.id}}"
+                                    <li><a   th:href="@{'/car/getMyCarParking?userId='+${session.user.id}}"
                                            href="lyear_forms_elements.html">我的车位</a></li>
                                 </ul>
                             </li>
@@ -49,19 +49,19 @@
                                 <ul class="nav nav-subnav">
                                     <li><a th:href="@{'/user/user/toUserChongzhi?userId='+${session.user.id}}"
                                            href="#">充值</a></li>
-                                    <li class="active"  ><a
-                                           th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
-                                    <li><a href="#">历史缴费</a></li>
+                                    <li class="active"><a
+                                            th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
+                                    <li><a th:href="@{'/user/user/toUserCost?userId='+${session.user.id}}">历史缴费</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item nav-item-has-subnav">
                                 <a href="javascript:void(0)"><i class="mdi mdi-account"></i> 账号资料</a>
                                 <ul class="nav nav-subnav">
                                     <li><a
-                                           th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}">个人信息</a>
+                                            th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}">个人信息</a>
                                     </li>
                                     <li><a
-                                           th:href="@{'/user/user/toUpdatePassword?userId='+${session.user.id}}">修改密码</a>
+                                            th:href="@{'/user/user/toUpdatePassword?userId='+${session.user.id}}">修改密码</a>
                                     </li>
                                 </ul>
                             </li>
@@ -263,7 +263,7 @@
                                             data-target="#myModal">
                                         点击办理月卡
                                     </button>
-                                    <div class="btn-lg">
+                                    <div class="btn-lg" th:text="'月卡费用：'+${carParkingCost.monthCost}">
                                         月卡费用：199
                                     </div>
 
@@ -273,6 +273,8 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <input id="monthCard" type="hidden" value="1">
+                                                    <input id="monthCost" type="hidden"
+                                                           th:value="${carParkingCost.monthCost}">
                                                     <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close"><span aria-hidden="true">&times;</span>
                                                     </button>
@@ -282,9 +284,11 @@
                                                     您确定办理月卡吗？
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        关闭
                                                     </button>
-                                                    <button onclick="btn_addCarCard(1)" class="btn btn-primary">确定办理</button>
+                                                    <button onclick="btn_addCarCard(1)" class="btn btn-primary">确定办理
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -295,7 +299,7 @@
                                             data-target="#myModal2">
                                         点击办理年卡
                                     </button>
-                                    <div class="btn-lg">
+                                    <div class="btn-lg" th:text="'年卡费用：'+${carParkingCost.yearCost}">
                                         年卡费用：2000
                                     </div>
                                     <div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
@@ -304,6 +308,8 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <input id="yearCard" type="hidden" value="2">
+                                                    <input id="yearCost" type="hidden"
+                                                           th:value="${carParkingCost.yearCost}">
                                                     <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close"><span aria-hidden="true">&times;</span>
                                                     </button>
@@ -313,9 +319,11 @@
                                                     您确定办理年卡吗？
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        关闭
                                                     </button>
-                                                    <button onclick="btn_addCarCard(2)" type="button" class="btn btn-primary">确定缴费
+                                                    <button onclick="btn_addCarCard(2)" type="button"
+                                                            class="btn btn-primary">确定缴费
                                                     </button>
                                                 </div>
                                             </div>
@@ -327,7 +335,8 @@
                                 <div class="card-body">
 
                                     <ul id="myTabs" class="nav nav-tabs" role="tablist">
-                                        <li class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab">月卡</a></li>
+                                        <li class="active"><a href="#home" id="home-tab" role="tab"
+                                                              data-toggle="tab">月卡</a></li>
                                         <li><a href="#profile" role="tab" id="profile-tab" data-toggle="tab">年卡</a></li>
                                     </ul>
                                     <div id="myTabContent" class="tab-content">
@@ -371,33 +380,47 @@
 
     var btn_addCarCard = function (type) {
         var id = $('#userId').val();
+        var money;
+        var context;
         var type = type;
+        money = $('#yearCost').val();
+        context = "年卡办理";
+        if (type == 1) {
+            money = $('#monthCost').val();
+            context = "月卡办理";
+        }
+
         lightyear.loading('show');
         setTimeout(function () {
 
             $.ajax({
                 type: "POST",
                 url: "http://localhost:8089/car/addCarCard/" + id,
-                data: {type: type},
+                data: {type: type, money: money, context: context},
                 success: function (data) {
 
-                   if(data > 0){
-                       lightyear.loading('hide');
-                       lightyear.notify('办理成功', 'success', 1000);
-                       setTimeout(function () {
-
-                           window.location.reload();
-                       }, 1000);
-                   }else {
-                       lightyear.loading('hide');
-                       lightyear.notify('当前有未出库的车辆，请结算后再进行办理', 'danger', 2000);
-                       setTimeout(function () {
-                           window.location.reload();
-                       }, 2000);
-                   }
+                    if (data > 0) {
+                        lightyear.loading('hide');
+                        lightyear.notify('办理成功', 'success', 1000);
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1000);
+                    } else if (data == -2) {
+                        lightyear.loading('hide');
+                        lightyear.notify('余额不足，请先充值', 'danger', 2000);
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        lightyear.loading('hide');
+                        lightyear.notify('当前有未出库的车辆，请结算后再进行办理', 'danger', 2000);
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    }
                 }
             })
-        },1e2);
+        }, 1e2);
 
 
     }

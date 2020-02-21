@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <title>个人信息 - 光年(Light Year Admin)后台管理系统模板</title>
+    <title>--紫竹小区(ZIZHU)--</title>
     <link rel="icon" href="favicon.ico" type="image/ico">
     <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
     <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
@@ -40,7 +40,7 @@
                                     <li><a
                                             th:href="@{'/car/getCarParksListToUser?userId='+${session.user.id}}"
                                             href="lyear_forms_elements.html">空闲车位查询</a></li>
-                                    <li><a  th:href="@{'/car/getMyCarParking?userId='+${session.user.id}}"
+                                    <li><a th:href="@{'/car/getMyCarParking?userId='+${session.user.id}}"
                                            href="lyear_forms_elements.html">我的车位</a></li>
                                 </ul>
                             </li>
@@ -51,17 +51,17 @@
                                            href="#">充值</a></li>
                                     <li><a target="right"
                                            th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
-                                    <li><a href="#">历史缴费</a></li>
+                                    <li><a th:href="@{'/user/user/toUserCost?userId='+${session.user.id}}" href="#">历史缴费</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item nav-item-has-subnav active open">
                                 <a href="javascript:void(0)"><i class="mdi mdi-account"></i> 账号资料</a>
                                 <ul class="nav nav-subnav">
                                     <li class="active"><a
-                                           th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}">个人信息</a>
+                                            th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}">个人信息</a>
                                     </li>
                                     <li><a
-                                           th:href="@{'/user/user/toUpdatePassword?userId='+${session.user.id}}">修改密码</a>
+                                            th:href="@{'/user/user/toUpdatePassword?userId='+${session.user.id}}">修改密码</a>
                                     </li>
                                 </ul>
                             </li>
@@ -270,6 +270,16 @@
                                             <label for="money">账户余额</label>
                                             <input type="text" class="form-control" name="money" id="money"
                                                    th:value="'￥'+${user.money}" disabled="disabled"/>
+                                        </div>
+                                        <div class="form-group" th:if="${carCard} != null">
+                                            <label for="cardNumber">会员卡号</label>
+                                            <input type="text" class="form-control" name="cardNumber" id="cardNumber"
+                                                   th:value="${carCard.cardNumber}" disabled="disabled"/>
+                                        </div>
+                                        <div class="form-group" th:if="${carCard} != null">
+                                            <label for="deadTime">有效日期至：</label>
+                                            <input type="text" class="form-control" name="deadTime" id="deadTime"
+                                                   th:value="${#dates.format(carCard.endTime,'yyyy年MM月dd日 HH时mm分ss秒')}" disabled="disabled"/>
                                         </div>
                                         <div class="form-group">
                                             <label for="nicheng">昵称</label>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <title>对话框 - 光年(Light Year Admin)后台管理系统模板</title>
+    <title>--紫竹小区(ZIZHU)--</title>
     <link rel="icon" href="favicon.ico" type="image/ico">
     <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
     <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
@@ -46,11 +46,11 @@
                         <li class="nav-item nav-item-has-subnav active open">
                             <a href="javascript:void(0)"><i class="mdi mdi-currency-jpy"></i> 充值缴费</a>
                             <ul class="nav nav-subnav">
-                                <li class="active" ><a th:href="@{'/user/user/toUserChongzhi?userId='+${user.id}}"
-                                       href="#">充值</a></li>
+                                <li class="active"><a th:href="@{'/user/user/toUserChongzhi?userId='+${user.id}}"
+                                                      href="#">充值</a></li>
                                 <li><a th:href="@{'/user/user/toUserCard?userId='+${user.id}}">办卡</a>
                                 </li>
-                                <li><a href="#">历史缴费</a></li>
+                                <li><a th:href="@{'/user/user/toUserCost?userId='+${session.user.id}}" href="#">历史缴费</a></li>
                             </ul>
                         </li>
                         <li class="nav-item nav-item-has-subnav">
@@ -59,7 +59,7 @@
                                 <li><a th:href="@{'/user/user/toUserInfo?userId='+${user.id}}">个人信息</a>
                                 </li>
                                 <li><a
-                                       th:href="@{'/user/user/toUpdatePassword?userId='+${user.id}}">修改密码</a></li>
+                                        th:href="@{'/user/user/toUpdatePassword?userId='+${user.id}}">修改密码</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -253,26 +253,37 @@
                         <div class="card">
                             <div class="card-header"><h4>请选择充值金额</h4></div>
                             <div class="card-body">
-
+                                <input id="userId" type="hidden" th:value="${session.user.id}">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <button class="btn btn-primary btn-block example-p-1">弹出框示例</button>
+                                        <button onclick="btn_chongzhi(100);"
+                                                class="btn btn-primary btn-block example-p-1">100
+                                        </button>
                                     </div>
                                     <div class="col-md-4">
-                                        <button class="btn btn-primary btn-block example-p-2">确认框示例</button>
+                                        <button onclick="btn_chongzhi(500);"
+                                                class="btn btn-primary btn-block example-p-1">500
+                                        </button>
                                     </div>
                                     <div class="col-md-4">
-                                        <button class="btn btn-primary btn-block example-p-3">对话框示例</button>
+                                        <button onclick="btn_chongzhi(1000);"
+                                                class="btn btn-primary btn-block example-p-1">1000
+                                        </button>
                                     </div>
+
                                     <br/><br/><br/>
                                     <div class="col-md-4">
-                                        <button class="btn btn-primary btn-block example-p-4">错误/红色 对话框</button>
+                                        <button onclick="btn_chongzhi(2000);"
+                                                class="btn btn-primary btn-block example-p-1">2000
+                                        </button>
                                     </div>
                                     <div class="col-md-4">
-                                        <button class="btn btn-primary btn-block example-p-5">成功/绿色 对话框</button>
+                                        <button onclick="btn_chongzhi(3000);"
+                                                class="btn btn-primary btn-block example-p-1">3000
+                                        </button>
                                     </div>
                                     <div class="col-md-4">
-                                        <button class="btn btn-primary btn-block example-p-6">警告/黄色 对话框</button>
+                                        <button class="btn btn-primary btn-block example-p-3">其他</button>
                                     </div>
 
                                 </div>
@@ -298,63 +309,48 @@
 <script type="text/javascript" th:src="@{/../../static/js/main.min.js}" src="js/main.min.js"></script>
 
 <script type="text/javascript">
-    $('.example-p-1').on('click', function () {
+    var btn_chongzhi = function (money) {
+        var userId = $("#userId").val();
+        var context = "账户充值";
         $.alert({
-            title: '嗨',
-            content: '这是对用户的简单提示框。 <br> 一些 <strong>HTML</strong> <em>内容</em>',
+            title: '',
+            content: '确定进行充值吗？',
             buttons: {
                 confirm: {
                     text: '确认',
                     btnClass: 'btn-primary',
                     action: function () {
-                        $.alert('你点击了确认!');
+                        $.ajax({
+                            type: "POST",
+                            url: "http://localhost:8089/user/user/addUserMoney/" + userId,
+                            data: {money: money, context: context},
+                            success: function (data) {
+                                if (data > 0) {
+                                    alert("充值成功");
+                                } else {
+                                    alert("充值失败");
+                                }
+                            }
+                        })
                     }
                 },
-                cancel: {
-                    text: '取消',
-                    action: function () {
-                        $.alert('你点击了取消!');
-                    }
-                }
+                // cancel: {
+                //     text: '取消',
+                //     action: function () {
+                //         $.alert('你点击了取消!');
+                //     }
+                // }
             }
         });
-    });
-    $('.example-p-2').on('click', function () {
-        $.confirm({
-            title: '对话框',
-            content: '一些内容...',
-            buttons: {
-                confirm: {
-                    text: '确认',
-                    action: function () {
-                        $.alert('确认的!');
-                    }
-                },
-                cancel: {
-                    text: '关闭',
-                    action: function () {
-                        $.alert('取消的!');
-                    }
-                },
-                somethingElse: {
-                    text: '其他',
-                    btnClass: 'btn-blue',
-                    keys: ['enter', 'shift'],
-                    action: function () {
-                        $.alert('其他的选择？');
-                    }
-                }
-            }
-        });
-    });
+    }
     $('.example-p-3').on('click', function () {
         $.confirm({
-            title: '提示',
+            title: '充值',
             content: '' +
                 '<form action="" class="formName">' +
                 '<div class="form-group">' +
-                '<label>请输入您的姓名</label>' +
-                '<input type="text" placeholder="姓名" class="name form-control" required />' +
+                '<label>请输入您要充值的金额</label>' +
+                '<input type="text" placeholder="金额" class="money form-control" required />' +
                 '</div>' +
                 '</form>',
             buttons: {
@@ -362,16 +358,29 @@
                     text: '提交',
                     btnClass: 'btn-blue',
                     action: function () {
-                        var name = this.$content.find('.name').val();
-                        if (!name) {
-                            $.alert('请您输入您的姓名');
+                        var userId = $("#userId").val();
+                        var context = "账户充值";
+                        var money = this.$content.find('.money').val();
+                        if (!money) {
+                            $.alert('请您输入要充值的金额');
                             return false;
+                        } else if (!(/(^[1-9]\d*$)/.test(money))) {
+                            $.alert('只能为正整数');
                         }
-                        $.alert('您的姓名是： ' + name);
+                        $.ajax({
+                            type: "POST",
+                            url: "http://localhost:8089/user/user/addUserMoney/" + userId,
+                            data: {money: money, context: context},
+                            success: function (data) {
+                                if (data > 0) {
+                                    alert("充值成功");
+                                } else {
+                                    alert("充值失败");
+                                }
+                            }
+                        })
+
                     }
-                },
-                cancel: {
-                    text: '取消'
                 },
             },
             onContentReady: function () {
@@ -383,58 +392,7 @@
             }
         });
     });
-    $('.example-p-4').on('click', function () {
-        $.confirm({
-            title: '错误提示',
-            content: '笑江湖浪迹十年游，空负少年头。对铜驼巷陌，吟情渺渺，心事悠悠！酒冷诗残梦断，南国正清秋。',
-            type: 'red',
-            typeAnimated: true,
-            buttons: {
-                tryAgain: {
-                    text: '重试',
-                    btnClass: 'btn-red',
-                    action: function () {
-                    }
-                },
-                close: {
-                    text: '关闭'
-                }
-            }
-        });
-    });
-    $('.example-p-5').on('click', function () {
-        $.confirm({
-            title: '成功',
-            content: '难消受灯昏罗帐，怅昙花一现恨难休！飘零惯，金戈铁马，拼葬荒丘！',
-            type: 'green',
-            buttons: {
-                omg: {
-                    text: '谢谢',
-                    btnClass: 'btn-green',
-                },
-                close: {
-                    text: '关闭',
-                }
-            }
-        });
-    });
-    $('.example-p-6').on('click', function () {
-        $.confirm({
-            title: '警告',
-            content: '把剑凄然望，无处招归舟。明日天涯路远，问谁留楚佩，弄影中洲？数英雄儿女，俯仰古今愁。',
-            type: 'orange',
-            typeAnimated: false,
-            buttons: {
-                omg: {
-                    text: '重试',
-                    btnClass: 'btn-orange',
-                },
-                close: {
-                    text: '关闭',
-                }
-            }
-        });
-    });
+
 </script>
 </body>
 </html>

@@ -1,16 +1,26 @@
 package cn.edu.bdu.carmanage.service.cms.user;
 
 import cn.edu.bdu.carmanage.entity.admin.AdminUser;
+import cn.edu.bdu.carmanage.entity.car.CarCard;
+import cn.edu.bdu.carmanage.entity.car.CarParking;
+import cn.edu.bdu.carmanage.entity.car.CarParks;
 import cn.edu.bdu.carmanage.entity.user.Announcement;
 import cn.edu.bdu.carmanage.entity.user.User;
+import cn.edu.bdu.carmanage.entity.user.UserPay;
 import cn.edu.bdu.carmanage.entity.user.UserVO;
 import cn.edu.bdu.carmanage.mapper.AnnouncementMapper;
+import cn.edu.bdu.carmanage.mapper.CarCardMapper;
 import cn.edu.bdu.carmanage.mapper.UserMapper;
+import cn.edu.bdu.carmanage.mapper.UserPayMapper;
+import cn.edu.bdu.carmanage.utils.CardNumberUtils;
+import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -21,12 +31,18 @@ import java.util.List;
  * @Date 2020/1/10
  **/
 @Service
+@Transactional
 public class UserService {
 
     @Autowired
     private UserMapper userMapper;
     @Autowired
     private AnnouncementMapper announcementMapper;
+    @Autowired
+    private UserPayMapper userPayMapper;
+    @Autowired
+    private CarCardMapper carCardMapper;
+
 
     /**
      * 添加新的普通用户
@@ -50,10 +66,11 @@ public class UserService {
 
     /**
      * 根据用户名查找用户
+     *
      * @param username
      * @return
      */
-    public User getUserByUsername(String username){
+    public User getUserByUsername(String username) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         User user = this.userMapper.selectOne(queryWrapper);
@@ -61,10 +78,12 @@ public class UserService {
     }
 
     public int updateUser(User user) {
-        if(user.getPassword() == null || "".equals(user.getPassword())){{
-            User user1 = this.userMapper.selectById(user.getId());
-            user.setPassword(user1.getPassword());
-        }}
+        if (user.getPassword() == null || "".equals(user.getPassword())) {
+            {
+                User user1 = this.userMapper.selectById(user.getId());
+                user.setPassword(user1.getPassword());
+            }
+        }
         int row = userMapper.updateById(user);
         return row;
     }
@@ -172,10 +191,92 @@ public class UserService {
     public int updateUserById(String id, String password, String newPassword) {
         int row = -1;
         User user = this.userMapper.selectById(id);
-        if(user.getPassword().equals(password)){
+        if (user.getPassword().equals(password)) {
             user.setPassword(newPassword);
             row = this.userMapper.updateById(user);
         }
         return row;
+    }
+
+    // 充值
+    public int addUserMoney(String userId, Double money) {
+        User user = this.userMapper.selectById(userId);
+        user.setMoney(user.getMoney() + money);
+        int row = this.userMapper.updateById(user);
+        return row;
+    }
+
+    // 缴费的时候生成的订单
+    public void addPayOrder(String userId, String context, Double money) {
+        UserPay userPay = new UserPay();
+        userPay.setUserId(userId);
+        userPay.setPay(money);
+        userPay.setOrderNumber("JFDD"+ CardNumberUtils.getCardNumber());
+        userPay.setTime(DateUtil.date());
+        userPay.setContext(context);
+
+        this.userPayMapper.insert(userPay);
+    }
+
+    // 用户账户余额消费
+    public int userConsume(String userId,Double money){
+        User user = this.userMapper.selectById(userId);
+        // 如果账户余额小于需要消费的金额则返回 -2
+        if(user.getMoney() - money < 0){
+            return -2;
+        }
+        user.setMoney(user.getMoney() - money);
+        int row = this.userMapper.updateById(user);
+        return row;
+    }
+
+    public CarCard getCarCardInfo(String userId) {
+        QueryWrapper<CarCard> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        CarCard carCard = this.carCardMapper.selectOne(queryWrapper);
+        if(carCard != null){
+            if(DateUtil.isExpired(carCard.getStartTime(),carCard.getEndTime(),DateUtil.date())){
+                // 如果办理的会员卡过期的话
+                return null;
+            }
+            return carCard;
+        }
+        return carCard;
+    }
+
+    public UserVO<UserPay> getUserCost(String userId, String start, String end, Long currentPage, Long size) {
+            Date startDate = null;
+        Date endDate = null;
+        if(!StringUtils.isEmpty(start)){
+            startDate = DateUtil.parse(start);
+        }if(!StringUtils.isEmpty(end)){
+            endDate = DateUtil.parse(end);
+        }
+        IPage<UserPay> iPage = new Page<>(currentPage, size);
+        QueryWrapper<UserPay> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        if(startDate != null &&  endDate != null){
+            // 起始日期和结束日期都不为空
+            queryWrapper.ge("time",startDate);
+            queryWrapper.le("time",DateUtil.offsetDay(endDate,1));
+        }
+        if(startDate != null && endDate == null){
+            // 起始日期不为空，结束日期为空
+            queryWrapper.ge("time",startDate);
+        }
+        if (startDate == null && endDate != null) {
+            // 起始日期为空，结束日期不为空
+            queryWrapper.le("time", DateUtil.offsetDay(endDate,1));
+        }
+        queryWrapper.orderByAsc("time");
+        IPage<UserPay> page = userPayMapper.selectPage(iPage, queryWrapper);
+        UserVO<UserPay> userPayVO = new UserVO<>();
+        userPayVO.setPages(page.getPages());
+        userPayVO.setCurrent(page.getCurrent());
+        userPayVO.setSize(page.getSize());
+        userPayVO.setTotal(page.getTotal());
+        userPayVO.setList(page.getRecords());
+
+        return userPayVO;
     }
 }

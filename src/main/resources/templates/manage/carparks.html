@@ -102,7 +102,7 @@
                                         th:each="page : ${#numbers.sequence(1,carParksVO.pages)}">
                                         <a
                                                 th:text="${page}"
-                                                th:href="@{http://localhost:8089/car/getCarParksList?currentPage=}+${page}">1</a>
+                                                th:href="@{http://localhost:8089/car/getCarParksList?currentPage=}+${page}+'&area='+${area}+'&parkNumber='+${parkNumber}">1</a>
                                     </li>
                                     <li>
                                         <a href="#" aria-label="Next">
@@ -136,7 +136,7 @@
                                                     <label for="area" class="am-u-sm-3 am-form-label">
                                                         区域 / Area</label>
                                                     <div class="am-u-sm-9">
-                                                        <input type="text" id="area" required
+                                                        <input type="text" id="areaNew" required
                                                                placeholder="区域 / Area" name="area">
                                                     </div>
                                                 </div>
@@ -144,53 +144,10 @@
                                                     <label for="parkNumber" class="am-u-sm-3 am-form-label">
                                                         车位号 / Park-Number </label>
                                                     <div class="am-u-sm-9">
-                                                        <input type="text" id="parkNumber" required
+                                                        <input type="text" id="parkNumberNew" required
                                                                placeholder="车位号 / Park-Number" name="parkNumber">
                                                     </div>
                                                 </div>
-                                                <!-- <div class="am-form-group">
-                                                     <label for="user-name" class="am-u-sm-3 am-form-label">
-                                                         性别 / sex </label>
-                                                     <div class="am-u-sm-9" style="line-height: 30px;">
-                                                         <input type="radio" id="man" name="sex" value="1" ${user.sex==1?
-                                                         "checked=checked ":""}/>
-                                                         <label for="man">
-                                                             男 </label> &nbsp;&nbsp;&nbsp;&nbsp; <input type="radio"
-                                                                                                        id="woman"
-                                                                                                        name="sex"
-                                                                                                        value="0"
-                                                                                                        ${user.sex==0?"checked=checke":""}/>
-                                                         <label for="woman"> 女 </label> <br/>
-                                                         <small>性别...</small>
-                                                     </div>
-                                                 </div>
-                                                 <div class="am-form-group">
-                                                     <label for="user-email" class="am-u-sm-3 am-form-label">
-                                                         联系电话 / phone </label>
-                                                     <div class="am-u-sm-9">
-                                                         <input type="tel" id="user-phone" required
-                                                                placeholder="请输入联系电话" name="phone"/>
-                                                         <small>联系电话...</small>
-                                                     </div>
-                                                 </div>
-                                                 <div class="am-form-group">
-                                                     <label for="user-email" class="am-u-sm-3 am-form-label">
-                                                         籍贯 / place </label>
-                                                     <div class="am-u-sm-9">
-                                                         <input type="text" id="user-email" required placeholder="请输入籍贯"
-                                                                name="place"/>
-                                                         <small>籍贯...</small>
-                                                     </div>
-                                                 </div>
-                                                 <div class="am-form-group">
-                                                     <label for="user-email" class="am-u-sm-3 am-form-label">
-                                                         电子邮件 / Email </label>
-                                                     <div class="am-u-sm-9">
-                                                         <input type="email" id="user-email" required
-                                                                placeholder="输入你的电子邮件 / Email" name="email"/>
-                                                         <small>邮箱你懂得...</small>
-                                                     </div>
-                                                 </div>-->
 
 
                                                 <div class="am-form-group">
@@ -310,8 +267,8 @@
         }
         var btn_save = function () {
             // var pid = $("#RawMaterialsTypePageId  option:selected").val();
-            var area = $("#area").val();
-            var parkNumber = $("#parkNumber").val();
+            var area = $("#areaNew").val();
+            var parkNumber = $("#parkNumberNew").val();
             var remark = $("#remark").val();
             $.ajax({
                 type: "post",
@@ -336,7 +293,6 @@
                     }
                 }
             });
-            alert(t);
         }
 
         var btn_edit = function (id) {
@@ -363,14 +319,13 @@
                             if (data > 0) {
                                 $.jq_Alert({
                                     message: "删除成功",
-                                    btnOkClick: function () {
-                                        page1();
-                                    }
+
                                 });
-                                alert("删除成功");
-                                window.location.reload();
-                            } else {
-                                alert("删除失败");
+                            } else if(data == -2) {
+                                $.jq_Alert({
+                                    message: "该车位有车辆，无法删除!",
+
+                                });
                             }
                         }
                     });

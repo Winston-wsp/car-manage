@@ -2,13 +2,17 @@ package cn.edu.bdu.carmanage.controller.car;
 
 import cn.edu.bdu.carmanage.entity.car.CarParking;
 import cn.edu.bdu.carmanage.entity.car.CarParks;
+import cn.edu.bdu.carmanage.entity.user.User;
+import cn.edu.bdu.carmanage.entity.user.UserPay;
 import cn.edu.bdu.carmanage.entity.user.UserVO;
 import cn.edu.bdu.carmanage.service.cms.car.CarParksService;
+import cn.edu.bdu.carmanage.service.cms.user.UserService;
 import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -26,6 +30,8 @@ public class CarParksController {
 
     @Autowired
     private CarParksService carParksService;
+    @Autowired
+    private UserService userService;
 
 
     @PostMapping("/addCarParks")
@@ -37,16 +43,21 @@ public class CarParksController {
 
     @GetMapping("/getCarParksList")
     public String getCarParksList(@RequestParam(value = "area", required = false, defaultValue = "") String area, @RequestParam(value = "parkNumber", required = false, defaultValue = "") String parkNumber, @RequestParam(value = "currentPage", defaultValue = "1") Long currentPage, @RequestParam(value = "size", defaultValue = "8") Long size, Model model) {
+        model.addAttribute("area", area);
+        model.addAttribute("parkNumber", parkNumber);
         UserVO<CarParks> carParksVO = carParksService.getCarParksList(area, parkNumber, currentPage, size);
         model.addAttribute("carParksVO", carParksVO);
         return "/manage/carparks";
     }
 
     @GetMapping("/getCarParksListToUser")
-    public String getCarParksListToUser(@RequestParam(value = "area", required = false, defaultValue = "") String area, @RequestParam(value = "parkNumber", required = false, defaultValue = "") String parkNumber, @RequestParam("userId") String userId, @RequestParam(value = "currentPage", defaultValue = "1") Long currentPage, @RequestParam(value = "size", defaultValue = "8") Long size, Model model) {
+    public String getCarParksListToUser(@RequestParam(value = "area", required = false, defaultValue = "") String area, @RequestParam(value = "parkNumber", required = false, defaultValue = "") String parkNumber, @RequestParam(value = "currentPage", defaultValue = "1") Long currentPage, @RequestParam(value = "size", defaultValue = "8") Long size, Model model) {
+
+        model.addAttribute("area", area);
+        model.addAttribute("parkNumber", parkNumber);
         UserVO<CarParks> carParksVO = carParksService.getCarParksListToUser(area, parkNumber, currentPage, size);
         model.addAttribute("carParksVO", carParksVO);
-        model.addAttribute("userId", userId);
+//        model.addAttribute("userId", userId);
         return "/user/carparks";
     }
 
@@ -110,7 +121,7 @@ public class CarParksController {
     }
 
     /**
-     * 管理员获取在场车辆的信息
+     * 管理员获取历史车辆的信息
      *
      * @param area
      * @param parkNumber
@@ -126,12 +137,11 @@ public class CarParksController {
     public String getCarParkings(@RequestParam(value = "area", required = false, defaultValue = "") String area,
                                  @RequestParam(value = "parkNumber", required = false, defaultValue = "") String parkNumber,
                                  @RequestParam(value = "username", required = false, defaultValue = "") String username,
-                                 @RequestParam(value = "nicheng", required = false, defaultValue = "") String nicheng,
                                  @RequestParam(value = "userId", required = false) String userId,
                                  @RequestParam(value = "currentPage", defaultValue = "1") Long currentPage,
                                  @RequestParam(value = "size", defaultValue = "8") Long size,
                                  Model model) {
-        UserVO<CarParking> carParkingVO = this.carParksService.getCarParkings(area, parkNumber, username, nicheng, currentPage, size);
+        UserVO<CarParking> carParkingVO = this.carParksService.getCarParkings(area, parkNumber, username, currentPage, size);
         model.addAttribute("carParkingVO", carParkingVO);
         return "/manage/carparking";
     }
@@ -145,21 +155,43 @@ public class CarParksController {
 
     /**
      * 根据id，更新出库时间
+     *
      * @param id
      * @return
      */
     @PutMapping("/updateCarParkingById/{carparkingId}")
     @ResponseBody
-    public int updateCarParkingById(@PathVariable("carparkingId") String id,@RequestParam("outTime") Date outTime){
+    public int updateCarParkingById(@PathVariable("carparkingId") String id, @RequestParam("outTime") Date outTime, @RequestParam("money") Double money, @RequestParam("context") String context) {
+        CarParking carParking = this.carParksService.getCarParkingById(id);
+        if (money > 0) {
+            int row = this.userService.userConsume(carParking.getUserId(), money);
+            if (row < 0) {
+                return row;
+            }
+        }
+        int result = this.carParksService.updateCarParkingById(id, outTime, money, context);
 
-        int row = this.carParksService.updateCarParkingById(id, outTime);
-        return row;
+        // 生成缴费账单
+        if (result > 0) {
+            result = this.userService.userConsume(carParking.getUserId(), money);
+            if (result > 0 && money > 0) {
+                this.userService.addPayOrder(carParking.getUserId(), context, -money);
+            }
+        }
+        return result;
     }
 
     @PostMapping("/addCarCard/{userId}")
     @ResponseBody
-    public int addCarCard(@PathVariable("userId") String userId, @RequestParam("type") int type) {
+    public int addCarCard(@PathVariable("userId") String userId, @RequestParam("type") int type, @RequestParam("money") Double money, @RequestParam("context") String context) {
         int row = this.carParksService.addCarCard(userId, type);
+        if (row > 0) {
+            User user = this.userService.getUserById(userId);
+            row = this.userService.userConsume(userId, money);
+            if (row > 0) {
+                this.userService.addPayOrder(userId, context, -money);
+            }
+        }
         return row;
     }
 

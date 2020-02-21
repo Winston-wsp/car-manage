@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <title>文档列表 - 光年(Light Year Admin)后台管理系统模板</title>
+    <title>--紫竹小区(ZIZHU)--</title>
     <link rel="icon" href="favicon.ico" type="image/ico">
     <meta name="keywords" content="LightYear,光年,后台模板,后台管理系统,光年HTML模板">
     <meta name="description" content="LightYear是一个基于Bootstrap v3.3.7的后台管理系统的HTML模板。">
@@ -50,7 +50,7 @@
                                            href="#">充值</a></li>
                                     <li><a
                                            th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
-                                    <li><a href="#">历史缴费</a></li>
+                                    <li><a th:href="@{'/user/user/toUserCost?userId='+${session.user.id}}" href="#">历史缴费</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item nav-item-has-subnav">
@@ -491,12 +491,17 @@
     // 出库缴费
     var car_out = function () {
         var carparkingId = $("#carparkingId").val();
+        // 出库时间
         var outTime = $("#outDate").val();
+        // 应该缴纳的费用
+        var money = $("#cost").val();
+        // 缴费备注
+        var context = "停车缴费";
         lightyear.loading('show');
         $.ajax({
             type: "PUT",
             url: "http://localhost:8089/car/updateCarParkingById/" + carparkingId,
-            data: {outTime: outTime},
+            data: {outTime: outTime,money:money,context:context},
             success: function (data) {
                 if (data > 0) {
                     lightyear.loading('hide');
@@ -504,6 +509,12 @@
                     setTimeout(function () {
                         window.location.reload();
                     }, 1000);
+                }else if(data == -2){
+                    lightyear.loading('hide');
+                    lightyear.notify('余额不足，请充值后缴费', 'danger', 2000);
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
                 } else {
                     lightyear.loading('hide');
                     lightyear.notify('出库失败，请重试', 'danger', 2000);

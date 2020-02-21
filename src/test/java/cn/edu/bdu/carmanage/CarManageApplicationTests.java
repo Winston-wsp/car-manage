@@ -1,10 +1,7 @@
 package cn.edu.bdu.carmanage;
 
-import cn.edu.bdu.carmanage.Enum.UsetTypeEnum;
 import cn.edu.bdu.carmanage.entity.car.CarParking;
 import cn.edu.bdu.carmanage.mapper.CarParkingMapper;
-import cn.edu.bdu.carmanage.service.cms.car.CarParksService;
-import cn.edu.bdu.carmanage.utils.CardNumberUtils;
 import cn.edu.bdu.carmanage.utils.Md5;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +32,7 @@ class CarManageApplicationTests {
             System.out.println(carParking );
         });
     }
-    @Test
-    public void test03()
-    {
-        System.out.println(UsetTypeEnum.COMMON.getValue());
-        for (int i = 0; i < 20; i++) {
-            System.out.println(CardNumberUtils.getCardNumber());
-        }
-    }
+
     @Test
     public void test04()
     {

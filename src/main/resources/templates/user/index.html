@@ -36,7 +36,7 @@
                             <a href="javascript:void(0)"><i class="mdi mdi-access-point-network"></i> 车位</a>
                             <ul class="nav nav-subnav">
                                 <li><a
-                                        th:href="@{'/car/getCarParksListToUser?userId='+${session.user.id}}"
+                                        th:href="@{/car/getCarParksListToUser}"
                                         href="lyear_forms_elements.html">空闲车位查询</a></li>
                                 <li><a th:href="@{'/car/getMyCarParking?userId='+${session.user.id}}"
                                        href="lyear_forms_elements.html">我的车位</a></li>
@@ -49,7 +49,7 @@
                                        href="#">充值</a></li>
                                 <li><a
                                         th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
-                                <li><a href="#">历史缴费</a></li>
+                                <li><a th:href="@{'/user/user/toUserCost?userId='+${session.user.id}}" href="#">历史缴费</a></li>
                             </ul>
                         </li>
                         <li class="nav-item nav-item-has-subnav">
