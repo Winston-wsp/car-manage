@@ -66,6 +66,7 @@
                                     <th>账户余额</th>
                                     <th>昵称</th>
                                     <th>手机号</th>
+                                    <th>充值</th>
                                     <th>修改</th>
                                     <th>删除</th>
                                 </tr>
@@ -78,6 +79,12 @@
                                     <td th:text="'￥'+${user.money}">1</td>
                                     <td th:text="${user.nicheng}">菲菲菲非常美丽的巨兔12138</td>
                                     <td th:text="${user.phoneNumber}">138177322211</td>
+                                    <td class="">
+                                        <!--                                        <button onclick="btn_edit(1)"><i class="icon-edit bigger-120"></i>编辑</button>-->
+                                        <button th:onclick="btn_getUserId([[${user.id}]]);" type="button" data-toggle="modal"
+                                                data-target="#chongzhiModal"><i class="icon-align-center bigger-120"></i>充值
+                                        </button>
+                                    </td>
                                     <td class="edit">
                                         <!--                                        <button onclick="btn_edit(1)"><i class="icon-edit bigger-120"></i>编辑</button>-->
                                         <button th:onclick="btn_edit([[${user.id}]]);" type="button" data-toggle="modal"
@@ -236,6 +243,31 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="chongzhiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">账户充值</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="inputUserId">
+                        <div class="form-group">
+                            <label for="inputMoney">充值金额</label>
+                            <input  type="text" class="form-control" id="inputMoney"
+                                   placeholder="请输入充值金额">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button onclick="btn_chongzhi();" type="button" class="btn btn-primary">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
@@ -253,6 +285,39 @@
             $(".tabs").slide({trigger: "click"});
 
         });
+
+        // 给id赋值
+        var btn_getUserId = function (id) {
+            $("#inputUserId").val(id);
+        }
+        // 充值
+        var btn_chongzhi = function () {
+            var userId = $("#inputUserId").val();
+            var context = "账户充值";
+            var money = $("#inputMoney").val();
+            if (!money) {
+                alert('请您输入要充值的金额');
+                return false;
+            } else if (!(/(^[1-9]\d*$)/.test(money))) {
+                alert('只能为正整数');
+                return false;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8089/user/user/addUserMoney/" + userId,
+                data: {money: money, context: context},
+                success: function (data) {
+                    if (data > 0) {
+                        alert("充值成功");
+                        window.location.reload();
+                    } else {
+                        alert("充值失败");
+                        window.location.reload();
+                    }
+                }
+            })
+        }
 
         // 确认修改
         var btn_update = function () {

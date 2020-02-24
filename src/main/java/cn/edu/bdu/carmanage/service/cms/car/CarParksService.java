@@ -6,10 +6,7 @@ import cn.edu.bdu.carmanage.entity.car.CarParkingCost;
 import cn.edu.bdu.carmanage.entity.car.CarParks;
 import cn.edu.bdu.carmanage.entity.user.User;
 import cn.edu.bdu.carmanage.entity.user.UserVO;
-import cn.edu.bdu.carmanage.mapper.CarCardMapper;
-import cn.edu.bdu.carmanage.mapper.CarParkingCostMapper;
-import cn.edu.bdu.carmanage.mapper.CarParkingMapper;
-import cn.edu.bdu.carmanage.mapper.CarParksMapper;
+import cn.edu.bdu.carmanage.mapper.*;
 import cn.edu.bdu.carmanage.utils.CardNumberUtils;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
@@ -19,6 +16,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -38,6 +36,8 @@ public class CarParksService {
     private CarCardMapper carCardMapper;
     @Autowired
     private CarParkingCostMapper carParkingCostMapper;
+    @Autowired
+    private UserMapper userMapper;
 
 
     public int addCarParks(CarParks carParks) {
@@ -101,7 +101,7 @@ public class CarParksService {
 
     public int deleteCarParks(String id) {
         CarParks carParks = this.carParksMapper.selectById(id);
-        if(carParks.getStatus() == '0'){
+        if (carParks.getStatus() == '0') {
             return -2;
         }
         int row = this.carParksMapper.deleteById(id);
@@ -130,23 +130,46 @@ public class CarParksService {
         return carParkingList;
     }
 
+    public UserVO<CarParking> getNotCarParkings(String area, String parkNumber, String username, Long currentPage, Long size) {
+
+        UserVO<CarParking> carParkingVO = this.getCarParkingVO(area, parkNumber, username, currentPage, size, false);
+
+        return carParkingVO;
+    }
+
     public UserVO<CarParking> getCarParkings(String area, String parkNumber, String username, Long currentPage, Long size) {
-        QueryWrapper<CarParking> queryWrapper = new QueryWrapper<>();
-//        Map<String, String> map = new HashMap<>();
-        if (!"".equals(area) && area != null) {
-//            map.put("area", area);
+
+        UserVO<CarParking> carParkingVO = this.getCarParkingVO(area, parkNumber, username, currentPage, size, true);
+
+        return carParkingVO;
+    }
+
+    /*
+    查找在场车辆和历史车辆中的共同方法
+     */
+    public UserVO<CarParking> getCarParkingVO(String area, String parkNumber, String username, Long currentPage, Long size, boolean flag) {
+        QueryWrapper<CarParking> queryWrapper =
+                new QueryWrapper<>();
+        if (!StringUtils.isEmpty(area)) {
+
             queryWrapper.eq("car_carparks.area", area);
 
         }
-        if (!"".equals(parkNumber) && parkNumber != null) {
-//            map.put("parkNumber", parkNumber);
+        if (!StringUtils.isEmpty(parkNumber)) {
+
             queryWrapper.eq("car_carparks.park_number", parkNumber);
         }
-        if (!"".equals(username) && username != null) {
-//            map.put("username", username);
+        if (!StringUtils.isEmpty(username)) {
+
             queryWrapper.eq("user_user.username", username);
         }
 
+        if(flag == true){
+            queryWrapper.isNull("end_time");
+        }else {
+            queryWrapper.isNotNull("end_time");
+        }
+        queryWrapper.orderByAsc("car_parking.start_time");
         Page<CarParking> page = new Page<>(currentPage, size);
         IPage<CarParking> parkingIPage = this.carParkingMapper.getCarParkings(page, queryWrapper);
         UserVO<CarParking> carParkingVO = new UserVO<>();
@@ -155,8 +178,10 @@ public class CarParksService {
         carParkingVO.setSize(parkingIPage.getSize());
         carParkingVO.setPages(parkingIPage.getPages());
         carParkingVO.setList(parkingIPage.getRecords());
+
         return carParkingVO;
     }
+
 
     public CarParking getCarParkingById(String id) {
         CarParking carParking = this.carParkingMapper.selectById(id);
@@ -313,5 +338,44 @@ public class CarParksService {
         CarParkingCost carParkingCost = carParkingCosts.get(0);
 
         return carParkingCost;
+    }
+
+    /**
+     * 管理员添加入库车辆信息
+     * @param carParksId
+     * @param username
+     * @param plateNumber
+     * @return
+     */
+    public int addCarParking(String carParksId, String username, String plateNumber) {
+
+        // 首先确定用户是否存在
+        User user = this.userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
+        if(user == null){
+            return -2;
+        }
+        CarParking carParking = new CarParking();
+        carParking.setUserId(user.getId());
+        carParking.setCarparksId(carParksId);
+        carParking.setPlateNumber(plateNumber);
+        carParking.setStartTime(new Date());
+
+        int row = this.carParkingMapper.insert(carParking);
+        CarParks carParks = this.carParksMapper.selectById(carParksId);
+        if (carParks != null) {
+            carParks.setStatus('0');
+            row = this.carParksMapper.updateById(carParks);
+        }
+        return row;
+    }
+
+    /**
+     * 设定停车费用
+     * @param carParkingCost
+     * @return
+     */
+    public int setCarParkingCost(CarParkingCost carParkingCost) {
+        int row = this.carParkingCostMapper.updateById(carParkingCost);
+        return row;
     }
 }

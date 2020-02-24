@@ -36,11 +36,11 @@
                             <li class="nav-item nav-item-has-subnav active open">
                                 <a href="javascript:void(0)"><i class="mdi mdi-access-point-network"></i> 车位</a>
                                 <ul class="nav nav-subnav">
-                                    <li ><a
+                                    <li><a
                                             th:href="@{'/car/getCarParksListToUser?userId='+${session.user.id}}"
                                             href="lyear_forms_elements.html">空闲车位查询</a></li>
                                     <li class="active"><a th:href="@{'/car/getMyCarParking?userId='+${session.user.id}}"
-                                           href="lyear_forms_elements.html">我的车位</a></li>
+                                                          href="lyear_forms_elements.html">我的车位</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item nav-item-has-subnav">
@@ -49,18 +49,19 @@
                                     <li><a th:href="@{'/user/user/toUserChongzhi?userId='+${session.user.id}}"
                                            href="#">充值</a></li>
                                     <li><a
-                                           th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
-                                    <li><a th:href="@{'/user/user/toUserCost?userId='+${session.user.id}}" href="#">历史缴费</a></li>
+                                            th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
+                                    <li><a th:href="@{'/user/user/toUserCost?userId='+${session.user.id}}"
+                                           href="#">历史缴费</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item nav-item-has-subnav">
                                 <a href="javascript:void(0)"><i class="mdi mdi-account"></i> 账号资料</a>
                                 <ul class="nav nav-subnav">
                                     <li><a
-                                           th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}">个人信息</a>
+                                            th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}">个人信息</a>
                                     </li>
                                     <li><a
-                                           th:href="@{'/user/user/toUpdatePassword?userId='+${session.user.id}}">修改密码</a>
+                                            th:href="@{'/user/user/toUpdatePassword?userId='+${session.user.id}}">修改密码</a>
                                     </li>
                                 </ul>
                             </li>
@@ -275,12 +276,16 @@
                                                     <td th:text="${carParking.carParks.area}">1</td>
                                                     <td th:text="${carParking.carParks.parkNumber}">第01章 天涯思君不可忘</td>
                                                     <td th:text="${carParking.plateNumber}">《倚天屠龙记》</td>
-                                                    <td th:text="${#dates.format(carParking.startTime,'yyyy年MM月dd日 HH:mm:ss')}">金庸</td>
+                                                    <td th:text="${#dates.format(carParking.startTime,'yyyy年MM月dd日 HH:mm:ss')}">
+                                                        金庸
+                                                    </td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <input type="hidden" id="carparkingId" th:value="${carParking.id}">
+                                                            <input type="hidden" id="carparkingId"
+                                                                   th:value="${carParking.id}">
                                                             <button th:onclick="btn_chuku([[${carParking.id}]]);"
-                                                                    class="btn btn-xs btn-default" title="出库" data-toggle="modal"
+                                                                    class="btn btn-xs btn-default" title="出库"
+                                                                    data-toggle="modal"
                                                                     data-target="#myModal"
                                                             ><i
                                                                     class="mdi mdi-account-check"></i>出库
@@ -291,48 +296,60 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                                             aria-labelledby="myModalLabel">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <input type="hidden" id="outDate">
                                                     <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
                                                             <span aria-hidden="true">&times;</span></button>
                                                         <h4 class="modal-title" id="myModalLabel">确认出库</h4>
                                                     </div>
                                                     <div class="modal-body">
                                                         <label for="plateNumber">车牌号</label>
-                                                        <input readonly="readonly" id="plateNumber" class="form-control" type="text"
+                                                        <input readonly="readonly" id="plateNumber" class="form-control"
+                                                               type="text"
                                                                name="plateNumber">
                                                     </div>
                                                     <div class="modal-body">
                                                         <label for="inTime">入库时间</label>
-                                                        <input readonly="readonly" id="inTime" class="form-control" type="text"
+                                                        <input readonly="readonly" id="inTime" class="form-control"
+                                                               type="text"
                                                                name="inTime">
                                                     </div>
                                                     <div class="modal-body">
                                                         <label for="outTime">出库时间</label>
-                                                        <input readonly="readonly" id="outTime" class="form-control" type="text"
+                                                        <input readonly="readonly" id="outTime" class="form-control"
+                                                               type="text"
                                                                name="outTime">
                                                     </div>
                                                     <div class="modal-body">
                                                         <label for="totalTime">停车时长</label>
-                                                        <input readonly="readonly" id="totalTime" class="form-control" type="text"
+                                                        <input readonly="readonly" id="totalTime" class="form-control"
+                                                               type="text"
                                                                name="totalTime">
                                                     </div>
                                                     <div class="modal-body">
                                                         <label for="userType">账户类型</label>
-                                                        <input readonly="readonly" id="userType" class="form-control" type="text"
+                                                        <input readonly="readonly" id="userType" class="form-control"
+                                                               type="text"
                                                                name="userType">
                                                     </div>
                                                     <div class="modal-body">
                                                         <label for="cost">费用</label>
-                                                        <input readonly="readonly" id="cost" class="form-control" type="text"
+                                                        <input readonly="readonly" id="cost" class="form-control"
+                                                               type="text"
                                                                name="cost">
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                                        <button onclick="car_out();" type="button" class="btn btn-primary">确定</button>
+                                                        <button type="button" class="btn btn-default"
+                                                                data-dismiss="modal">关闭
+                                                        </button>
+                                                        <button onclick="car_out();" type="button"
+                                                                class="btn btn-primary">确定
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -350,8 +367,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 <script type="text/javascript" th:src="@{/../../static/js/jquery.min.js}" src="js/jquery.min.js"></script>
@@ -460,16 +475,40 @@
                 var totalTime = dayDiff + "天" + hours + "小时" + minutes + "分钟";
 
                 var cost = 0;
+                // 第一梯度时长
+                var levelOneTime = 0;
+                // 第一梯度费用
+                var levelOne = 0;
+                // 第二梯度时长
+                var levelTwoTime = 0;
+                // 第二梯度费用
+                var levelTwo = 0;
+                // 全天费用
+                var dayCost = 0;
+                $.ajax({
+                    type: "GET",
+                    async: false,
+                    url: "http://localhost:8089/user/car/getCarParkingCostRule",
+                    success: function (data) {
+                        levelOneTime = data.levelOneTime;
+                        levelOne = data.levelOne;
+                        levelTwoTime = data.levelTwoTime;
+                        levelTwo = data.levelTwo;
+                        levelThreeTime = data.levelThreeTime;
+                        levelThree = data.levelThree;
+                        dayCost = data.dayCost;
+                    }
+                })
                 if (result == "普通用户") {
                     // 对进入小区临时停车的小、中型车，1小时以内免费；1~4小时收费5元；5小时以上9小时以内收费8元；全天10元。
-                    if (hours < 1) {
-                        cost = dayDiff * 10 + 0;
-                    } else if (hours >= 1 && hours < 5) {
-                        cost = dayDiff * 10 + 5;
-                    } else if (hours >= 5 && hours < 9) {
-                        cost = dayDiff * 10 + 8;
-                    } else if (hours >= 9) {
-                        cost = dayDiff * 10 + 10;
+                    if (hours < levelOneTime) {
+                        cost = dayDiff * dayCost + levelOne;
+                    } else if (hours >= levelOneTime && hours < levelTwoTime) {
+                        cost = dayDiff * dayCost + levelTwo;
+                    } else if (hours >= levelTwoTime && hours < levelThreeTime) {
+                        cost = dayDiff * dayCost + levelThree;
+                    } else if (hours >= levelThreeTime) {
+                        cost = dayDiff * dayCost + dayCost;
                     }
                 } else {
                     cost = 0;
@@ -501,7 +540,7 @@
         $.ajax({
             type: "PUT",
             url: "http://localhost:8089/car/updateCarParkingById/" + carparkingId,
-            data: {outTime: outTime,money:money,context:context},
+            data: {outTime: outTime, money: money, context: context},
             success: function (data) {
                 if (data > 0) {
                     lightyear.loading('hide');
@@ -509,7 +548,7 @@
                     setTimeout(function () {
                         window.location.reload();
                     }, 1000);
-                }else if(data == -2){
+                } else if (data == -2) {
                     lightyear.loading('hide');
                     lightyear.notify('余额不足，请充值后缴费', 'danger', 2000);
                     setTimeout(function () {

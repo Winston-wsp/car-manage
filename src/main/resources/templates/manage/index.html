@@ -246,17 +246,20 @@
                 <a th:href="@{/car/getCarParksList}" href="../../static/html/admin/type.html" target="right">
                     <li>车位管理</li>
                 </a>
-                <a th:href="@{/car/getCarParkings}"  href="inventory.html" target="right">
-                    <li>历史停车</li>
-                </a>
                 <a th:href="@{/car/getCarParksListToAdmin}" target="right">
                     <li>空闲车位</li>
+                </a>
+                <a th:href="@{/car/getCarParkings}" target="right">
+                    <li>在场车辆</li>
+                </a>
+                <a th:href="@{/car/getNotCarParkings}" href="inventory.html" target="right">
+                    <li>历史停车</li>
                 </a>
                 <a th:href="@{/user/user/getAnnouncement}" href="warning.html" target="right">
                     <li>发布公告</li>
                 </a>
-                <a href="outBoud.html" target="right">
-                    <li>收入查询</li>
+                <a th:href="@{/admin/car/getCarParkingCost}" target="right">
+                    <li>费用设定</li>
                 </a>
                 <a th:href="@{/admin/user/editPassword?adminUsername=}+${adminUser.username}" target="right">
                     <li>修改密码</li>
@@ -270,7 +273,8 @@
     </div>
 </div>
 <script th:src="@{/../../static/js/jquery.min.js}" src="/../js/jquery.min.js" type="text/javascript"></script>
-<script th:src="@{/../../static/js/plugs/Jqueryplugs.js}" src="/../js/plugs/Jqueryplugs.js" type="text/javascript"></script>
+<script th:src="@{/../../static/js/plugs/Jqueryplugs.js}" src="/../js/plugs/Jqueryplugs.js"
+        type="text/javascript"></script>
 <script th:src="@{/../../static/js/_layout.js}" src="/../js/_layout.js"></script>
 
 

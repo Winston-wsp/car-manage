@@ -336,7 +336,7 @@
                                             <div th:text="${announcement.content}" class="panel-body">
                                                 话说大宋开基之主太祖赵匡胤，此位天子，原乃上界赤龙临凡，英雄猛勇，豪侠情怀，创开四百年天下。陈桥兵变，黄袍加身，代位于后周而归一统。前书已有《两宋》表明，兹不絮谈。且说大宋相传继统四世仁宗嘉佑王，当时天子英明，群臣为国，四方宁靖，百姓安康。前者宋太祖既殁之后，杨家父子众英雄相继而亡。今者人得五虎，英雄佐粥，保护江山，扫除国敌。后话休题多表。忽一日，仁宗天子临朝。但见祥光灿烂，瑞色辉煌。
                                             </div>
-                                            <span th:text="${#dates.format(announcement.time,'yyyy-MM-dd')}"></span>
+                                            <div th:text="${#dates.format(announcement.time,'yyyy-MM-dd')}"></div>
                                         </div>
                                     </div>
 
@@ -348,10 +348,12 @@
                     <div class="col-lg-6">
                         <div class="card">
                             <div class="card-header">
-                                <h4>交易历史记录</h4>
+                                <h4>停车收费说明</h4>
                             </div>
                             <div class="card-body">
-                                <canvas class="js-chartjs-lines"></canvas>
+                                <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;普通用户：1小时以内免费；1~4小时收费5元；5小时以上9小时以内收费8元；全天10元。
+                                </h4> <h4>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;月卡用户：1小时以内免费；1~4小时收费5元；5小时以上9小时以内收费8元；全天10元。
+                            </h4>
                             </div>
                         </div>
                     </div>

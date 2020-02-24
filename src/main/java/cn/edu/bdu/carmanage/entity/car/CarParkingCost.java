@@ -19,8 +19,16 @@ public class CarParkingCost {
     private  int yearCost;
     @TableField("level_one")
     private  int levelOne;
+    @TableField("level_one_time")
+    private int levelOneTime;
     @TableField("level_two")
     private  int levelTwo;
+    @TableField("level_two_time")
+    private int levelTwoTime;
+    @TableField("level_three")
+    private int levelThree;
+    @TableField("level_three_time")
+    private int levelThreeTime;
     @TableField("day_cost")
     private  int dayCost;
 }

@@ -71,12 +71,13 @@
                                     <td th:text="${carParks.remark}">138177322211</td>
                                     <td class="edit">
                                         <!--                                        <button onclick="btn_edit(1)"><i class="icon-edit bigger-120"></i>编辑</button>-->
-                                        <button th:onclick="btn_in([[${carParks.id}]]);" type="button"
+                                        <button th:onclick="btn_id([[${carParks.id}]]);" type="button"
                                                 data-toggle="modal"
                                                 data-target="#myModal"><i class="icon-adjust bigger-120"></i>入库
                                         </button>
-                                    </td>
+                                        <!-- Modal -->
 
+                                    </td>
                                 </tr>
                                     </span>
                                 </tbody>
@@ -113,9 +114,35 @@
         </div>
         <!-- tab end-->
     </div>
-
-    <!-- Modal -->
-
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">入库信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="carParksId">
+                        <div class="form-group">
+                            <label for="inputUsername">用户名</label>
+                            <input type="" class="form-control" id="inputUsername"
+                                   placeholder="用户名">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPlateNumber">车牌号</label>
+                            <input type="text" class="form-control" id="inputPlateNumber" placeholder="车牌号">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button onclick="btn_in();" type="button" class="btn btn-primary">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
@@ -126,6 +153,43 @@
     <script th:src="@{/../../static/js/plugs/jquery.SuperSlide.source.js}"
             src="js/plugs/jquery.SuperSlide.source.js"></script>
     <script>
+        // 获取车位id
+        var btn_id = function (id) {
+            $('#carParksId').val(id);
+        }
+        // 入库操作
+        var btn_in = function () {
+            var username = $.trim($('#inputUsername').val());
+            var plateNumber = $.trim($('#inputPlateNumber').val());
+            var id = $('#carParksId').val();
+            if (username.length == 0 || plateNumber.length == 0) {
+                alert("不能有空字段");
+                return false;
+            }
+            if(plateNumber.length != 7){
+                alert("车牌号非法");
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8089/admin/car/addCarParking/" + id,
+                data: {username: username, plateNumber: plateNumber},
+                success: function (data) {
+                    if (data > 0) {
+                        alert("入库成功");
+                        window.location.reload();
+                    } else if (data == -2) {
+                        alert("用户不存在，无法入库");
+                    } else {
+                        alert("入库失败，请稍后再试");
+                        window.location.reload();
+                    }
+                }
+            });
+
+        }
+
+
         // 确认修改
         var btn_update = function () {
             var id = $("#inputId").val();

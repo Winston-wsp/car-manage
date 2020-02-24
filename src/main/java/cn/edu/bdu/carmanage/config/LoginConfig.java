@@ -13,9 +13,9 @@ import java.util.List;
  * @Date 2020/2/17 19:28
  * @Version 1.0
  */
-//@Configuration
+@Configuration
 public class LoginConfig implements  WebMvcConfigurer {
-//    @Bean
+    @Bean
     public LoginInterceptor loginInterceptor(){
         return new LoginInterceptor();
     }
@@ -31,6 +31,7 @@ public class LoginConfig implements  WebMvcConfigurer {
         patterns.add("/user/user/addUser");
         patterns.add("/user/user/getUser");
         patterns.add("/admin/user/index");
+        patterns.add("/admin/user/getAdminUser");
         patterns.add("/static/**");
         interceptorRegistration.excludePathPatterns(patterns);
     }

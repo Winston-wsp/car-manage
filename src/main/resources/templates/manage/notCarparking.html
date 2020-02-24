@@ -19,7 +19,7 @@
         <div class="tabs">
             <div class="hd">
                 <ul>
-                    <li class="on" style="box-sizing: initial;-webkit-box-sizing: initial;">在场车辆</li>
+                    <li class="on" style="box-sizing: initial;-webkit-box-sizing: initial;">历史停车记录</li>
                 </ul>
             </div>
 
@@ -29,12 +29,12 @@
                         <div class="row m-b-10">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <form th:action="@{/car/getCarParkings}" method="get">
-                                        <div class="col-xs-2">
+                                    <form th:action="@{/car/getNotCarParkings}" method="get">
+                                        <div class="col-xs-3">
                                             <input id="area" name="area" type="text" class="form-control"
                                                    placeholder="请输入区域...">
                                         </div>
-                                        <div class="col-xs-3">
+                                         <div class="col-xs-4">
                                             <input id="parkNumber" name="parkNumber" type="text" class="form-control"
                                                    placeholder="请输入车位号...">
                                         </div>
@@ -42,11 +42,11 @@
                                             <input id="username" name="username" type="text" class="form-control"
                                                    placeholder="请输入用户名...">
                                         </div>
-                                        <div class="col-xs-3">
+                                     <!--   <div class="col-xs-3">
                                             <input id="nicheng" name="nicheng" type="text" class="form-control"
                                                    placeholder="请输入昵称...">
-                                        </div>
-                                        <div class="col-xs-1">
+                                        </div>-->
+                                        <div class="col-xs-2">
                                             <button class="btn btn-default" type="submit">搜索
                                             </button>
                                         </div>
@@ -67,9 +67,9 @@
                                     <th>车位号</th>
                                     <th>车牌号</th>
                                     <th>用户名</th>
-                                    <th>昵称</th>
+                                    <th>电话号</th>
                                     <th>入场时间</th>
-                                    <th>操作</th>
+                                    <th>出场时间</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -80,15 +80,9 @@
                                     <td th:text="${carParking.carParks.parkNumber}">菲菲菲非常美丽的巨兔12138</td>
                                     <td th:text="${carParking.plateNumber}">菲菲菲非常美丽的巨兔12138</td>
                                     <td th:text="${carParking.user.username}">菲菲菲非常美丽的巨兔12138</td>
-                                    <td th:text="${carParking.user.nicheng}">138177322211</td>
+                                    <td th:text="${carParking.user.phoneNumber}">138177322211</td>
                                     <td th:text="${#dates.format(carParking.startTime,'yyyy年MM月dd日 HH:mm:ss')}">138177322211</td>
-                                    <td class="edit">
-                                        <!--                                        <button onclick="btn_edit(1)"><i class="icon-edit bigger-120"></i>编辑</button>-->
-                                        <button th:onclick="btn_edit([[${carParking.id}]]);" type="button"
-                                                data-toggle="modal"
-                                                data-target="#myModal"><i class="icon-adn bigger-120"></i>出库
-                                        </button>
-                                    </td>
+                                    <td th:text="${#dates.format(carParking.endTime,'yyyy年MM月dd日 HH:mm:ss')}">138177322211</td>
                                 </tr>
                                     </span>
                                 </tbody>
@@ -108,7 +102,7 @@
                                         th:each="page : ${#numbers.sequence(1,carParkingVO.pages)}">
                                         <a
                                                 th:text="${page}"
-                                                th:href="@{http://localhost:8089/car/getCarParkings?currentPage=}+${page}">1</a>
+                                                th:href="@{http://localhost:8089/car/getNotCarParkings?currentPage=}+${page}">1</a>
                                     </li>
                                     <li>
                                         <a href="#" aria-label="Next">

@@ -126,7 +126,31 @@ public class CarParksController {
      * @param area
      * @param parkNumber
      * @param username
-     * @param nicheng
+     * @param userId
+     * @param currentPage
+     * @param size
+     * @param model
+     * @return
+     */
+    @GetMapping("/getNotCarParkings")
+    public String getNotCarParkings(@RequestParam(value = "area", required = false, defaultValue = "") String area,
+                                 @RequestParam(value = "parkNumber", required = false, defaultValue = "") String parkNumber,
+                                 @RequestParam(value = "username", required = false, defaultValue = "") String username,
+                                 @RequestParam(value = "userId", required = false) String userId,
+                                 @RequestParam(value = "currentPage", defaultValue = "1") Long currentPage,
+                                 @RequestParam(value = "size", defaultValue = "8") Long size,
+                                 Model model) {
+        UserVO<CarParking> carParkingVO = this.carParksService.getNotCarParkings(area, parkNumber, username, currentPage, size);
+        model.addAttribute("carParkingVO", carParkingVO);
+        return "/manage/notCarparking";
+    }
+
+    /**
+     * 管理员获取在场车辆的信息
+     *
+     * @param area
+     * @param parkNumber
+     * @param username
      * @param userId
      * @param currentPage
      * @param size
@@ -135,12 +159,12 @@ public class CarParksController {
      */
     @GetMapping("/getCarParkings")
     public String getCarParkings(@RequestParam(value = "area", required = false, defaultValue = "") String area,
-                                 @RequestParam(value = "parkNumber", required = false, defaultValue = "") String parkNumber,
-                                 @RequestParam(value = "username", required = false, defaultValue = "") String username,
-                                 @RequestParam(value = "userId", required = false) String userId,
-                                 @RequestParam(value = "currentPage", defaultValue = "1") Long currentPage,
-                                 @RequestParam(value = "size", defaultValue = "8") Long size,
-                                 Model model) {
+                                    @RequestParam(value = "parkNumber", required = false, defaultValue = "") String parkNumber,
+                                    @RequestParam(value = "username", required = false, defaultValue = "") String username,
+                                    @RequestParam(value = "userId", required = false) String userId,
+                                    @RequestParam(value = "currentPage", defaultValue = "1") Long currentPage,
+                                    @RequestParam(value = "size", defaultValue = "8") Long size,
+                                    Model model) {
         UserVO<CarParking> carParkingVO = this.carParksService.getCarParkings(area, parkNumber, username, currentPage, size);
         model.addAttribute("carParkingVO", carParkingVO);
         return "/manage/carparking";

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/../../static/css/Site.css}" href="css/Site.css"/>
+    <link rel="stylesheet" th:href="@{/../../static/css/zy.all.css}" href="css/zy.all.css"/>
+    <link rel="stylesheet" th:href="@{/../../static/css/font-awesome.min.css}" href="css/font-awesome.min.css"/>
+    <link rel="stylesheet" th:href="@{/../../static/css/amazeui.min.css}" href="css/amazeui.min.css"/>
+    <link rel="stylesheet" th:href="@{/../../static/css/admin.css}" href="css/admin.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="dvcontent">
+    <div>
+        <!--tab start-->
+        <div class="tabs">
+            <div class="hd">
+                <ul>
+                    <li class="on" style="box-sizing: initial;-webkit-box-sizing: initial;">费用设定</li>
+                </ul>
+            </div>
+
+            <div class="bd">
+                <ul style="display: block;padding: 20px;">
+
+                    <div class="am-cf admin-main" style="padding-top: 0px;">
+                        <!-- content start -->
+
+                        <div class="am-cf admin-main" style="padding-top: 0px;">
+                            <!-- content start -->
+                            <div class="admin-content">
+                                <div class="admin-content-body">
+
+                                    <div class="am-g">
+                                        <div class="am-u-sm-12 am-u-md-4 am-u-md-push-8">
+
+                                        </div>
+                                        <div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4"
+                                             style="padding-top: 30px;">
+                                            <form class="am-form am-form-horizontal"
+                                                  action="/car/setCarParkingCost" method="post">
+
+                                                <div class="am-form-group">
+                                                    <label for="month_cost" class="am-u-sm-3 am-form-label">
+                                                        月卡费用 / Month Card</label>
+                                                    <div class="am-u-sm-9">
+                                                        <input th:value="${carParkingCost.monthCost}" type="number"
+                                                               id="month_cost" required
+                                                               placeholder="月卡费用 / Month Card" name="month_cost">
+                                                    </div>
+                                                </div>
+                                                <div class="am-form-group">
+                                                    <label for="year_cost" class="am-u-sm-3 am-form-label">
+                                                        年卡费用 / Year Card</label>
+                                                    <div class="am-u-sm-9">
+                                                        <input th:value="${carParkingCost.yearCost}" type="number"
+                                                               id="year_cost" required
+                                                               placeholder=" 年卡费用 / Year Card" name="year_cost">
+                                                    </div>
+                                                </div>
+                                                <div class="am-form-group">
+                                                    <label for="level_one_time" class="am-u-sm-3 am-form-label">
+                                                        第一梯度时长 / Level One Time</label>
+                                                    <div class="am-u-sm-9">
+                                                        <input th:value="${carParkingCost.levelOneTime}" type="number"
+                                                               id="level_one_time" required
+                                                               placeholder="第一梯度时长 / Level One Time"
+                                                               name="level_one_time">
+                                                    </div>
+                                                </div>
+                                                <div class="am-form-group">
+                                                    <label for="level_one_cost" class="am-u-sm-3 am-form-label">
+                                                        第一梯度费用 / Level One Cost</label>
+                                                    <div class="am-u-sm-9">
+                                                        <input th:value="${carParkingCost.levelOne}" type="number"
+                                                               id="level_one_cost" required
+                                                               placeholder="第一梯度费用 / Level One Cost"
+                                                               name="level_one_cost">
+                                                    </div>
+                                                </div>
+                                                <div class="am-form-group">
+                                                    <label for="level_two_time" class="am-u-sm-3 am-form-label">
+                                                        第二梯度时长 / Level Two Time</label>
+                                                    <div class="am-u-sm-9">
+                                                        <input th:value="${carParkingCost.levelTwoTime}" type="number"
+                                                               id="level_two_time" required
+                                                               placeholder="第二梯度时长 / Level Two Time"
+                                                               name="level_two_time">
+                                                    </div>
+                                                </div>
+                                                <div class="am-form-group">
+                                                    <label for="level_two_cost" class="am-u-sm-3 am-form-label">
+                                                        第二梯度费用 / Level Two Cost</label>
+                                                    <div class="am-u-sm-9">
+                                                        <input th:value="${carParkingCost.levelTwo}" type="number"
+                                                               id="level_two_cost" required
+                                                               placeholder="第二梯度费用 / Level Two Cost"
+                                                               name="level_two_cost">
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <label for="level_three_time" class="am-u-sm-3 am-form-label">
+                                                        第三梯度时长 / Level Three Time</label>
+                                                    <div class="am-u-sm-9">
+                                                        <input th:value="${carParkingCost.levelThreeTime}" type="number"
+                                                               id="level_three_time" required
+                                                               placeholder="第三梯度时长 / Level Three Time"
+                                                               name="level_three_time">
+                                                    </div>
+                                                </div>
+                                                <div class="am-form-group">
+                                                    <label for="level_three_cost" class="am-u-sm-3 am-form-label">
+                                                        第三梯度费用 / Level Three Cost</label>
+                                                    <div class="am-u-sm-9">
+                                                        <input th:value="${carParkingCost.levelThree}" type="number"
+                                                               id="level_three_cost" required
+                                                               placeholder="第三梯度费用 / Level Three Cost"
+                                                               name="level_three_cost">
+                                                    </div>
+                                                </div>
+                                                <div class="am-form-group">
+                                                    <label for="day_cost" class="am-u-sm-3 am-form-label">
+                                                        一天费用 / Day Cost</label>
+                                                    <div class="am-u-sm-9">
+                                                        <input th:value="${carParkingCost.dayCost}" type="number"
+                                                               id="day_cost" required
+                                                               placeholder="一天费用 / Day Cost"
+                                                               name="day_cost">
+                                                    </div>
+                                                </div>
+
+                                                <div class="am-form-group">
+                                                    <div class="am-u-sm-9 am-u-sm-push-3">
+                                                        <input onclick="btn_setCost();" type="button"
+                                                               class="am-btn am-btn-success"
+                                                               value="确定"/>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- content end -->
+                        </div>
+                    </div>
+                </ul>
+            </div>
+
+        </div>
+        <!-- tab end-->
+    </div>
+
+    <!-- Modal -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <script th:src="@{/../../static/js/plugs/Jqueryplugs.js}" src="js/plugs/Jqueryplugs.js"
+            type="text/javascript"></script>
+    <script th:src="@{/../../static/js/_layout.js}" src="js/_layout.js"></script>
+    <script th:src="@{/../../static/js/plugs/jquery.SuperSlide.source.js}"
+            src="js/plugs/jquery.SuperSlide.source.js"></script>
+    <script>
+        var num = 1;
+        $(function () {
+
+            $(".tabs").slide({trigger: "click"});
+
+        });
+
+        // 更改费用
+        var btn_setCost = function () {
+
+            var monthCost = $('#month_cost').val();
+            var yearCost = $('#year_cost').val();
+            var levelOneTime = $('#level_one_time').val();
+            var levelOneCost = $('#level_one_cost').val();
+            var levelTwoTime = $('#level_two_time').val();
+            var levelTwoCost = $('#level_two_cost').val();
+            var levelThreeTime = $('#level_three_time').val();
+            var levelThreeCost = $('#level_three_cost').val();
+            var dayCost = $('#day_cost').val();
+
+            $.ajax({
+                type: "PUT",
+                url: "http://localhost:8089/admin/car/setCarParkingCost",
+                data: {
+                    id: 1,
+                    monthCost: monthCost,
+                    yearCost: yearCost,
+                    levelOneTime: levelOneTime,
+                    levelOne: levelOneCost,
+                    levelTwoTime: levelTwoTime,
+                    levelTwo: levelTwoCost,
+                    levelThreeTime: levelThreeTime,
+                    levelThree: levelThreeCost,
+                    dayCost: dayCost
+                },
+                success: function (data) {
+                    if (data > 0) {
+                        alert("设定成功");
+                        window.location.reload();
+                    } else {
+                        alert("修改失败");
+                    }
+                }
+            });
+
+        }
+
+
+    </script>
+
+</div>
+</body>
+
+</html>
