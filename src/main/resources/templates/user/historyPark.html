@@ -301,6 +301,8 @@
                                                 <tr>
                                                     <th>编号</th>
                                                     <th>车牌号</th>
+                                                    <th>区域</th>
+                                                    <th>车位号</th>
                                                     <th>入库时间</th>
                                                     <th>出库时间</th>
                                                 </tr>
@@ -309,6 +311,8 @@
                                                 <tr th:each="carParking,stat:${carParkingVO.list}">
                                                     <td th:text="${stat.count}">1</td>
                                                     <td th:text="${carParking.plateNumber}">1</td>
+                                                    <td th:text="${carParking.carParks.area}">1</td>
+                                                    <td th:text="${carParking.carParks.parkNumber}">1</td>
                                                     <td th:text="${#dates.format(carParking.startTime,'yyyy年MM月dd日 HH时mm分ss秒')}">
                                                         《倚天屠龙记》
                                                     </td>

@@ -298,22 +298,23 @@ public class UserService {
         }
         IPage<CarParking> iPage = new Page<>(currentPage, size);
         QueryWrapper<CarParking> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", userId);
+        queryWrapper.eq("car_parking.user_id", userId);
+        queryWrapper.isNotNull("car_parking.end_time");
         if (startDate != null && endDate != null) {
             // 起始日期和结束日期都不为空
-            queryWrapper.ge("start_time", startDate);
-            queryWrapper.le("start_time", DateUtil.offsetDay(endDate, 1));
+            queryWrapper.ge("car_parking.start_time", startDate);
+            queryWrapper.le("car_parking.start_time", DateUtil.offsetDay(endDate, 1));
         }
         if (startDate != null && endDate == null) {
             // 起始日期不为空，结束日期为空
-            queryWrapper.ge("start_time", startDate);
+            queryWrapper.ge("car_parking.start_time", startDate);
         }
         if (startDate == null && endDate != null) {
             // 起始日期为空，结束日期不为空
-            queryWrapper.le("start_time", DateUtil.offsetDay(endDate, 1));
+            queryWrapper.le("car_parking.start_time", DateUtil.offsetDay(endDate, 1));
         }
-        queryWrapper.orderByDesc("start_time");
-        IPage<CarParking> page = carParkingMapper.selectPage(iPage,queryWrapper);
+        queryWrapper.orderByDesc("car_parking.start_time");
+        IPage<CarParking> page = carParkingMapper.getCarParkings(iPage,queryWrapper);
         UserVO<CarParking> carParkingVO = new UserVO<>();
         carParkingVO.setPages(page.getPages());
         carParkingVO.setCurrent(page.getCurrent());

@@ -11,7 +11,7 @@
  Target Server Version : 50722
  File Encoding         : 65001
 
- Date: 24/02/2020 14:35:04
+ Date: 28/02/2020 15:09:11
 */
 
 SET NAMES utf8mb4;
@@ -34,7 +34,7 @@ CREATE TABLE `car_card`  (
 -- ----------------------------
 -- Records of car_card
 -- ----------------------------
-INSERT INTO `car_card` VALUES ('392176652430e39f3d09acc8019f3c05', 'ZZ1221715216', '4d3e6c9cbec284d6c5bc1311923e68f0', 1, '2020-02-20 20:24:19', '2022-10-20 20:24:19');
+INSERT INTO `car_card` VALUES ('392176652430e39f3d09acc8019f3c05', 'ZZ1221715216', '4d3e6c9cbec284d6c5bc1311923e68f0', 1, '2020-02-20 20:24:19', '2022-11-20 20:24:19');
 INSERT INTO `car_card` VALUES ('953f9160eff8e0a7818eb8f80d3076b3', 'ZZ6766264098', '0da744141990b3808eebd9f03a3098f9', 1, '2020-02-20 22:44:22', '2021-03-20 22:44:22');
 
 -- ----------------------------
@@ -56,7 +56,7 @@ CREATE TABLE `car_carparks`  (
 INSERT INTO `car_carparks` VALUES ('0183d7ae3aeab2c1e1c36cb8c0f59f54', 'C区', 'C03', '', '1');
 INSERT INTO `car_carparks` VALUES ('1246f8d2184ed1fd11337791583377a4', 'A区', 'A04', '', '0');
 INSERT INTO `car_carparks` VALUES ('2782c8418cee75eafdc93daa9bd32379', 'A区', 'A01', '私人车位', '1');
-INSERT INTO `car_carparks` VALUES ('305ad15c929a31309f93f9daa4f566e9', 'A区', 'A03', '临时车位', '1');
+INSERT INTO `car_carparks` VALUES ('305ad15c929a31309f93f9daa4f566e9', 'A区', 'A03', '临时车位', '0');
 INSERT INTO `car_carparks` VALUES ('3596c5a9af93e919510e5e35027ad6f1', 'A区', 'A02', '临时车位', '1');
 INSERT INTO `car_carparks` VALUES ('468475eba8c5ea4c8352584420fba1e2', 'B区', 'B06', '', '1');
 INSERT INTO `car_carparks` VALUES ('4aa63256b64c6046a3a72521b335e356', 'B区', 'B05', '可用车位', '1');
@@ -64,13 +64,13 @@ INSERT INTO `car_carparks` VALUES ('4e8c70c5222a0683f3d03793cc4d3e1a', 'B区', '
 INSERT INTO `car_carparks` VALUES ('574f400819a7e0e92d9656470f264766', 'C区', 'C02', '', '1');
 INSERT INTO `car_carparks` VALUES ('5d983907ecebda9d58ef925b8b92c31d', 'B区', 'B02', '', '1');
 INSERT INTO `car_carparks` VALUES ('5fd5e79efbf765fee2a871d6f8bd8fb3', 'B区', 'B04', '', '1');
-INSERT INTO `car_carparks` VALUES ('724355ad4838fd3b7bbce7980403e559', 'A区', 'A00', '临时车位', '0');
+INSERT INTO `car_carparks` VALUES ('724355ad4838fd3b7bbce7980403e559', 'A区', 'A00', '临时车位', '1');
 INSERT INTO `car_carparks` VALUES ('95e83131f95f4940b7e045e6a2ffe7f0', 'A区', 'A05', '', '0');
 INSERT INTO `car_carparks` VALUES ('a7e07bbc52fdb4a19b95b84b39751265', 'C区', 'C01', '可用车位', '1');
 INSERT INTO `car_carparks` VALUES ('a8105d58e9905ec2bdc952ea077c8fe5', 'B区', 'B03', '', '1');
 INSERT INTO `car_carparks` VALUES ('c52b7db5ec4142924939d905e6d03be7', 'C区', 'C04', '可用车位', '1');
 INSERT INTO `car_carparks` VALUES ('cd8f7da66590579291daa3f879054473', 'C区', 'C05', '', '1');
-INSERT INTO `car_carparks` VALUES ('e5852c101f8a8a6a877211a044f9b72a', 'A区', 'A06', '临时车位', '1');
+INSERT INTO `car_carparks` VALUES ('e5852c101f8a8a6a877211a044f9b72a', 'A区', 'A06', '临时车位', '0');
 
 -- ----------------------------
 -- Table structure for car_info
@@ -100,13 +100,15 @@ CREATE TABLE `car_parking`  (
 -- ----------------------------
 -- Records of car_parking
 -- ----------------------------
+INSERT INTO `car_parking` VALUES ('04168ead8b151ecfe261c6e792e451b6', '748478b433aa3987747602f10fc7ad1a', '305ad15c929a31309f93f9daa4f566e9', '沪AJJ846', '2020-02-28 14:29:39', NULL);
 INSERT INTO `car_parking` VALUES ('11b0a85a2b743df54837900f065b9f6d', '0da744141990b3808eebd9f03a3098f9', '60f9cffd95983c8111f1e3a49d2de792', '沪AJJ846', '2020-02-20 19:38:59', '2020-02-20 21:40:04');
 INSERT INTO `car_parking` VALUES ('1afad926e3bf45119600d85b5ee61a87', '0da744141990b3808eebd9f03a3098f9', '26e2f9924fd3cd8db88de5ebf8e4e727', '沪AJJ846', '2020-02-20 21:08:57', '2020-02-20 21:09:22');
 INSERT INTO `car_parking` VALUES ('1c91b03387b72a73fee2e552e792fa6a', '4d3e6c9cbec284d6c5bc1311923e68f0', '724355ad4838fd3b7bbce7980403e559', '沪AAB273', '2020-02-20 20:21:20', '2020-02-20 20:21:41');
+INSERT INTO `car_parking` VALUES ('1e3af7972e708288095fb27bd65d3c6e', '4d3e6c9cbec284d6c5bc1311923e68f0', 'e5852c101f8a8a6a877211a044f9b72a', '沪AJJ846', '2020-02-28 14:22:46', NULL);
 INSERT INTO `car_parking` VALUES ('20869297cf6137344e75a0e850911475', '4d3e6c9cbec284d6c5bc1311923e68f0', '724355ad4838fd3b7bbce7980403e559', '沪AJJ846', '2020-01-22 14:53:02', '2020-02-19 20:49:57');
 INSERT INTO `car_parking` VALUES ('2b160fa06c992494ef1cdc993698c2cc', '4d3e6c9cbec284d6c5bc1311923e68f0', '60f9cffd95983c8111f1e3a49d2de792', '沪AJJ846', '2020-02-21 10:31:45', '2020-02-21 10:31:49');
 INSERT INTO `car_parking` VALUES ('2e769400871db6f5f0fad28bfa22488d', 'a48075877ea90d8c14dae3833641815c', '1246f8d2184ed1fd11337791583377a4', '京A88888', '2020-02-23 22:07:49', NULL);
-INSERT INTO `car_parking` VALUES ('2fca92e3657fda8794e29daccc4b4918', '4d3e6c9cbec284d6c5bc1311923e68f0', '724355ad4838fd3b7bbce7980403e559', '闵HJJ32h', '2020-02-23 21:46:00', NULL);
+INSERT INTO `car_parking` VALUES ('2fca92e3657fda8794e29daccc4b4918', '4d3e6c9cbec284d6c5bc1311923e68f0', '724355ad4838fd3b7bbce7980403e559', '闵HJJ32h', '2020-02-23 21:46:00', '2020-02-27 19:33:41');
 INSERT INTO `car_parking` VALUES ('36b5d4ffbd63fb9d67fbfd70248c9b43', '6dfef63c1615f8a93a7331accec38cf4', '95e83131f95f4940b7e045e6a2ffe7f0', '沪AJJ846', '2020-02-24 12:01:41', NULL);
 INSERT INTO `car_parking` VALUES ('426845e7c75b68453a51d2c9165a4dff', '0da744141990b3808eebd9f03a3098f9', '26e2f9924fd3cd8db88de5ebf8e4e727', '闵HI8832', '2020-02-20 21:08:25', '2020-02-20 21:08:32');
 INSERT INTO `car_parking` VALUES ('56f45c439c09d0f8adcc811514ecc337', '4d3e6c9cbec284d6c5bc1311923e68f0', '60f9cffd95983c8111f1e3a49d2de792', '沪AJJ846', '2020-02-19 20:57:16', '2020-02-19 21:00:26');
@@ -183,6 +185,41 @@ INSERT INTO `user_announcement` VALUES ('e158dfe1639e3458046e0a97c956e8da', '关
 INSERT INTO `user_announcement` VALUES ('eeda4d25657fed4c87e241db5b5ae535', '小区公告', '请大家爱护公物，不要随意破坏小区内的绿化。谢谢大家配合', '2020-02-17 04:39:35');
 
 -- ----------------------------
+-- Table structure for user_order_alipay
+-- ----------------------------
+DROP TABLE IF EXISTS `user_order_alipay`;
+CREATE TABLE `user_order_alipay`  (
+  `id` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `user_id` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户id',
+  `out_trade_no` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商户订单号',
+  `total_amount` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '付款金额',
+  `subject` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订单名称',
+  `body` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '商品描述',
+  `creatTime` datetime(0) NULL DEFAULT NULL COMMENT '订单创建日期',
+  `status` int(1) NULL DEFAULT 0 COMMENT '订单是否成功（0：失败，1：成功）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_order_alipay
+-- ----------------------------
+INSERT INTO `user_order_alipay` VALUES ('0ea389e73425824caef1b9e679596daa', '4d3e6c9cbec284d6c5bc1311923e68f0', 'DDH5173324357', '100', '个人充值', '余额充值', '2020-02-26 22:50:17', 0);
+INSERT INTO `user_order_alipay` VALUES ('152dcba0dfc067815f11b51d0422b158', '4d3e6c9cbec284d6c5bc1311923e68f0', 'JFDD1493033957', '3000', '个人充值', '余额充值', '2020-02-28 13:32:15', 1);
+INSERT INTO `user_order_alipay` VALUES ('158224108d300c7b3366a905034f70df', '4d3e6c9cbec284d6c5bc1311923e68f0', 'JFDD1637550822', '100', '个人充值', '余额充值', '2020-02-27 19:29:23', 1);
+INSERT INTO `user_order_alipay` VALUES ('26a0105c4157308df6700a5d6b20e6c9', '4d3e6c9cbec284d6c5bc1311923e68f0', 'JFDD1633959799', '2000', '个人充值', '余额充值', '2020-02-27 19:38:12', 0);
+INSERT INTO `user_order_alipay` VALUES ('28a22f121f2cab37eb0d841fa8a6dd28', '4d3e6c9cbec284d6c5bc1311923e68f0', 'JFDD5005039555', '40', '个人充值', '余额充值', '2020-02-27 11:04:10', 1);
+INSERT INTO `user_order_alipay` VALUES ('299542a52c0baff4db5aab399b51ff13', '748478b433aa3987747602f10fc7ad1a', 'JFDD1848360727', '100', '个人充值', '余额充值', '2020-02-28 14:29:57', 0);
+INSERT INTO `user_order_alipay` VALUES ('3d43ef69543975a246190e8e55b070df', '4d3e6c9cbec284d6c5bc1311923e68f0', 'DDH1122023788', '100', '个人充值', '余额充值', '2020-02-26 22:52:51', 0);
+INSERT INTO `user_order_alipay` VALUES ('594ce13bb24032dffdaf810fe4cff48c', '4d3e6c9cbec284d6c5bc1311923e68f0', 'JFDD1924735382', '50', '个人充值', '余额充值', '2020-02-27 11:07:25', 1);
+INSERT INTO `user_order_alipay` VALUES ('77eb856ae13cff229f4b6cd4b1443242', '4d3e6c9cbec284d6c5bc1311923e68f0', 'JFDD4661276306', '70', '个人充值', '余额充值', '2020-02-27 11:15:22', 1);
+INSERT INTO `user_order_alipay` VALUES ('77fbfdcfa6ed41c586030849c08ebd3e', '4d3e6c9cbec284d6c5bc1311923e68f0', 'JFDD1086797033', '100', '个人充值', '余额充值', '2020-02-28 13:37:55', 1);
+INSERT INTO `user_order_alipay` VALUES ('8d8ec8728ec53159e382bef543848654', '4d3e6c9cbec284d6c5bc1311923e68f0', 'JFDD1321187205', '80', '个人充值', '余额充值', '2020-02-27 17:34:38', 1);
+INSERT INTO `user_order_alipay` VALUES ('a324c479d559fe9904aeb1b8e451d33a', '4d3e6c9cbec284d6c5bc1311923e68f0', 'JFDD1791421447', '1', '个人充值', '余额充值', '2020-02-27 11:17:09', 1);
+INSERT INTO `user_order_alipay` VALUES ('a829a4b3f6eed3d31337a750e61d6c1d', '4d3e6c9cbec284d6c5bc1311923e68f0', 'JFDD9508374937', '30', '个人充值', '余额充值', '2020-02-27 10:56:09', 0);
+INSERT INTO `user_order_alipay` VALUES ('ca426aff3f08f6cfa0fad5baecadb166', '4d3e6c9cbec284d6c5bc1311923e68f0', 'JFDD7555459665', '100', '个人充值', '余额充值', '2020-02-27 17:41:51', 1);
+INSERT INTO `user_order_alipay` VALUES ('ef264d04fa207eb3de39f40d2dcb4c1e', '4d3e6c9cbec284d6c5bc1311923e68f0', 'JFDD5431334400', '3000', '个人充值', '余额充值', '2020-02-27 19:38:02', 0);
+
+-- ----------------------------
 -- Table structure for user_pay
 -- ----------------------------
 DROP TABLE IF EXISTS `user_pay`;
@@ -202,6 +239,8 @@ CREATE TABLE `user_pay`  (
 INSERT INTO `user_pay` VALUES ('072729b05b215960d0871605a3ed8140', '4d3e6c9cbec284d6c5bc1311923e68f0', -1800, 'JFDD6412529840', '2020-02-14 22:55:38', '年卡办理');
 INSERT INTO `user_pay` VALUES ('165cdb71129f2c14540d74406b3381e7', '4d3e6c9cbec284d6c5bc1311923e68f0', 200, 'JFDD4479788351', '2020-02-13 20:25:53', '月卡办理');
 INSERT INTO `user_pay` VALUES ('1990354b19573ad8ffa46584b674ecdb', '4d3e6c9cbec284d6c5bc1311923e68f0', 200, 'JFDD2084666572', '2020-02-19 20:25:23', '月卡办理');
+INSERT INTO `user_pay` VALUES ('1c7a3cc88e4baf336b7d8b911da72264', '4d3e6c9cbec284d6c5bc1311923e68f0', 100, 'JFDD1629399078', '2020-02-26 20:46:08', '账户充值');
+INSERT INTO `user_pay` VALUES ('241208c5d0903580078f290331f29a33', '4d3e6c9cbec284d6c5bc1311923e68f0', 100, 'JFDD2026779258', '2020-02-27 19:31:18', '余额充值');
 INSERT INTO `user_pay` VALUES ('2f11885b77a494d7607ae79d14cbf932', '4d3e6c9cbec284d6c5bc1311923e68f0', -200, 'JFDD6419637382', '2020-02-19 22:56:11', '月卡办理');
 INSERT INTO `user_pay` VALUES ('326fc570eb4093e43178436ffb3fec2f', '4d3e6c9cbec284d6c5bc1311923e68f0', 200, 'JFDD2141715996', '2020-02-20 19:21:41', '月卡办理');
 INSERT INTO `user_pay` VALUES ('3a7baf5bab2e5b9c7e1b4ac614694806', '1d3a17f0c523ecb4ab3ac955c23070c4', 20, 'JFDD2101125884', '2020-02-23 23:23:23', '账户充值');
@@ -210,12 +249,16 @@ INSERT INTO `user_pay` VALUES ('4acf45da207ac176619bad6bca4f6bfa', '4d3e6c9cbec2
 INSERT INTO `user_pay` VALUES ('4c0e806fc89a0900313599a5674c57b8', '4d3e6c9cbec284d6c5bc1311923e68f0', 200, 'JFDD6275857789', '2020-02-20 17:31:08', '月卡办理');
 INSERT INTO `user_pay` VALUES ('4e04a401bd489087ba0124ca641101d7', '4d3e6c9cbec284d6c5bc1311923e68f0', 200, 'JFDD4975073395', '2020-02-20 20:24:19', '月卡办理');
 INSERT INTO `user_pay` VALUES ('563d701bab6be3736dd584599085bede', '0da744141990b3808eebd9f03a3098f9', 500, 'JFDD1069120874', '2020-02-20 22:44:32', '账户充值');
+INSERT INTO `user_pay` VALUES ('625e355cb4457db1b24f2fcc54ae8021', '4d3e6c9cbec284d6c5bc1311923e68f0', -300, 'JFDD1634303962', '2020-02-27 19:34:18', '月卡办理');
 INSERT INTO `user_pay` VALUES ('648183fb21972420dfb0b6d62161f88e', '0da744141990b3808eebd9f03a3098f9', 20, 'JFDD1503846068', '2020-02-20 21:51:08', '账户充值');
 INSERT INTO `user_pay` VALUES ('73a99293203f9afae65bb1eab605f00c', '4d3e6c9cbec284d6c5bc1311923e68f0', 100, 'JFDD4309876349', '2020-02-20 22:42:47', '账户充值');
 INSERT INTO `user_pay` VALUES ('744d79b6e87a0f8f280a6bd81f2a3136', '0da744141990b3808eebd9f03a3098f9', 200, 'JFDD5283757641', '2020-02-20 22:44:56', '月卡办理');
 INSERT INTO `user_pay` VALUES ('8074b216f7f0b7c4949c51ea201b2eab', '4d3e6c9cbec284d6c5bc1311923e68f0', -200, 'JFDD1606916245', '2020-02-22 10:44:24', '月卡办理');
+INSERT INTO `user_pay` VALUES ('81ec42edcac76f176d372fa31ae737f6', '4d3e6c9cbec284d6c5bc1311923e68f0', 100, 'JFDD3869404422', '2020-02-28 13:38:29', '余额充值');
 INSERT INTO `user_pay` VALUES ('920d1d2acc05a74c8e40a81d242e28af', '4d3e6c9cbec284d6c5bc1311923e68f0', 80, 'JFDD3225390861', '2020-02-20 16:43:08', '账户充值');
+INSERT INTO `user_pay` VALUES ('9c0ea523458703f504a9d52d06a8dccc', '4d3e6c9cbec284d6c5bc1311923e68f0', 3000, 'JFDD1886765240', '2020-02-28 13:32:57', '余额充值');
 INSERT INTO `user_pay` VALUES ('a399e4d4c429c041c07b2c0cc96dc943', '0da744141990b3808eebd9f03a3098f9', 10, 'JFDD6298778081', '2020-02-23 23:22:35', '账户充值');
+INSERT INTO `user_pay` VALUES ('a9b4127c2fddafb9fb3445ad2f378011', NULL, 200, 'JFDD2084666572', '2020-02-25 11:28:10', NULL);
 INSERT INTO `user_pay` VALUES ('ae00c26cae31f18a9cd2c7563d8ecea0', '4d3e6c9cbec284d6c5bc1311923e68f0', 500, 'JFDD4485425572', '2020-02-20 16:42:30', '账户充值');
 INSERT INTO `user_pay` VALUES ('c144bca85ca99922bb74de6a43137517', '0da744141990b3808eebd9f03a3098f9', 5, 'JFDD2412176642', '2020-02-20 21:51:20', '停车缴费');
 INSERT INTO `user_pay` VALUES ('c35d04a6f1ced562d722c96306b17b51', '4d3e6c9cbec284d6c5bc1311923e68f0', 0, 'JFDD1555172414', '2020-02-20 22:55:32', '停车缴费');
@@ -245,7 +288,7 @@ CREATE TABLE `user_user`  (
 -- ----------------------------
 INSERT INTO `user_user` VALUES ('0da744141990b3808eebd9f03a3098f9', 'james', 'bbbbbb', '13816422218', '詹姆斯', 320);
 INSERT INTO `user_user` VALUES ('1d3a17f0c523ecb4ab3ac955c23070c4', 'adminaa', 'aaaaaa', '17748373732', '大力', 20);
-INSERT INTO `user_user` VALUES ('4d3e6c9cbec284d6c5bc1311923e68f0', 'aaaaaa', 'admina', '17749707028', '赫乙正方', 680);
+INSERT INTO `user_user` VALUES ('4d3e6c9cbec284d6c5bc1311923e68f0', 'aaaaaa', 'admina', '17749707028', '赫乙正方', 3680);
 INSERT INTO `user_user` VALUES ('6dfef63c1615f8a93a7331accec38cf4', 'guestc', 'aaaaaa', '13912345600', '保罗', 0);
 INSERT INTO `user_user` VALUES ('748478b433aa3987747602f10fc7ad1a', 'admina', 'aaaaaa', '17748373732', '大力', 0);
 INSERT INTO `user_user` VALUES ('765dd4600cc15cd0b936fd18a3001997', 'guestcr', 'cccccc', '13912345671', '安东尼', 0);

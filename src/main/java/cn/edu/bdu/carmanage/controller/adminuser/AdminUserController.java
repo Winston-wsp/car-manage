@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @Author Winston
@@ -70,6 +71,13 @@ public class AdminUserController {
     public String editPassword(@RequestParam("adminUsername") String adminUsername, Model model) {
         model.addAttribute("adminUsername", adminUsername);
         return "/manage/updatePwd";
+    }
+
+    @GetMapping("/adminUserLogout")
+    public String adminUserLogout(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return "/index";
     }
 /*    @PostMapping("/updateAdminUser")
     public {
