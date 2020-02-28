@@ -37,10 +37,12 @@
                         <li class="nav-item nav-item-has-subnav">
                             <a href="javascript:void(0)"><i class="mdi mdi-access-point-network"></i> 车位</a>
                             <ul class="nav nav-subnav">
-                                <li><a th:href="@{'/car/getCarParksListToUser?userId='+${user.id}}"
+                                <li><a th:href="@{'/car/getCarParksListToUser?userId='+${session.user.id}}"
                                        href="lyear_forms_elements.html">空闲车位查询</a></li>
-                                <li><a th:href="@{'/car/getMyCarParking?userId='+${user.id}}"
+                                <li><a th:href="@{'/car/getMyCarParking?userId='+${session.user.id}}"
                                        href="lyear_forms_elements.html">我的车位</a></li>
+                                <li><a th:href="@{'/car/getHistoryParking?userId='+${session.user.id}}"
+                                       href="lyear_forms_elements.html">历史停车记录</a></li>
                             </ul>
                         </li>
                         <li class="nav-item nav-item-has-subnav active open">
@@ -50,7 +52,8 @@
                                                       href="#">充值</a></li>
                                 <li><a th:href="@{'/user/user/toUserCard?userId='+${user.id}}">办卡</a>
                                 </li>
-                                <li><a th:href="@{'/user/user/toUserCost?userId='+${session.user.id}}" href="#">历史缴费</a></li>
+                                <li><a th:href="@{'/user/user/toUserCost?userId='+${session.user.id}}" href="#">历史缴费</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item nav-item-has-subnav">
@@ -256,31 +259,47 @@
                                 <input id="userId" type="hidden" th:value="${session.user.id}">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <button onclick="btn_chongzhi(100);"
+                                      <!--  <button onclick="btn_chongzhi(100);"
                                                 class="btn btn-primary btn-block example-p-1">100
-                                        </button>
+                                        </button>-->
+                                        <a th:href="@{/alipay/go/applytest?money=100}"
+                                                class="btn btn-primary btn-block example-p-1">100
+                                        </a>
+
                                     </div>
                                     <div class="col-md-4">
-                                        <button onclick="btn_chongzhi(500);"
+                                        <!--<button onclick="btn_chongzhi(500);"
                                                 class="btn btn-primary btn-block example-p-1">500
-                                        </button>
+                                        </button>-->
+                                        <a th:href="@{/alipay/go/applytest?money=500}"
+                                           class="btn btn-primary btn-block example-p-1">500
+                                        </a>
                                     </div>
                                     <div class="col-md-4">
-                                        <button onclick="btn_chongzhi(1000);"
+                                      <!--  <button onclick="btn_chongzhi(1000);"
                                                 class="btn btn-primary btn-block example-p-1">1000
-                                        </button>
+                                        </button>-->
+                                        <a th:href="@{/alipay/go/applytest?money=1000}"
+                                           class="btn btn-primary btn-block example-p-1">1000
+                                        </a>
                                     </div>
 
                                     <br/><br/><br/>
                                     <div class="col-md-4">
-                                        <button onclick="btn_chongzhi(2000);"
+                                        <!--<button onclick="btn_chongzhi(2000);"
                                                 class="btn btn-primary btn-block example-p-1">2000
-                                        </button>
+                                        </button>-->
+                                        <a th:href="@{/alipay/go/applytest?money=2000}"
+                                           class="btn btn-primary btn-block example-p-1">2000
+                                        </a>
                                     </div>
                                     <div class="col-md-4">
-                                        <button onclick="btn_chongzhi(3000);"
+                                        <!--<button onclick="btn_chongzhi(3000);"
                                                 class="btn btn-primary btn-block example-p-1">3000
-                                        </button>
+                                        </button>-->
+                                        <a th:href="@{/alipay/go/applytest?money=3000}"
+                                           class="btn btn-primary btn-block example-p-1">3000
+                                        </a>
                                     </div>
                                     <div class="col-md-4">
                                         <button class="btn btn-primary btn-block example-p-3">其他</button>
@@ -367,7 +386,8 @@
                         } else if (!(/(^[1-9]\d*$)/.test(money))) {
                             $.alert('只能为正整数');
                         }
-                        $.ajax({
+                        window.location = "http://localhost:8089/alipay/go/applytest?money="+money;
+               /*         $.ajax({
                             type: "POST",
                             url: "http://localhost:8089/user/user/addUserMoney/" + userId,
                             data: {money: money, context: context},
@@ -378,7 +398,7 @@
                                     alert("充值失败");
                                 }
                             }
-                        })
+                        })*/
 
                     }
                 },

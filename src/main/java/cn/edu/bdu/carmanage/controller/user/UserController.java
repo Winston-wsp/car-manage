@@ -13,11 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -305,8 +303,8 @@ public class UserController {
                              @RequestParam(value = "size", defaultValue = "8") Long size,
                              Model model) {
 
-            model.addAttribute("startDate", startDate);
-            model.addAttribute("endDate", endDate);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
        /* Map<String,String> map = new HashMap<>();
         if(!StringUtils.isEmpty(startDate) ){
             map.put("startDate",startDate);

@@ -3,19 +3,15 @@ package cn.edu.bdu.carmanage.controller.car;
 import cn.edu.bdu.carmanage.entity.car.CarParking;
 import cn.edu.bdu.carmanage.entity.car.CarParks;
 import cn.edu.bdu.carmanage.entity.user.User;
-import cn.edu.bdu.carmanage.entity.user.UserPay;
 import cn.edu.bdu.carmanage.entity.user.UserVO;
 import cn.edu.bdu.carmanage.service.cms.car.CarParksService;
 import cn.edu.bdu.carmanage.service.cms.user.UserService;
-import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -134,12 +130,12 @@ public class CarParksController {
      */
     @GetMapping("/getNotCarParkings")
     public String getNotCarParkings(@RequestParam(value = "area", required = false, defaultValue = "") String area,
-                                 @RequestParam(value = "parkNumber", required = false, defaultValue = "") String parkNumber,
-                                 @RequestParam(value = "username", required = false, defaultValue = "") String username,
-                                 @RequestParam(value = "userId", required = false) String userId,
-                                 @RequestParam(value = "currentPage", defaultValue = "1") Long currentPage,
-                                 @RequestParam(value = "size", defaultValue = "8") Long size,
-                                 Model model) {
+                                    @RequestParam(value = "parkNumber", required = false, defaultValue = "") String parkNumber,
+                                    @RequestParam(value = "username", required = false, defaultValue = "") String username,
+                                    @RequestParam(value = "userId", required = false) String userId,
+                                    @RequestParam(value = "currentPage", defaultValue = "1") Long currentPage,
+                                    @RequestParam(value = "size", defaultValue = "8") Long size,
+                                    Model model) {
         UserVO<CarParking> carParkingVO = this.carParksService.getNotCarParkings(area, parkNumber, username, currentPage, size);
         model.addAttribute("carParkingVO", carParkingVO);
         return "/manage/notCarparking";
@@ -159,12 +155,12 @@ public class CarParksController {
      */
     @GetMapping("/getCarParkings")
     public String getCarParkings(@RequestParam(value = "area", required = false, defaultValue = "") String area,
-                                    @RequestParam(value = "parkNumber", required = false, defaultValue = "") String parkNumber,
-                                    @RequestParam(value = "username", required = false, defaultValue = "") String username,
-                                    @RequestParam(value = "userId", required = false) String userId,
-                                    @RequestParam(value = "currentPage", defaultValue = "1") Long currentPage,
-                                    @RequestParam(value = "size", defaultValue = "8") Long size,
-                                    Model model) {
+                                 @RequestParam(value = "parkNumber", required = false, defaultValue = "") String parkNumber,
+                                 @RequestParam(value = "username", required = false, defaultValue = "") String username,
+                                 @RequestParam(value = "userId", required = false) String userId,
+                                 @RequestParam(value = "currentPage", defaultValue = "1") Long currentPage,
+                                 @RequestParam(value = "size", defaultValue = "8") Long size,
+                                 Model model) {
         UserVO<CarParking> carParkingVO = this.carParksService.getCarParkings(area, parkNumber, username, currentPage, size);
         model.addAttribute("carParkingVO", carParkingVO);
         return "/manage/carparking";
@@ -230,6 +226,30 @@ public class CarParksController {
     public Long getCarCardByUserId(@PathVariable("userId") String userId, @RequestParam("endTime") Date endTime) {
         Long result = this.carParksService.getCarCardByUserId(userId, endTime);
         return result;
+    }
+
+    /**
+     * 历史停车记录
+     *
+     * @param userId
+     * @param model
+     * @return
+     */
+    @GetMapping("/getHistoryParking")
+    public String getHistoryParking(
+            @RequestParam("userId") String userId,
+            @RequestParam(value = "startDate", required = false, defaultValue = "") String startDate,
+            @RequestParam(value = "endDate", required = false, defaultValue = "") String endDate,
+            @RequestParam(value = "currentPage", defaultValue = "1") Long currentPage,
+            @RequestParam(value = "size", defaultValue = "8") Long size,
+            Model model) {
+
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        UserVO<CarParking> carParkingVO = this.userService.getUserHistoryParking(userId, startDate, endDate, currentPage, size);
+        model.addAttribute("carParkingVO", carParkingVO);
+        return "/user/historyPark";
+
     }
 
 }

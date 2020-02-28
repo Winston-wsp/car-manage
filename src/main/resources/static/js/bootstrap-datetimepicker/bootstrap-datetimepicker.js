@@ -882,7 +882,7 @@
                         input.val(unset ? '' : date.format(actualFormat));
                     }
                     notifyEvent({
-                        type: 'dp.error',
+                        type: 'templates.error',
                         date: targetMoment
                     });
                 }

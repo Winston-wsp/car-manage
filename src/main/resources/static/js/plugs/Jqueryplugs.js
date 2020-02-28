@@ -338,7 +338,7 @@ $.fn.extend({
                     });
                 },
                 error: function () {
-                    alert("error");
+                    alert("templates.error");
                 },
                 complete: function (request, settings) {
                     $.jq_Loading_close();

@@ -12,7 +12,12 @@
     <link th:href="@{/../../static/css/materialdesignicons.min.css}" href="css/materialdesignicons.min.css"
           rel="stylesheet">
     <link th:href="@{/../../static/css/style.min.css}" href="css/style.min.css" rel="stylesheet">
-
+    <!--时间选择插件-->
+    <link rel="stylesheet" th:href="@{/../../static/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css}"
+          href="js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+    <!--日期选择插件-->
+    <link rel="stylesheet" th:href="@{/../../static/js/bootstrap-datepicker/bootstrap-datepicker3.min.css}"
+          href="js/bootstrap-datepicker/bootstrap-datepicker3.min.css">
 </head>
 
 <body>
@@ -34,7 +39,7 @@
                             <li class="nav-item active"><a th:href="@{'/user/user/getUser?userId='+${session.user.id}}"
                                                            href="javascript:void(0)"><i class="mdi mdi-home"></i> 首页</a>
                             </li>
-                            <li class="nav-item nav-item-has-subnav">
+                            <li class="nav-item nav-item-has-subnav active open">
                                 <a href="javascript:void(0)"><i class="mdi mdi-access-point-network"></i> 车位</a>
                                 <ul class="nav nav-subnav">
                                     <li><a
@@ -42,24 +47,25 @@
                                             href="lyear_forms_elements.html">空闲车位查询</a></li>
                                     <li><a th:href="@{'/car/getMyCarParking?userId='+${session.user.id}}"
                                            href="lyear_forms_elements.html">我的车位</a></li>
-                                    <li><a th:href="@{'/car/getHistoryParking?userId='+${user.id}}"
-                                           href="lyear_forms_elements.html">历史停车记录</a></li>
+                                    <li class="active"><a
+                                            th:href="@{'/car/getHistoryParking?userId='+${session.user.id}}"
+                                            href="lyear_forms_elements.html">历史停车记录</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item nav-item-has-subnav">
-                                <a href="javascript:void(0)"><i class="mdi mdi-currency-jpy"></i> 充值缴费</a>
+                                <a href="javascript:void(0);"><i class="mdi mdi-currency-jpy"></i> 充值缴费</a>
                                 <ul class="nav nav-subnav">
                                     <li><a th:href="@{'/user/user/toUserChongzhi?userId='+${session.user.id}}"
                                            href="#">充值</a></li>
                                     <li><a
-                                           th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
-                                    <li><a th:href="@{'/user/user/toUserCost?userId='+${session.user.id}}" href="#">历史缴费</a></li>
+                                            th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
+                                    <li><a th:href="@{'/user/user/toUserCost?userId='+${session.user.id}}">历史缴费</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item nav-item-has-subnav active open">
+                            <li class="nav-item nav-item-has-subnav">
                                 <a href="javascript:void(0)"><i class="mdi mdi-account"></i> 账号资料</a>
                                 <ul class="nav nav-subnav">
-                                    <li class="active"><a
+                                    <li><a
                                             th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}">个人信息</a>
                                     </li>
                                     <li><a
@@ -258,105 +264,176 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-toolbar clearfix">
 
-                                    <hr>
-                                    <form method="post" action="#!" class="site-form">
-                                        <input id="userId" type="hidden" th:value="${user.id}">
-                                        <div class="form-group">
-                                            <label for="username">用户名</label>
-                                            <input type="text" class="form-control" name="username" id="username"
-                                                   th:value="${user.username}" disabled="disabled"/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="money">账户余额</label>
-                                            <input type="text" class="form-control" name="money" id="money"
-                                                   th:value="'￥'+${user.money}" disabled="disabled"/>
-                                        </div>
-                                        <div class="form-group" th:if="${carCard} != null">
-                                            <label for="cardNumber">会员卡号</label>
-                                            <input type="text" class="form-control" name="cardNumber" id="cardNumber"
-                                                   th:value="${carCard.cardNumber}" disabled="disabled"/>
-                                        </div>
-                                        <div class="form-group" th:if="${carCard} != null">
-                                            <label for="deadTime">有效日期至：</label>
-                                            <input type="text" class="form-control" name="deadTime" id="deadTime"
-                                                   th:value="${#dates.format(carCard.endTime,'yyyy年MM月dd日 HH时mm分ss秒')}" disabled="disabled"/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="nicheng">昵称</label>
-                                            <input type="text" class="form-control" name="nicheng" id="nicheng"
-                                                   placeholder="输入您的昵称" th:value="${user.nicheng}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="phoneNumber">电话</label>
-                                            <input type="text" class="form-control" name="phoneNumber" id="phoneNumber"
-                                                   aria-describedby="phoneHelp" placeholder="请输入正确的电话号码"
-                                                   th:value="${user.phoneNumber}">
-                                            <small id="phoneHelp" class="form-text text-muted">请保证您填写的电话号码是正确的。</small>
-                                        </div>
-                                        <button onclick="btn_update();" type="button" class="btn btn-primary">保存
-                                        </button>
-                                    </form>
+                                    <div class="row m-b-10">
+                                        <form th:action="@{/car/getHistoryParking}" method="get">
+                                            <div class="col-lg-10">
+                                                <div class="card-body">
+                                                    <div class="input-daterange input-group">
+                                                        <input type="hidden" name="userId"
+                                                               th:value="${session.user.id}">
+                                                        <input class="form-control js-datepicker"
+                                                               data-date-format="yyyy-mm-dd" type="text"
+                                                               id="startDate" name="startDate"
+                                                               placeholder="从">
+                                                        <span class="input-group-addon"><i
+                                                                class="mdi mdi-chevron-right"></i></span>
+                                                        <input class="form-control js-datepicker"
+                                                               data-date-format="yyyy-mm-dd" type="text"
+                                                               id="endDate" name="endDate"
+                                                               placeholder="至">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                <div class="card-body">
+                                                    <button class="btn btn-success" type="submit">搜索
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th>编号</th>
+                                                    <th>车牌号</th>
+                                                    <th>入库时间</th>
+                                                    <th>出库时间</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="carParking,stat:${carParkingVO.list}">
+                                                    <td th:text="${stat.count}">1</td>
+                                                    <td th:text="${carParking.plateNumber}">1</td>
+                                                    <td th:text="${#dates.format(carParking.startTime,'yyyy年MM月dd日 HH时mm分ss秒')}">
+                                                        《倚天屠龙记》
+                                                    </td>
+                                                    <td th:text="${#dates.format(carParking.endTime,'yyyy年MM月dd日 HH时mm分ss秒')}">
+                                                        《倚天屠龙记》
+                                                    </td>
 
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <ul class="pagination" th:if="${#lists.size(carParkingVO.list)} != 0">
+                                            <li class="disabled"><span>«</span></li>
+                                            <li class="" th:classappend="${page == carParkingVO.current}?'active':''"
+                                                th:each="page : ${#numbers.sequence(1,carParkingVO.pages)}">
+                                                <a
+                                                        th:text="${page}"
+                                                        th:href="@{/car/getHistoryParking?currentPage=}+${page}+'&userId='+${session.user.id}+'&startDate='+${startDate}+'&endDate='+${endDate}">1</a>
+                                            </li>
+                                            <!--                        <li class="disabled"><span>...</span></li>-->
+                                            <li><a href="#!">»</a></li>
+                                        </ul>
+
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
 
                     </div>
                 </div>
+
             </main>
+
         </div>
     </div>
 </div>
 
-<script th:src="@{/../../static/js/jquery.min.js}" type="text/javascript" src="js/jquery.min.js"></script>
-<script th:src="@{/../../static/js/bootstrap.min.js}" type="text/javascript" src="js/bootstrap.min.js"></script>
-<script th:src="@{/../../static/js/perfect-scrollbar.min.js}" type="text/javascript"
+<script type="text/javascript" th:src="@{/../../static/js/jquery.min.js}" src="js/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" th:src="@{/../../static/js/perfect-scrollbar.min.js}"
         src="js/perfect-scrollbar.min.js"></script>
 <script type="text/javascript" th:src="@{/../../static/js/lightyear.js}"></script>
-<script type="text/javascript" th:src="@{/../../static/js/bootstrap-notify.min.js}"></script>
+<script th:src="@{/../../static/js/bootstrap-notify.min.js}" src="js/bootstrap-notify.min.js"></script>
 <script type="text/javascript" th:src="@{/../../static/js/main.min.js}" src="js/main.min.js"></script>
-<script>
-    var btn_update = function () {
-        var id = $("#userId").val();
-        var username = $("#username").val();
-        var nicheng = $("#nicheng").val();
-        var phoneNumber = $.trim($("#phoneNumber").val());
-        var pattern = /^1[345678]\d{9}$/;
+<script type="text/javascript" th:src="@{/../../static/js/lightyear.js}" src="js/lightyear.js"></script>
 
-        if (!pattern.test(phoneNumber)) {
-            lightyear.loading('show');
-            lightyear.loading('hide');
-            lightyear.notify('号码格式不正确哦！', 'danger', 1000);
-            setTimeout(function () {
+<!--时间选择插件-->
+<script th:src="@{/../../static/js/bootstrap-datetimepicker/moment.min.js}"
+        src="js/bootstrap-datetimepicker/moment.min.js"></script>
+<script th:src="@{/../../static/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js}"
+        src="js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script th:src="@{/../../static/js/bootstrap-datetimepicker/locale/zh-cn.js}"
+        src="js/bootstrap-datetimepicker/locale/zh-cn.js"></script>
+<!--日期选择插件-->
+<script th:src="@{/../../static/js/bootstrap-datepicker/bootstrap-datepicker.min.js}"
+        src="js/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+<script th:src="@{/../../static/js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js}"
+        src="js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"></script>
 
-            }, 1000);
-        } else {
-            lightyear.loading('show');
-            $.ajax({
-                type: "PUT",
-                url: "http://localhost:8089/user/user/updateUser",
-                data: {
-                    id: id,
-                    username: username,
-                    nicheng: nicheng,
-                    phoneNumber: phoneNumber
-                },
-                success: function (data) {
-                    if (data > 0) {
-                        lightyear.loading('hide');
-                        lightyear.notify('保存成功', 'success', 1000);
-                        setTimeout(function () {
+<script type="text/javascript">
 
-                            window.location.reload();
-                        }, 1000);
-                    } else {
-                    }
-                }
-            });
-        }
+    // 搜索框
+    var btn_search = function () {
+        var startDate = $('#startDate').val().toString();
+        var endDate = $('#endDate').val().toString();
+        var userId = $('#userId').val();
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8089/user/user/toUserCost",
+            data: {useId: userId, startDate: startDate, endDate: endDate}
+        });
     }
+    var btn_save = function (id) {
+        // 消息提示示例
+        $('#saveCarparking').on('click', function () {
+            var userId = $('#userId').val();
+            var carparksId = id;
+            var plateNumber = $.trim($('#plateNumber').val());
+            lightyear.loading('show');
+            if (plateNumber.length == 7) {
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8089/car/addCarParing",
+                    data: {userId: userId, carparksId: carparksId, plateNumber: plateNumber},
+                    success: function (data) {
+                        if (data > 0) {
+                            lightyear.loading('hide');
+                            lightyear.notify('入库成功', 'success', 1000);
+                            setTimeout(function () {
+
+                                window.location.reload();
+                            }, 1000);
+
+                        } else {
+                            lightyear.loading('hide');
+                            lightyear.notify('系统繁忙，请稍后再试', 'danger', 2000);
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 2000);
+                        }
+                    }
+                });
+
+            } else if (plateNumber.length != 7) {
+
+                setTimeout(function () {
+                    lightyear.loading('hide');
+                    lightyear.notify('车牌号非法', 'danger', 500);
+                }, 500);
+            }
+
+
+        });
+
+    }
+
+    $(function () {
+        $('.search-bar .dropdown-menu a').click(function () {
+            var field = $(this).data('field') || '';
+            $('#search-field').val(field);
+            $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
+        });
+    });
 </script>
+
 </body>
 </html>
