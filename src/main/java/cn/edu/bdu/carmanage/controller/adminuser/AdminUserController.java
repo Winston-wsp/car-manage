@@ -75,8 +75,7 @@ public class AdminUserController {
 
     @GetMapping("/adminUserLogout")
     public String adminUserLogout(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        session.invalidate();
+        request.getSession().removeAttribute("adminUserSession");
         return "/index";
     }
 /*    @PostMapping("/updateAdminUser")

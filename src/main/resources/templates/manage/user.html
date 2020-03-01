@@ -149,7 +149,7 @@
                                                         用户名 / username </label>
                                                     <div class="am-u-sm-9">
                                                         <input type="text" id="user-name" required
-                                                               placeholder="用户名 / username" name="username">
+                                                               placeholder="用户名必须在2~10位之间" name="username">
                                                         <small id="usernameTip"></small>
                                                     </div>
                                                 </div>
@@ -158,7 +158,7 @@
                                                         昵称 / nicheng </label>
                                                     <div class="am-u-sm-9">
                                                         <input type="text" id="user-nicheng" required
-                                                               placeholder="昵称 / nicheng" name="nicheng">
+                                                               placeholder="昵称必须在2~10位之间" name="nicheng">
                                                         <small id="nichengTip"></small>
                                                     </div>
                                                 </div>
@@ -167,7 +167,7 @@
                                                         密码 / password </label>
                                                     <div class="am-u-sm-9">
                                                         <input type="text" id="user-password" required
-                                                               placeholder="密码 / password" name="password">
+                                                               placeholder="密码必须在6~18位之间" name="password">
                                                         <small id="passwordTip"></small>
                                                     </div>
                                                 </div>
@@ -220,11 +220,11 @@
                         <div class="form-group">
                             <label for="inputUsername">用户名</label>
                             <input readonly="readonly" type="email" class="form-control" id="inputUsername"
-                                   placeholder="用户名">
+                                   placeholder="用户名必须在2~10位之间">
                         </div>
                         <div class="form-group">
                             <label for="inputNicheng">昵称</label>
-                            <input type="text" class="form-control" id="inputNicheng" placeholder="昵称">
+                            <input type="text" class="form-control" id="inputNicheng" placeholder="昵称必须在2~10位之间">
                         </div>
                         <div class="form-group">
                             <label for="inputPhoneNumber">手机号</label>
@@ -232,7 +232,7 @@
                         </div>
                         <div class="form-group">
                             <label for="inputPassword">密码</label>
-                            <input type="text" class="form-control" id="inputPassword" placeholder="密码">
+                            <input type="text" class="form-control" id="inputPassword" placeholder="密码必须在6~18位之间">
                         </div>
                     </form>
                 </div>
@@ -351,6 +351,11 @@
             var nicheng = $.trim($("#user-nicheng").val());
             var password = $.trim($("#user-password").val());
             var phoneNumber = $.trim($("#user-phone").val());
+            if(username.length == 0 || nicheng.length == 0 || password.length == 0 ||phoneNumber.length == 0)
+            {
+                alert("不能有空字段");
+                return false;
+            }
             if(phoneNumber.length == 0){
                 $("#user-phone").removeClass("form-control is-valid")
                 $("#user-phone").addClass("form-control is-invalid");

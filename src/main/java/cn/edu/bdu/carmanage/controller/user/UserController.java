@@ -161,7 +161,7 @@ public class UserController {
 
     @GetMapping("/userLogout")
     public String userLogout(HttpServletRequest request) {
-        request.getSession().invalidate();
+        request.getSession().removeAttribute("user");
         return "/login";
     }
 

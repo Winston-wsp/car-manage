@@ -270,29 +270,33 @@
             var area = $("#areaNew").val();
             var parkNumber = $("#parkNumberNew").val();
             var remark = $("#remark").val();
-            $.ajax({
-                type: "post",
-                url: "/car/addCarParks",
-                // contentType : "application/json",
-                data: {area: area, parkNumber: parkNumber, remark: remark},
-                success: function (data) {
-                    if (data > 0) {
-                        $.jq_Alert({
-                            message: "添加成功",
-                            btnOktext: "确认",
-                            dialogModal: true,
-                            btnOkClick: function () {
-                                //$("#RawMaterialsTypeName").val("");
-                                //$("#RawMaterialsTypeDescription").val("");
-                                //$("#Ramark").val("");
-                                //page1();
-                                window.location = "http://localhost:8089/car/getCarParksList"
+            if (area.length == 0 || parkNumber.length == 0){
+                alert("区域和车牌号不能为空");
+                return false;
+            }
+                $.ajax({
+                    type: "post",
+                    url: "/car/addCarParks",
+                    // contentType : "application/json",
+                    data: {area: area, parkNumber: parkNumber, remark: remark},
+                    success: function (data) {
+                        if (data > 0) {
+                            $.jq_Alert({
+                                message: "添加成功",
+                                btnOktext: "确认",
+                                dialogModal: true,
+                                btnOkClick: function () {
+                                    //$("#RawMaterialsTypeName").val("");
+                                    //$("#RawMaterialsTypeDescription").val("");
+                                    //$("#Ramark").val("");
+                                    //page1();
+                                    window.location = "http://localhost:8089/car/getCarParksList"
 
-                            }
-                        });
+                                }
+                            });
+                        }
                     }
-                }
-            });
+                });
         }
 
         var btn_edit = function (id) {
@@ -321,7 +325,7 @@
                                     message: "删除成功",
 
                                 });
-                            } else if(data == -2) {
+                            } else if (data == -2) {
                                 $.jq_Alert({
                                     message: "该车位有车辆，无法删除!",
 
