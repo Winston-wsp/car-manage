@@ -261,10 +261,13 @@
                 <a th:href="@{/admin/car/getCarParkingCost}" target="right">
                     <li>费用设定</li>
                 </a>
+                <a th:href="@{/admin/user/getHistoryOrder}" target="right">
+                    <li>历史订单</li>
+                </a>
                 <a th:href="@{/admin/user/editPassword?adminUsername=}+${adminUser.username}" target="right">
                     <li>修改密码</li>
                 </a>
-                <a th:href="@{/admin/user/adminUserLogout}"7>
+                <a th:href="@{/admin/user/adminUserLogout}" 7>
                     <li>退出登录</li>
                 </a>
             </ul>

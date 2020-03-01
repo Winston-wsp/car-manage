@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" " http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.bdu.carmanage.mapper.UserPayMapper">
+    <resultMap id="userPayResultMap" type="cn.edu.bdu.carmanage.entity.user.UserPay">
+        <id column="id" property="id"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="pay" property="pay"></result>
+        <result column="order_number" property="orderNumber"></result>
+        <result column="time" property="time"></result>
+        <result column="context" property="context"></result>
+        <association property="user" javaType="cn.edu.bdu.carmanage.entity.user.User">
+            <id column="id" property="id"></id>
+            <result column="username" property="username"></result>
+            <result column="money" property="money"></result>
+            <result column="phone_number" property="phoneNumber"></result>
+        </association>
+    </resultMap>
+
+    <select id="getUserPay"  parameterType="map" resultMap="userPayResultMap">
+        SELECT
+        pay.*,
+        user_user.username,
+        user_user.phone_number,
+        user_user.money
+        FROM
+        user_pay pay
+        INNER JOIN user_user ON pay.user_id = user_user.id
+        ${ew.customSqlSegment}
+    </select>
+</mapper>

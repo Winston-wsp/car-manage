@@ -1,6 +1,8 @@
 package cn.edu.bdu.carmanage.controller.adminuser;
 
 import cn.edu.bdu.carmanage.entity.admin.AdminUser;
+import cn.edu.bdu.carmanage.entity.user.UserPay;
+import cn.edu.bdu.carmanage.entity.user.UserVO;
 import cn.edu.bdu.carmanage.service.cms.adminuser.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * @Author Winston
@@ -38,10 +39,10 @@ public class AdminUserController {
     }
 
     @PostMapping("getAdminUser")
-    public String getAdminUser(AdminUser adminUser, HttpServletRequest request,Model model) {
+    public String getAdminUser(AdminUser adminUser, HttpServletRequest request, Model model) {
         Boolean flag = adminUserService.getAdminUser(adminUser);
         if (flag) {
-            request.getSession().setAttribute("adminUserSession",adminUser);
+            request.getSession().setAttribute("adminUserSession", adminUser);
             model.addAttribute("adminUser", adminUser);
             return "/manage/index";
         }
@@ -56,12 +57,14 @@ public class AdminUserController {
 
         return ResponseEntity.ok(adminUser);
     }
+
     @PutMapping("/updateAdminUser")
     @ResponseBody
-    public int updateAdminUserByUsername(AdminUser adminUser,String newPassword){
+    public int updateAdminUserByUsername(AdminUser adminUser, String newPassword) {
         int row = adminUserService.updateAdminUserByUsername(adminUser, newPassword);
         return row;
     }
+
     @GetMapping("/index")
     public String index() {
         return "index";
@@ -74,10 +77,27 @@ public class AdminUserController {
     }
 
     @GetMapping("/adminUserLogout")
-    public String adminUserLogout(HttpServletRequest request){
+    public String adminUserLogout(HttpServletRequest request) {
         request.getSession().removeAttribute("adminUserSession");
         return "/index";
     }
+
+    @GetMapping("/getHistoryOrder")
+    public String getHistoryOrder(@RequestParam(value = "username", required = false, defaultValue = "") String username,
+                                  @RequestParam(value = "userId", required = false) String userId,
+                                  @RequestParam(value = "startTime", required = false, defaultValue = "") String startTime,
+                                  @RequestParam(value = "endTime", required = false, defaultValue = "") String endTime,
+                                  @RequestParam(value = "currentPage", defaultValue = "1") Long currentPage,
+                                  @RequestParam(value = "size", defaultValue = "8") Long size,
+                                  Model model) {
+        model.addAttribute("startTime", startTime);
+        model.addAttribute("endTime", endTime);
+        model.addAttribute("username", username);
+        UserVO<UserPay> userPayVO = this.adminUserService.getHistoryOrder(username, startTime, endTime, currentPage, size);
+        model.addAttribute("userPayVO", userPayVO);
+        return "/manage/historyOrder";
+    }
+
 /*    @PostMapping("/updateAdminUser")
     public {
 

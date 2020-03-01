@@ -27,4 +27,6 @@ public class UserPay {
     private String orderNumber;
     private Date time;
     private String context;
+    @TableField(exist = false)
+    private User user;
 }
