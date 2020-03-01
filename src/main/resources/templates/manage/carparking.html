@@ -244,6 +244,97 @@
                 success: function (data) {
                     var startTime = data.startTime;
                     var endTime = new Date();
+                    var carparkingId = data.id;
+                    $("#outDate").val(endTime);
+                    $("#plateNumber").val(data.plateNumber);
+                    $("#carparkingId").val(carparkingId);
+                    $("#inTime").val(startTime);
+                    $("#outTime").val(endTime.format("yyyy-MM-dd hh:mm:ss"));
+                    var dateBegin = new Date(startTime.replace(/-/g, "/"));//将-转化为/，使用new Date
+                    var dateEnd = endTime;//获取当前时间
+                    var dateDiff = dateEnd.getTime() - dateBegin.getTime();//时间差的毫秒数
+                    var userId = data.userId;
+                    var result;
+                    $.ajax({
+                        type: "GET",
+                        async: false,
+                        url: "http://localhost:8089/car/getCarCardByUserId/" + userId,
+                        data: {carparkingId: carparkingId, endTime: endTime},
+                        success: function (data) {
+                            if (data == 1) {
+                                result = "VIP用户";
+                            } else if (data == -1) {
+                                result = "普通用户";
+                            } else {
+                                result = "普通用户";
+                                dateDiff = data;
+                            }
+                        }
+                    })
+                    var dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));//计算出相差天数
+                    var leave1 = dateDiff % (24 * 3600 * 1000) //计算天数后剩余的毫秒数
+                    var hours = Math.floor(leave1 / (3600 * 1000))//计算出小时数
+                    //计算相差分钟数
+                    var leave2 = leave1 % (3600 * 1000) //计算小时数后剩余的毫秒数
+                    var minutes = Math.floor(leave2 / (60 * 1000))//计算相差分钟数
+                    //计算相差秒数
+                    var leave3 = leave2 % (60 * 1000) //计算分钟数后剩余的毫秒数
+                    var seconds = Math.round(leave3 / 1000)
+                    var totalTime = dayDiff + "天" + hours + "小时" + minutes + "分钟";
+
+                    var cost = 0;
+                    // 第一梯度时长
+                    var levelOneTime = 0;
+                    // 第一梯度费用
+                    var levelOne = 0;
+                    // 第二梯度时长
+                    var levelTwoTime = 0;
+                    // 第二梯度费用
+                    var levelTwo = 0;
+                    // 全天费用
+                    var dayCost = 0;
+                    $.ajax({
+                        type: "GET",
+                        async: false,
+                        url: "http://localhost:8089/user/car/getCarParkingCostRule",
+                        success: function (data) {
+                            levelOneTime = data.levelOneTime;
+                            levelOne = data.levelOne;
+                            levelTwoTime = data.levelTwoTime;
+                            levelTwo = data.levelTwo;
+                            levelThreeTime = data.levelThreeTime;
+                            levelThree = data.levelThree;
+                            dayCost = data.dayCost;
+                        }
+                    })
+                    if (result == "普通用户") {
+                        // 对进入小区临时停车的小、中型车，1小时以内免费；1~4小时收费5元；5小时以上9小时以内收费8元；全天10元。
+                        if (hours < levelOneTime) {
+                            cost = dayDiff * dayCost + levelOne;
+                        } else if (hours >= levelOneTime && hours < levelTwoTime) {
+                            cost = dayDiff * dayCost + levelTwo;
+                        } else if (hours >= levelTwoTime && hours < levelThreeTime) {
+                            cost = dayDiff * dayCost + levelThree;
+                        } else if (hours >= levelThreeTime) {
+                            cost = dayDiff * dayCost + dayCost;
+                        }
+                    } else {
+                        cost = 0;
+                    }
+                    $("#userType").val(result);
+                    $('#totalTime').val(totalTime);
+                    $('#cost').val(cost);
+                }
+            });
+        }
+      /*  var btn_chuku = function (id) {
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "http://localhost:8089/car/getCarParkingById/" + id,
+                success: function (data) {
+                    var startTime = data.startTime;
+                    var endTime = new Date();
                     $("#outDate").val(endTime);
                     $("#plateNumber").val(data.plateNumber);
                     $("#carparkingId").val(data.id);
@@ -301,7 +392,7 @@
                     $('#cost').val(cost);
                 }
             });
-        }
+        }*/
 
         // 出库缴费
         var car_out = function () {

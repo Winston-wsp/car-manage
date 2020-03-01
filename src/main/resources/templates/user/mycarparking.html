@@ -439,9 +439,10 @@
             success: function (data) {
                 var startTime = data.startTime;
                 var endTime = new Date();
+                var carparkingId = data.id;
                 $("#outDate").val(endTime);
                 $("#plateNumber").val(data.plateNumber);
-                $("#carparkingId").val(data.id);
+                $("#carparkingId").val(carparkingId);
                 $("#inTime").val(startTime);
                 $("#outTime").val(endTime.format("yyyy-MM-dd hh:mm:ss"));
                 var dateBegin = new Date(startTime.replace(/-/g, "/"));//将-转化为/，使用new Date
@@ -453,7 +454,7 @@
                     type: "GET",
                     async: false,
                     url: "http://localhost:8089/car/getCarCardByUserId/" + userId,
-                    data: {endTime: endTime},
+                    data: {carparkingId: carparkingId, endTime: endTime},
                     success: function (data) {
                         if (data == 1) {
                             result = "VIP用户";

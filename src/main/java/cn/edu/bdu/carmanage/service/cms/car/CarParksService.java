@@ -8,6 +8,7 @@ import cn.edu.bdu.carmanage.entity.user.User;
 import cn.edu.bdu.carmanage.entity.user.UserVO;
 import cn.edu.bdu.carmanage.mapper.*;
 import cn.edu.bdu.carmanage.utils.CardNumberUtils;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -109,6 +110,14 @@ public class CarParksService {
     }
 
     public int addCarParing(CarParking carParking) {
+        List<CarParking> carParkingList = this.carParkingMapper.selectList(new QueryWrapper<CarParking>()
+                .eq("user_id", carParking.getUserId())
+                .isNotNull("start_time")
+                .isNull("end_time"));
+        if (CollectionUtil.isNotEmpty(carParkingList)) {
+            // 如果不为空，说明不是第一辆车
+            carParking.setSort(-1);
+        }
         int row = this.carParkingMapper.insert(carParking);
         CarParks carParks = this.carParksMapper.selectById(carParking.getCarparksId());
         if (carParks != null) {
@@ -164,9 +173,9 @@ public class CarParksService {
             queryWrapper.eq("user_user.username", username);
         }
 
-        if(flag == true){
+        if (flag == true) {
             queryWrapper.isNull("end_time");
-        }else {
+        } else {
             queryWrapper.isNotNull("end_time");
         }
         queryWrapper.orderByAsc("car_parking.start_time");
@@ -264,24 +273,29 @@ public class CarParksService {
      * @param userId
      * @return
      */
-    public Long getCarCardByUserId(String userId, Date endTime) {
+    public Long getCarCardByUserId(String userId, String carparkingId, Date endTime) {
         QueryWrapper<CarCard> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
         CarCard carCard = this.carCardMapper.selectOne(queryWrapper);
-
-        // 用户车辆所在的车位，用户可以停多辆
-        List<CarParking> carParkings = new ArrayList<>();
-        List<CarParking> carParkingList = this.carParkingMapper.getMyCarParing(userId);
-        carParkingList.forEach(carParking -> {
-            if (carParking.getStartTime() != null && carParking.getEndTime() == null) {
-                carParkings.add(carParking);
-            }
-        });
         if (carCard == null) {
             // 不存在卡号，是普通用户
-            return -1l;
+            return -1L;
         }
-        CarParking carParking = carParkings.get(0);
+
+        // 用户车辆所在的车位，用户可以停多辆
+        CarParking carParking = this.carParkingMapper.selectById(carparkingId);
+        if(carParking.getSort() != 1){
+            return -1L;
+        }
+//        List<CarParking> carParkings = new ArrayList<>();
+//        List<CarParking> carParkingList = this.carParkingMapper.getMyCarParing(userId);
+//        carParkingList.forEach(carParking -> {
+//            if (carParking.getStartTime() != null && carParking.getEndTime() == null) {
+//                carParkings.add(carParking);
+//            }
+//        });
+//
+//        CarParking carParking = carParkings.get(0);
         // 获取用户入库的时间
         Date startTime = carParking.getStartTime();
         // 卡的有效期
@@ -344,6 +358,7 @@ public class CarParksService {
 
     /**
      * 管理员添加入库车辆信息
+     *
      * @param carParksId
      * @param username
      * @param plateNumber
@@ -353,10 +368,19 @@ public class CarParksService {
 
         // 首先确定用户是否存在
         User user = this.userMapper.selectOne(new QueryWrapper<User>().eq("username", username));
-        if(user == null){
+        if (user == null) {
             return -2;
         }
         CarParking carParking = new CarParking();
+
+        // 看看是不是第一辆车
+        List<CarParking> carParkingList = this.carParkingMapper.selectList(new QueryWrapper<CarParking>()
+                .eq("user_id", user.getId())
+                .isNotNull("start_time")
+                .isNull("end_time"));
+        if(CollectionUtil.isNotEmpty(carParkingList)){
+            carParking.setSort(-2);
+        }
         carParking.setUserId(user.getId());
         carParking.setCarparksId(carParksId);
         carParking.setPlateNumber(plateNumber);
@@ -373,6 +397,7 @@ public class CarParksService {
 
     /**
      * 设定停车费用
+     *
      * @param carParkingCost
      * @return
      */

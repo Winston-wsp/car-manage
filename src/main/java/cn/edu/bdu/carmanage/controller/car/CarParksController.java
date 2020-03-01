@@ -223,8 +223,8 @@ public class CarParksController {
      */
     @GetMapping("/getCarCardByUserId/{userId}")
     @ResponseBody
-    public Long getCarCardByUserId(@PathVariable("userId") String userId, @RequestParam("endTime") Date endTime) {
-        Long result = this.carParksService.getCarCardByUserId(userId, endTime);
+    public Long getCarCardByUserId(@PathVariable("userId") String userId, @RequestParam("carparkingId") String carparkingId, @RequestParam("endTime") Date endTime) {
+        Long result = this.carParksService.getCarCardByUserId(userId, carparkingId, endTime);
         return result;
     }
 

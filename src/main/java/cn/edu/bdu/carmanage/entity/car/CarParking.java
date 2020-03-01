@@ -36,4 +36,6 @@ public class CarParking {
     private CarParks carParks;
     @TableField(exist = false)
     private User User;
+    @TableField("sort")
+    private Integer sort;
 }
