@@ -52,8 +52,9 @@
                                     <li><a th:href="@{'/user/user/toUserChongzhi?userId='+${session.user.id}}"
                                            href="#">充值</a></li>
                                     <li><a
-                                           th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
-                                    <li><a th:href="@{'/user/user/toUserCost?userId='+${session.user.id}}" href="#">历史缴费</a></li>
+                                            th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
+                                    <li><a th:href="@{'/user/user/toUserCost?userId='+${session.user.id}}"
+                                           href="#">历史缴费</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item nav-item-has-subnav active open">
@@ -104,11 +105,11 @@
                                     <span th:text="${session.user.nicheng}">笔下光年 <span class="caret"></span></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a target="right"
-                                           th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}"><i
+                                    <li><a
+                                            th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}"><i
                                             class="mdi mdi-account"></i> 个人信息</a></li>
-                                    <li><a target="right"
-                                           th:href="@{'/user/user/toUpdatePassword?userId='+${session.user.id}}"><i
+                                    <li><a
+                                            th:href="@{'/user/user/toUpdatePassword?userId='+${session.user.id}}"><i
                                             class="mdi mdi-lock-outline"></i> 修改密码</a>
                                     </li>
                                     <li><a href="javascript:void(0)"><i class="mdi mdi-delete"></i> 清空缓存</a></li>
@@ -281,7 +282,8 @@
                                         <div class="form-group" th:if="${carCard} != null">
                                             <label for="deadTime">有效日期至：</label>
                                             <input type="text" class="form-control" name="deadTime" id="deadTime"
-                                                   th:value="${#dates.format(carCard.endTime,'yyyy年MM月dd日 HH时mm分ss秒')}" disabled="disabled"/>
+                                                   th:value="${#dates.format(carCard.endTime,'yyyy年MM月dd日 HH时mm分ss秒')}"
+                                                   disabled="disabled"/>
                                         </div>
                                         <div class="form-group">
                                             <label for="nicheng">昵称</label>

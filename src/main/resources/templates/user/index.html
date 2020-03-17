@@ -51,7 +51,8 @@
                                        href="#">充值</a></li>
                                 <li><a
                                         th:href="@{'/user/user/toUserCard?userId='+${session.user.id}}">办卡</a></li>
-                                <li><a th:href="@{'/user/user/toUserCost?userId='+${session.user.id}}" href="#">历史缴费</a></li>
+                                <li><a th:href="@{'/user/user/toUserCost?userId='+${session.user.id}}" href="#">历史缴费</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item nav-item-has-subnav">
@@ -101,10 +102,10 @@
                                 <span th:text="${session.user.nicheng}">笔下光年 <span class="caret"></span></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right">
-                                <li><a target="right" th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}"><i
+                                <li><a th:href="@{'/user/user/toUserInfo?userId='+${session.user.id}}"><i
                                         class="mdi mdi-account"></i> 个人信息</a></li>
-                                <li><a target="right"
-                                       th:href="@{'/user/user/toUpdatePassword?userId='+${session.user.id}}"><i
+                                <li><a
+                                        th:href="@{'/user/user/toUpdatePassword?userId='+${session.user.id}}"><i
                                         class="mdi mdi-lock-outline"></i> 修改密码</a>
                                 </li>
                                 <li><a href="javascript:void(0)"><i class="mdi mdi-delete"></i> 清空缓存</a></li>
@@ -314,8 +315,35 @@
                 </div>
 
                 <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header" style="background-color: lightblue"><h4>费用说明</h4></div>
+                            <div class="card-body">
 
-                    <div class="col-lg-6">
+                                <dl class="row" th:each="userTypeInfo,stat : ${userTypeInfoList}">
+                                    <dt class="col-sm-3" th:text="${userTypeInfo.userType}">普通用户</dt>
+                                    <dd class="col-sm-9" th:text="${userTypeInfo.typeDescribe}">1小时以内免费；1~4小时收费5元；5小时以上9小时以内收费8元；全天10元。</dd>
+                                </dl>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header" style="background-color: #a5b3c7"><h4>公告栏</h4></div>
+                            <div class="card-body">
+
+                                <dl class="row" th:each="announcement,stat : ${announcementList}">
+                                    <dt class="col-sm-3" th:text="${announcement.title}">《侠骨丹心》</dt>
+                                    <dd class="col-sm-9" th:text="${announcement.content}">
+                                        道尽“独行长剑一杯酒，孤客高楼万里情；侠骨柔情现正义，青天碧海映丹心。
+                                    </dd>
+                                </dl>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-6">
                         <div class="card">
                             <div class="card-header">
                                 <h4>公告栏</h4>
@@ -345,9 +373,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
 
-                    <div class="col-lg-6">
+                    <!--<div class="col-lg-6">
                         <div class="card">
                             <div class="card-header">
                                 <h4>停车收费说明</h4>
@@ -358,7 +386,7 @@
                             </h4>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
 
                 </div>
 

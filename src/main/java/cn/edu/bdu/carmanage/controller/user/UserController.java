@@ -2,10 +2,7 @@ package cn.edu.bdu.carmanage.controller.user;
 
 import cn.edu.bdu.carmanage.entity.car.CarCard;
 import cn.edu.bdu.carmanage.entity.car.CarParkingCost;
-import cn.edu.bdu.carmanage.entity.user.Announcement;
-import cn.edu.bdu.carmanage.entity.user.User;
-import cn.edu.bdu.carmanage.entity.user.UserPay;
-import cn.edu.bdu.carmanage.entity.user.UserVO;
+import cn.edu.bdu.carmanage.entity.user.*;
 import cn.edu.bdu.carmanage.service.cms.car.CarParksService;
 import cn.edu.bdu.carmanage.service.cms.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,6 +91,10 @@ public class UserController {
             // 获取公告栏
             List<Announcement> announcementList = this.userService.getAnnouncementList();
             model.addAttribute("announcementList", announcementList);
+
+            // 获取费用说明信息
+            List<UserType> userTypeInfoList = this.userService.getUserTypeInfo();
+            model.addAttribute("userTypeInfoList", userTypeInfoList);
             return "/user/index";
         }
         model.addAttribute("message", "用户名或密码错误，请重新输入");

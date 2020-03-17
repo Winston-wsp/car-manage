@@ -2,10 +2,7 @@ package cn.edu.bdu.carmanage.service.cms.user;
 
 import cn.edu.bdu.carmanage.entity.car.CarCard;
 import cn.edu.bdu.carmanage.entity.car.CarParking;
-import cn.edu.bdu.carmanage.entity.user.Announcement;
-import cn.edu.bdu.carmanage.entity.user.User;
-import cn.edu.bdu.carmanage.entity.user.UserPay;
-import cn.edu.bdu.carmanage.entity.user.UserVO;
+import cn.edu.bdu.carmanage.entity.user.*;
 import cn.edu.bdu.carmanage.mapper.*;
 import cn.edu.bdu.carmanage.utils.CardNumberUtils;
 import cn.hutool.core.date.DateUtil;
@@ -39,6 +36,8 @@ public class UserService {
     private CarCardMapper carCardMapper;
     @Autowired
     private CarParkingMapper carParkingMapper;
+    @Autowired
+    private UserTypeMapper userTypeMapper;
 
     /**
      * 添加新的普通用户
@@ -314,7 +313,7 @@ public class UserService {
             queryWrapper.le("car_parking.start_time", DateUtil.offsetDay(endDate, 1));
         }
         queryWrapper.orderByDesc("car_parking.start_time");
-        IPage<CarParking> page = carParkingMapper.getCarParkings(iPage,queryWrapper);
+        IPage<CarParking> page = carParkingMapper.getCarParkings(iPage, queryWrapper);
         UserVO<CarParking> carParkingVO = new UserVO<>();
         carParkingVO.setPages(page.getPages());
         carParkingVO.setCurrent(page.getCurrent());
@@ -323,5 +322,10 @@ public class UserService {
         carParkingVO.setList(page.getRecords());
 
         return carParkingVO;
+    }
+
+    public List<UserType> getUserTypeInfo() {
+        List<UserType> userTypes = this.userTypeMapper.selectList(null);
+        return userTypes;
     }
 }
