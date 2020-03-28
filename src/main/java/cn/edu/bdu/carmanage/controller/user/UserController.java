@@ -67,6 +67,9 @@ public class UserController {
             model.addAttribute("carParksMap", carParksMap);
 
             // 获取公告栏
+            // 获取费用说明信息
+            List<UserType> userTypeInfoList = this.userService.getUserTypeInfo();
+            model.addAttribute("userTypeInfoList", userTypeInfoList);
             List<Announcement> announcementList = this.userService.getAnnouncementList();
             model.addAttribute("announcementList", announcementList);
             return "/user/index";

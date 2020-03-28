@@ -30,6 +30,7 @@ public class LoginConfig implements  WebMvcConfigurer {
         patterns.add("/user/user/register");
         patterns.add("/user/user/addUser");
         patterns.add("/user/user/getUser");
+        patterns.add("/user/user/test");
         patterns.add("/admin/user/index");
         patterns.add("/admin/user/getAdminUser");
         patterns.add("/static/**");
