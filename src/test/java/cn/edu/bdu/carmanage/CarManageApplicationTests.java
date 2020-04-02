@@ -21,7 +21,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 class CarManageApplicationTests {
@@ -120,6 +123,42 @@ class CarManageApplicationTests {
         ExcelTool excelTool = new ExcelTool();
         List<?> objects = excelTool.simpleRead("C:\\Users\\WU\\Desktop\\test03241703 (1)(1).xlsx", User.class);
         System.out.println(objects);
+    }
+
+    @Test
+    public void test7()
+    {
+        List<Map<String,String>> books = new ArrayList<>();
+        Map<String,String> info = new HashMap<>();
+        info.put("name","骆驼祥子");
+        info.put("price","25.00");
+        info.put("author","老舍");
+
+        Map<String,String> info1 = new HashMap<>();
+        info1.put("name","骆驼祥子1");
+        info1.put("price","25.00");
+        info1.put("author","老舍1");
+
+        Map<String,String> info2 = new HashMap<>();
+        info2.put("name","骆驼祥子2");
+        info2.put("price","25.00");
+        info2.put("author","老舍2");
+
+        Map<String,String> info3 = new HashMap<>();
+        info3.put("name","骆驼祥子3");
+        info3.put("price","25.00");
+        info3.put("author","老舍3");
+
+        books.add(info);
+        books.add(info1);
+        books.add(info2);
+        books.add(info3);
+
+        List<String> name = books.stream().map(map -> {
+            return map.get("name");
+        }).collect(Collectors.toList());
+        System.out.println(name);
+
     }
 
 }
