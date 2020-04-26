@@ -66,10 +66,10 @@ public class UserController {
             carParksMap.put("emptyCarParks", emptyCarParks);
             model.addAttribute("carParksMap", carParksMap);
 
-            // 获取公告栏
             // 获取费用说明信息
             List<UserType> userTypeInfoList = this.userService.getUserTypeInfo();
             model.addAttribute("userTypeInfoList", userTypeInfoList);
+            // 获取公告栏
             List<Announcement> announcementList = this.userService.getAnnouncementList();
             model.addAttribute("announcementList", announcementList);
             return "/user/index";
@@ -79,12 +79,12 @@ public class UserController {
 
     @PostMapping("getUser")
     public String getUser(@RequestParam(value = "userId", required = false) String userId, User user, Model model, HttpServletRequest request) {
+        // 查询用户是否存在
         User u = userService.getUser(user);
-        ;
+        //如果存在则保存用户session
         if (u != null) {
-            Map<String, Integer> carParksMap = new HashMap<>();
             request.getSession().setAttribute("user", u);
-
+            Map<String, Integer> carParksMap = new HashMap<>();
             Integer allCarParks = this.carParksService.getAllCarParks();
             Integer emptyCarParks = this.carParksService.getEmptyCarParks();
             carParksMap.put("allCarParks", allCarParks);

@@ -7,6 +7,8 @@ import cn.edu.bdu.carmanage.listener.ExcelOptionsService;
 import cn.edu.bdu.carmanage.mapper.CarParkingMapper;
 import cn.edu.bdu.carmanage.util.ExcelTool;
 import cn.edu.bdu.carmanage.utils.Md5;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONArray;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -20,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,16 +103,16 @@ class CarManageApplicationTests {
         }
         List<FieldEntity> fieldEntityList = new ArrayList<>();
         result.forEach(list -> {
-                FieldEntity fieldEntity = new FieldEntity();
-                fieldEntity.setMobile(list.get(0));
-                fieldEntity.setFullName(list.get(1));
-                fieldEntity.setUserAuthority(list.get(2));
-                fieldEntity.setIdNum(list.get(3));
-                fieldEntity.setUserGroup(list.get(4));
-                fieldEntity.setUserAuthority(list.get(5));
-                fieldEntity.setEmployeeNumber(list.get(6));
+            FieldEntity fieldEntity = new FieldEntity();
+            fieldEntity.setMobile(list.get(0));
+            fieldEntity.setFullName(list.get(1));
+            fieldEntity.setUserAuthority(list.get(2));
+            fieldEntity.setIdNum(list.get(3));
+            fieldEntity.setUserGroup(list.get(4));
+            fieldEntity.setUserAuthority(list.get(5));
+            fieldEntity.setEmployeeNumber(list.get(6));
 
-                fieldEntityList.add(fieldEntity);
+            fieldEntityList.add(fieldEntity);
         });
 
         System.out.println("读取结果：" + result);
@@ -126,28 +129,27 @@ class CarManageApplicationTests {
     }
 
     @Test
-    public void test7()
-    {
-        List<Map<String,String>> books = new ArrayList<>();
-        Map<String,String> info = new HashMap<>();
-        info.put("name","骆驼祥子");
-        info.put("price","25.00");
-        info.put("author","老舍");
+    public void test7() {
+        List<Map<String, String>> books = new ArrayList<>();
+        Map<String, String> info = new HashMap<>();
+        info.put("name", "骆驼祥子");
+        info.put("price", "25.00");
+        info.put("author", "老舍");
 
-        Map<String,String> info1 = new HashMap<>();
-        info1.put("name","骆驼祥子1");
-        info1.put("price","25.00");
-        info1.put("author","老舍1");
+        Map<String, String> info1 = new HashMap<>();
+        info1.put("name", "骆驼祥子1");
+        info1.put("price", "25.00");
+        info1.put("author", "老舍1");
 
-        Map<String,String> info2 = new HashMap<>();
-        info2.put("name","骆驼祥子2");
-        info2.put("price","25.00");
-        info2.put("author","老舍2");
+        Map<String, String> info2 = new HashMap<>();
+        info2.put("name", "骆驼祥子2");
+        info2.put("price", "25.00");
+        info2.put("author", "老舍2");
 
-        Map<String,String> info3 = new HashMap<>();
-        info3.put("name","骆驼祥子3");
-        info3.put("price","25.00");
-        info3.put("author","老舍3");
+        Map<String, String> info3 = new HashMap<>();
+        info3.put("name", "骆驼祥子3");
+        info3.put("price", "25.00");
+        info3.put("author", "老舍3");
 
         books.add(info);
         books.add(info1);
@@ -161,4 +163,36 @@ class CarManageApplicationTests {
 
     }
 
+    @Test
+    public void test8() {
+        List<String> strList = new ArrayList<String>();
+        strList.add("a");
+        strList.add("b");
+//        strList.add("c");
+//        strList.add("d");
+        List<String> strList2 = new ArrayList<String>();
+//        strList2.add("b");
+        strList2.add("c");
+        strList2.add("d");
+        strList2.add("e");
+
+        strList.retainAll(strList2);
+        System.out.println(strList);
+
+    }
+
+    @Test
+    public void test9() {
+        DateTime parse = DateUtil.parse("2020-04-01");
+        Timestamp timestamp = parse.toTimestamp();
+
+        DateTime date1 = DateUtil.date(1587475023538L);
+        DateTime date2 = DateUtil.date(1611235023000L);
+        String name = date1.monthEnum().name();
+        int year = date2.year() - date1.year();
+        int month = date2.month() - date1.month();
+        int result = Math.abs(month + year * 12);
+        DateTime dateTime = DateUtil.offsetMonth(date1, 1);
+        System.out.println();
+    }
 }
