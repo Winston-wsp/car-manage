@@ -10,6 +10,7 @@ import cn.edu.bdu.carmanage.utils.Md5;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -23,10 +24,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SpringBootTest
@@ -194,5 +192,25 @@ class CarManageApplicationTests {
         int result = Math.abs(month + year * 12);
         DateTime dateTime = DateUtil.offsetMonth(date1, 1);
         System.out.println();
+    }
+    
+    @Test
+    public void test10()
+    {
+        DateTime start = DateUtil.date();
+        DateTime end = DateUtil.offsetDay(start, -1);
+
+        String fromDate = DateUtil.format(start, "yyyy/MM/dd");
+        String toDate = DateUtil.format(end, "yyyy/MM/dd");
+        System.out.println();
+    }
+
+    @Test
+    public void test11()
+    {
+        DateTime date = DateUtil.date(1121321312);
+        DateUtil.format(date,"yyyy-MM-dd");
+        System.out.println();
+
     }
 }

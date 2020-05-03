@@ -521,8 +521,9 @@
                         dayCost = data.dayCost;
                     }
                 })
+                // 普通用户
                 if (result == "普通用户") {
-                    // 对进入小区临时停车的小、中型车，1小时以内免费；1~4小时收费5元；5小时以上9小时以内收费8元；全天10元。
+                    // 计算各个梯度的费用
                     if (hours < levelOneTime) {
                         cost = dayDiff * dayCost + levelOne;
                     } else if (hours >= levelOneTime && hours < levelTwoTime) {
@@ -533,6 +534,7 @@
                         cost = dayDiff * dayCost + dayCost;
                     }
                 } else {
+                    // 办卡用户
                     cost = 0;
                 }
                 $("#userType").val(result);
