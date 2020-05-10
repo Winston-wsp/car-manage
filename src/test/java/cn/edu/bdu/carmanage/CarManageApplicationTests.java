@@ -10,7 +10,7 @@ import cn.edu.bdu.carmanage.utils.Md5;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -24,7 +24,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @SpringBootTest
@@ -193,10 +196,9 @@ class CarManageApplicationTests {
         DateTime dateTime = DateUtil.offsetMonth(date1, 1);
         System.out.println();
     }
-    
+
     @Test
-    public void test10()
-    {
+    public void test10() {
         DateTime start = DateUtil.date();
         DateTime end = DateUtil.offsetDay(start, -1);
 
@@ -206,11 +208,51 @@ class CarManageApplicationTests {
     }
 
     @Test
-    public void test11()
-    {
+    public void test11() {
         DateTime date = DateUtil.date(1121321312);
-        DateUtil.format(date,"yyyy-MM-dd");
+        DateUtil.format(date, "yyyy-MM-dd");
         System.out.println();
 
     }
+
+    @Test
+    public void test12() {
+        String account = "6217000140012931001";
+        String s = hideData(account, 4, 4);
+        System.out.println(s);
+
+    }
+
+    /**
+     * 对重要数据进行隐藏处理
+     *
+     * @param data         //要隐藏的数据
+     * @param beforeLength //前面保留位数
+     * @param afterLength  //后面保留位数
+     * @return
+     */
+    public static String hideData(String data, int beforeLength, int afterLength) {
+        if (StringUtils.isBlank(data)) {
+            return data;
+        }
+        int length = data.length();
+        //替换字符串，当前使用“*”
+        String replaceSymbol = "*";
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            if (i >= length - afterLength || i < beforeLength) {
+                sb.append(data.charAt(i));
+            } else {
+                sb.append(replaceSymbol);
+            }
+        }
+        return sb.toString();
+    }
+
+    @Test
+    public void test13()
+    {
+
+    }
+
 }
