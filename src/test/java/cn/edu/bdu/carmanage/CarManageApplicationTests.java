@@ -3,8 +3,10 @@ package cn.edu.bdu.carmanage;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import cn.edu.bdu.carmanage.entity.car.CarParking;
+import cn.edu.bdu.carmanage.entity.sms.SmsModel;
 import cn.edu.bdu.carmanage.listener.ExcelOptionsService;
 import cn.edu.bdu.carmanage.mapper.CarParkingMapper;
+import cn.edu.bdu.carmanage.service.cms.sms.SendSmsService;
 import cn.edu.bdu.carmanage.util.ExcelTool;
 import cn.edu.bdu.carmanage.utils.Md5;
 import cn.hutool.core.date.DateTime;
@@ -37,7 +39,8 @@ class CarManageApplicationTests {
     private CarParkingMapper carParkingMapper;
     @Autowired
     private ExcelOptionsService excelOptionsService;
-
+    @Autowired
+    private SendSmsService sendSmsService;
     @Test
     public void test01() {
         String password = "abc123";
@@ -252,7 +255,12 @@ class CarManageApplicationTests {
     @Test
     public void test13()
     {
+        SmsModel smsModel = new SmsModel();
+        smsModel.setMobile("17749707027");
+        smsModel.setTemplateCode("您的验证码为：${code}，该验证码5分钟内有效，请勿泄漏于他人！");
+        smsModel.setTemplateParam("135566");
 
+//        sendSmsService.send(smsModel);
     }
 
 }

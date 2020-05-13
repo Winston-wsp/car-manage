@@ -110,6 +110,17 @@
             <version>3.17</version>
         </dependency>
 
+        <!--短信业务-->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <!--阿里的处理excel的工具-->
         <dependency>
             <groupId>com.alibaba</groupId>

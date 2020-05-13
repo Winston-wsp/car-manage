@@ -27,6 +27,8 @@ public class LoginConfig implements  WebMvcConfigurer {
         // 排除配置--对下面的不进行拦截
         List<String> patterns = new ArrayList<>();
         patterns.add("/user/user/login");
+        patterns.add("/user/user/toForgetPassword");
+        patterns.add("/user/verifyCode/**");
         patterns.add("/user/user/register");
         patterns.add("/user/user/addUser");
         patterns.add("/user/user/getUser");

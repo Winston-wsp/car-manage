@@ -15,6 +15,11 @@ spring:
     time-zone: GMT+8
   mvc:
     static-path-pattern: /static/**
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: rabbitmq
+    password: rabbitmq
 server:
   port: 8089
 
@@ -26,3 +31,16 @@ pagehelper:
   params: count=countSql
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
+
+
+app:
+  aliyun:
+    sms:
+    accessId: LTAI4GGsVoAhyGmfexGxDkQz
+    accessKey: 8iZX97IfC83TNEpGktMsYIOTMIht0A
+    signName: 紫竹小区
+    codeTemplate: SMS_189840797
+    product: Dysmsapi
+    domain: dysmsapi.aliyuncs.com
+
+# rabbitmq服务配置

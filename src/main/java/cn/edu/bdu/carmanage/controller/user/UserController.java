@@ -322,4 +322,15 @@ public class UserController {
         model.addAttribute("userPayVO", userPayVO);
         return "/user/userCost";
     }
+
+
+    /**
+     * 忘记密码
+     */
+    @GetMapping("/toForgetPassword")
+    public String toForgetPassword() {
+
+        return "/user/forgetPassword";
+    }
+
 }
