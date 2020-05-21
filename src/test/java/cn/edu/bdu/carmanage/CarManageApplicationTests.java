@@ -26,10 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SpringBootTest
@@ -259,8 +256,17 @@ class CarManageApplicationTests {
         smsModel.setMobile("17749707027");
         smsModel.setTemplateCode("您的验证码为：${code}，该验证码5分钟内有效，请勿泄漏于他人！");
         smsModel.setTemplateParam("135566");
-
+        smsModel.setTemplateParam(null);
 //        sendSmsService.send(smsModel);
     }
 
+    @Test
+    public void test14()
+    {
+        String id = "213424";
+
+        System.out.println(id);
+        id = null;
+        System.out.println(id);
+    }
 }
