@@ -263,10 +263,10 @@ class CarManageApplicationTests {
     @Test
     public void test14()
     {
-        String id = "213424";
+        String id = "https://www.bilibili.com/video/BV15741177Eh?p=";
 
-        System.out.println(id);
-        id = null;
-        System.out.println(id);
+        for (int i = 1; i < 232; i++) {
+            System.out.println(id+i);
+        }
     }
 }

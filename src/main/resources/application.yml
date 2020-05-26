@@ -33,14 +33,4 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
 
 
-app:
-  aliyun:
-    sms:
-    accessId: LTAI4GGsVoAhyGmfexGxDkQz
-    accessKey: 8iZX97IfC83TNEpGktMsYIOTMIht0A
-    signName: 紫竹小区
-    codeTemplate: SMS_189840797
-    product: Dysmsapi
-    domain: dysmsapi.aliyuncs.com
-
 # rabbitmq服务配置
