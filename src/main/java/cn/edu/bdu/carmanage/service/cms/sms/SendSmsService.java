@@ -32,10 +32,10 @@ public class SendSmsService {
     @Value("dysmsapi.aliyuncs.com")
     private String domain;
 
-    @Value("LTAI4GGsVoAhyGmfexGxDkQz")
+    @Value("dsfdf")
     private String accessKeyId;
 
-    @Value("8iZX97IfC83TNEpGktMsYIOTMIht0A")
+    @Value("sdfsdfasdf")
     private String accessKeySecret;
 
     @Value("cn-hangzhou")
