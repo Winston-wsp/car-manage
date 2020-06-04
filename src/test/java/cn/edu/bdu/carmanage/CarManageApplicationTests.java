@@ -9,7 +9,9 @@ import cn.edu.bdu.carmanage.mapper.CarParkingMapper;
 import cn.edu.bdu.carmanage.service.cms.sms.SendSmsService;
 import cn.edu.bdu.carmanage.util.ExcelTool;
 import cn.edu.bdu.carmanage.utils.Md5;
+import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +40,7 @@ class CarManageApplicationTests {
     private ExcelOptionsService excelOptionsService;
     @Autowired
     private SendSmsService sendSmsService;
+
     @Test
     public void test01() {
         String password = "abc123";
@@ -250,8 +253,7 @@ class CarManageApplicationTests {
     }
 
     @Test
-    public void test13()
-    {
+    public void test13() {
         SmsModel smsModel = new SmsModel();
         smsModel.setMobile("17749707027");
         smsModel.setTemplateCode("您的验证码为：${code}，该验证码5分钟内有效，请勿泄漏于他人！");
@@ -261,12 +263,56 @@ class CarManageApplicationTests {
     }
 
     @Test
-    public void test14()
-    {
+    public void test14() {
         String id = "https://www.bilibili.com/video/BV15741177Eh?p=";
 
         for (int i = 1; i < 232; i++) {
-            System.out.println(id+i);
+            System.out.println(id + i);
         }
+    }
+
+    @Test
+    public void test15() {
+        String dateStr = "2020-06-04 12:34:23";
+        DateTime dateTime = DateUtil.parse(dateStr);
+        DateTime beginOfWeek = DateUtil.beginOfWeek(dateTime);
+        DateTime offsetWeek = DateUtil.offsetWeek(beginOfWeek, -1);
+        System.out.println(offsetWeek);
+    }
+
+    /**
+     * 判断是否能够补签
+     * 周一早上10点前禁止补签上周及上周以前的签到
+     * @param date
+     * @return
+     */
+    public static boolean canSignIn(Date date) {
+        // 获取当前时间
+        DateTime timeNow = new DateTime();
+        // 获取需要对比的时间
+        DateTime dateTime = new DateTime(date);
+        // 获取周一
+        DateTime monday = DateUtil.beginOfWeek(timeNow);
+        // 获取本周一10点的时间
+        DateTime offsetTime = monday.offset(DateField.HOUR, 10);
+        // 本周一10点的时间和需要对比时间的时间差
+        long timeDiff = DateUtil.between(offsetTime, dateTime, DateUnit.SECOND);
+        // 当前时间和周一10点的时间差
+        long nowDiff = DateUtil.between(timeNow, offsetTime, DateUnit.SECOND);
+        // 如果需要对比的时间在本周一10点之后则能被补签
+        if (timeDiff > 0) {
+            return true;
+        }
+        // 如果当前时间在周一10点之前且对比时间小于一周则能被补签
+        if(nowDiff < 0){
+            DateTime lastWeek = DateUtil.offsetWeek(monday, -1);
+            // 和周一
+        }
+        // 如果需要对比的时间在本周一10点之前且小于一周则能被补签
+        long between = DateUtil.between(timeNow, offsetTime, DateUnit.SECOND);
+        if (between > 0) {
+            // 如果>0则能进行补签
+        }
+
     }
 }
